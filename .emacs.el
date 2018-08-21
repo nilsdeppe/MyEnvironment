@@ -1318,7 +1318,10 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package markdown-mode
   :ensure t
-  :mode (".md" ".markdown"))
+  :mode (".md" ".markdown")
+  :config
+  (define-key markdown-mode-map (kbd "M-p") nil)
+  (define-key markdown-mode-map (kbd "M-n") nil))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; auctex
