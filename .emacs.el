@@ -359,7 +359,8 @@
   :diminish ivy-mode
   :commands (ivy-mode)
   :config
-  (require 'ivy)
+  (when my:byte-compile-init
+    (require 'ivy))
   (ivy-mode t)
   (setq ivy-use-virtual-buffers t)
   (setq enable-recursive-minibuffers t)
@@ -1024,10 +1025,11 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
       :commands (ein:jupyter-server-start)
       :defer 5
       :config
-      (require 'ein)
-      (require 'ein-loaddefs)
-      (require 'ein-notebook)
-      (require 'ein-subpackages)
+      (when my:byte-compile-init
+        (require 'ein)
+        (require 'ein-loaddefs)
+        (require 'ein-notebook)
+        (require 'ein-subpackages))
       ;; when editing the emacs.el file, we do not want to start a new
       ;; Jupyter server each time we save, so we only start a new Jupyter
       ;; server if there currently isn't one running.
