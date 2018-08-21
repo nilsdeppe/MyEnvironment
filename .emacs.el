@@ -171,8 +171,6 @@
 (global-set-key (kbd "C-m") 'newline-and-indent)
 ;; Load the compile ocmmand
 (global-set-key (kbd "C-c C-c") 'compile)
-;; Undo, basically C-x u
-(global-set-key (kbd "C-/") 'undo)
 
 ;; We don't want to type yes and no all the time so, do y and n
 (defalias 'yes-or-no-p 'y-or-n-p)
