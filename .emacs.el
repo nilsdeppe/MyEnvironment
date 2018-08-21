@@ -46,6 +46,10 @@
 ;; correctly with a byte-compiled init file.
 (defvar my:byte-compile-init t)
 
+;; Force Emacs to try to start a server. On macOS checking if a server is
+;; started doesn't always work correctly so this is a workaround for that.
+(defvar my:force-server-start nil)
+
 ;; TEX is installed in a different location on macOS
 (when (string-equal system-type "darwin")
   (setenv "PATH" (concat (getenv "PATH") ":/Library/TeX/texbin/"))
@@ -107,8 +111,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Start emacs server if not already running
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(if (and (fboundp 'server-running-p) (not (server-running-p)))
-    (server-start))
+(when (or my:force-server-start
+          (and (fboundp 'server-running-p) (not (server-running-p))))
+  (server-start))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; General Tweaks
