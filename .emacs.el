@@ -310,19 +310,25 @@
                 interactive-only)))
       (byte-compile-file (expand-file-name file))))
 
+  ;; Add a post-save hook that checks if ~/.emacs.el exists and if the file
+  ;; name of the current buffer is ~/.emacs.el or the symbolically linked
+  ;; file.
   (add-hook
    'after-save-hook
    (function
     (lambda ()
-      (if (string= (file-truename "~/.emacs.el")
-                   (file-truename (buffer-file-name)))
-          (byte-compile-init-files (file-truename "~/.emacs.el"))))))
+      (when (and (string= (file-truename "~/.emacs.el")
+                          (file-truename (buffer-file-name)))
+                 (file-exists-p "~/.emacs.el"))
+        (byte-compile-init-files "~/.emacs.el")))))
 
-  ;; Byte-compile again to ~/.emacs.elc if it is outdated
-  (if (file-newer-than-file-p
-       (file-truename "~/.emacs.el")
-       (file-truename "~/.emacs.elc"))
-      (byte-compile-init-files "~/.emacs.el")))
+  ;; Byte-compile again to ~/.emacs.elc if it is outdated. We use file-truename
+  ;; to follow symbolic links so that ~/.emacs.el can be symbolically linked to
+  ;; the location where the .emacs.el is stored.
+  (when (file-newer-than-file-p
+         (file-truename "~/.emacs.el")
+         (file-truename "~/.emacs.elc"))
+    (byte-compile-init-files "~/.emacs.el")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; auto-package-update
