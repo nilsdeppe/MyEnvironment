@@ -168,8 +168,6 @@
 (global-set-key (kbd "C-c C-c") 'compile)
 ;; Undo, basically C-x u
 (global-set-key (kbd "C-/") 'undo)
-;; Find file in project
-(global-set-key (kbd "C-x M-f") 'project-find-file)
 
 ;; We don't want to type yes and no all the time so, do y and n
 (defalias 'yes-or-no-p 'y-or-n-p)
@@ -418,8 +416,7 @@
     (declare-function counsel-etags-locate-tags-file "counsel-etags.el"))
   :bind (
          ("M-." . counsel-etags-find-tag-at-point)
-         ("M-t" . counsel-etags-grep-symbol-at-point)
-         ("M-s" . counsel-etags-find-tag))
+         ("M-t" . counsel-etags-grep-symbol-at-point))
   :config
   ;; Ignore files above 800kb
   (setq counsel-etags-max-file-size 800)
