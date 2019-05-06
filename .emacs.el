@@ -1162,10 +1162,6 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
   (add-hook 'magit-mode-hook (lambda () (setq whitespace-mode -1)))
   (setq magit-completing-read-function 'ivy-completing-read)
   )
-(use-package magit-gerrit
-  :ensure t
-  :after magit
-  )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; GitGutter
