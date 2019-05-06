@@ -381,8 +381,6 @@
 
 (use-package swiper
   :ensure t
-  :bind (("C-s" . swiper)
-         ("C-r" . swiper))
   )
 
 (use-package counsel
@@ -392,8 +390,10 @@
          ("<f1> f" . counsel-describe-function)
          ("<f1> v" . counsel-describe-variable)
          ("<f1> l" . counsel-find-library)
-         ("<f2> i" . counsel-info-lookup-symbol)
-         ("<f2> u" . counsel-unicode-char)
+         ("C-c i" . counsel-info-lookup-symbol)
+         ("C-c u" . counsel-unicode-char)
+         ("C-s" . buffer-dependent-swiper)
+         ("C-r" . buffer-dependent-swiper)
          ("C-c g" . counsel-git-grep)
          ("C-c j" . counsel-git)
          ("C-c k" . counsel-ag)
@@ -406,11 +406,30 @@
   (if (executable-find "rg")
       ;; use ripgrep instead of grep because it's way faster
       (setq counsel-grep-base-command
-            "rg -i -M 120 --no-heading --line-number --color never '%s' %s"
+            "rg -i -M 120 --no-heading --line-number --color never %s %s"
             counsel-rg-base-command
             "rg -i -M 120 --no-heading --line-number --color never %s .")
     (warn "\nWARNING: Could not find the ripgrep executable. It "
           "is recommended you install ripgrep."))
+
+  ;; Switch whether we use swiper or counsel-grep depending on the major mode.
+  ;; This is because for certain themes font highlighting is very expensive
+  ;; in some modes (e.g. C++ mode)
+  (defun buffer-dependent-swiper ()
+    (interactive)
+    (if (and (buffer-file-name)
+             (not (ignore-errors
+                    (file-remote-p (buffer-file-name))))
+             (if (or (eq major-mode 'org-mode)
+                     (eq major-mode 'c++-mode))
+                 (> (buffer-size) 50000)
+               ;; The value 300000 is the default number of characters
+               ;; before falling back to counsel-grep from swiper.
+               (> (buffer-size) 300000)))
+        (progn
+          (save-buffer)
+          (counsel-grep))
+      (swiper--ivy (swiper--candidates))))
   )
 
 ;; Use universal ctags to build the tags database for the project.
