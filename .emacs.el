@@ -792,6 +792,9 @@
   :defer t
   :init
   (add-to-list 'auto-mode-alist '("\\.tpp\\'" . c++-mode))
+  (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
+  (add-to-list 'auto-mode-alist '("\\.hpp\\'" . c++-mode))
+  (add-to-list 'auto-mode-alist '("\\.cpp\\'" . c++-mode))
   :config
   (define-key c++-mode-map (kbd "C-c C-c") 'compile)
   (define-key c++-mode-map (kbd "C-c C-k") 'kill-compilation)
