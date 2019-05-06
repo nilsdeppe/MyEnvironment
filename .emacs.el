@@ -702,6 +702,7 @@
 (use-package visual-regexp-steroids
   :ensure t
   :bind (("C-c v r" . vr/query-replace)
+         ("M-%" . vr/query-replace)
          ("C-c v m" . vr/mc-mark)
          ("C-M-s" . vr/isearch-forward)
          ("C-M-r" . vr/isearch-backward))
