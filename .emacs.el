@@ -1045,8 +1045,8 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
 ;; ein - ipython notebooks in gui emacs
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Only launch if the executable exists.
-(if (and my:jupyter_location
-         my:jupyter_start_dir)
+(when (and my:jupyter_location
+           my:jupyter_start_dir)
     ;; Skewer mode is used by ein for running javascript in the notebook
     (use-package skewer-mode
       :ensure t
@@ -1059,7 +1059,6 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
       :config
       (when my:byte-compile-init
         (require 'ein)
-        (require 'ein-loaddefs)
         (require 'ein-notebook)
         (require 'ein-subpackages))
       ;; when editing the emacs.el file, we do not want to start a new
