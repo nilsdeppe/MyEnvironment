@@ -403,21 +403,22 @@
   ;; Switch whether we use swiper or counsel-grep depending on the major mode.
   ;; This is because for certain themes font highlighting is very expensive
   ;; in some modes (e.g. C++ mode)
-  (defun buffer-dependent-swiper ()
+  (defun buffer-dependent-swiper (&optional initial-input)
     (interactive)
-    (if (and (buffer-file-name)
-             (not (ignore-errors
-                    (file-remote-p (buffer-file-name))))
-             (if (or (eq major-mode 'org-mode)
-                     (eq major-mode 'c++-mode))
-                 (> (buffer-size) 50000)
-               ;; The value 300000 is the default number of characters
-               ;; before falling back to counsel-grep from swiper.
-               (> (buffer-size) 300000)))
-        (progn
-          (save-buffer)
-          (counsel-grep))
-      (swiper--ivy (swiper--candidates))))
+    (if (or (not buffer-file-name)
+            (ignore-errors
+              (file-remote-p (buffer-file-name)))
+            (if (or (eq major-mode 'org-mode)
+                    (eq major-mode 'c++-mode))
+                (<= (buffer-size) 50000)
+              ;; The value 300000 is the default number of characters
+              ;; before falling back to counsel-grep from swiper.
+              (<= (buffer-size) 300000)))
+        (swiper initial-input)
+      (progn
+        (when (file-writable-p buffer-file-name)
+          (save-buffer))
+        (counsel-grep initial-input))))
   )
 
 ;; Use universal ctags to build the tags database for the project.
