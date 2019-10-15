@@ -1190,7 +1190,7 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
 (use-package gitignore-mode
   :ensure t
   :diminish gitignore-mode
-  :mode (".gitignore"))
+  :mode ("\\.gitignore\\'"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; cmake-mode
@@ -1239,7 +1239,7 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
      "~/.emacs.d/plugins/protobuf-mode.el"))
 (if (file-exists-p "~/.emacs.d/plugins/protobuf-mode.el")
     (use-package protobuf-mode
-      :mode ("\\.proto")
+      :mode ("\\.proto\\'")
       )
   )
 
@@ -1248,14 +1248,14 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package yaml-mode
   :ensure t
-  :mode (".yml" ".yaml"))
+  :mode ("\\.yml\\'" "\\.yaml\\'"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; json-mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package json-mode
   :ensure t
-  :mode (".json" ".imp"))
+  :mode ("\\.json\\'" "\\.imp\\'"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; rust-mode
@@ -1345,7 +1345,7 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package markdown-mode
   :ensure t
-  :mode (".md" ".markdown")
+  :mode ("\\.md\\'" "\\.markdown\\'")
   :config
   (define-key markdown-mode-map (kbd "M-p") nil)
   (define-key markdown-mode-map (kbd "M-n") nil))
