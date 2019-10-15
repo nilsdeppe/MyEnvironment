@@ -19,7 +19,7 @@ will move things in a direction that will allow easy customization for people.
 
 The Emacs configuration installs itself, but first you should set a few options
 in it. If you open the `.emacs.el` file you will be able to specify options for
-some of the packages used, such as [YCMD](https://github.com/Valloric/ycmd),
+some of the packages used, such as
 [EIN](https://github.com/millejoh/emacs-ipython-notebook), whether to use Dvorak
 bindings, and whether to enable Evil mode. You'll need to specify some paths,
 but most of the configuration should work without any changes.
@@ -30,13 +30,12 @@ but most of the configuration should work without any changes.
 4. Delete `~/.emacs.elc`
 5. Restart Emacs three times
 
-Everything except
-[YCMD](https://github.com/Valloric/ycmd),
-[Jupyter](https://github.com/Valloric/ycmd),
+Everything except [Jupyter](https://jupyter.org),
 [ClangFormat](https://clang.llvm.org/docs/ClangFormat.html), and
 [Clang-Rename](https://clang.llvm.org/extra/clang-rename.html) will have
-installed itself. That is, everything that isn't an external-to-Emacs third
-party dependency is installed on startup.
+installed itself, as well as any completers fol
+[lsp-mode](https://github.com/emacs-lsp/lsp-mode) That is, everything that isn't
+an external-to-Emacs third party dependency is installed on startup.
 
 ### Packages
 
@@ -56,10 +55,10 @@ Here is an overview of the packages I use:
   for regexp-replacements
 - Google Style Guide for C/C++ projects (you may need to change that for your
   projects :) )
-- [ycmd](https://github.com/abingham/emacs-ycmd) for code completion in Python,
+- [lsp-mode](https://github.com/emacs-lsp/lsp-mode) for code completion in Python,
   C/C++, and Rust (I currently don't use other languages).
 - [company](https://github.com/company-mode/company-mode) for general completion
-  (hooking into YCMD)
+  (hooking into LSP)
 - [flycheck](https://github.com/flycheck/flycheck) for syntax checking
 - [string-inflection](https://github.com/akicho8/string-inflection) for changing
   the case of the word-at-point
@@ -101,7 +100,7 @@ by `meta-n`.
 | `C-m`        | Enter/newline and indent                                     |
 | `C-c g`      | Use Counsel to do a `git grep`                               |
 | `C-c r`      | Use Counsel to do a `ripgrep`                                |
-| `M-.`        | Find tag at point/ycmd goto definition                       |
+| `M-.`        | Find tag at point/LSP goto definition                        |
 | `M-t`        | Grep for symbol at point                                     |
 | `C-x M-f`    | Projectile find file to find file in project.                |
 | `M-s`        | Avy go to visible word that starts with character.           |
@@ -139,7 +138,7 @@ by `meta-n`.
 | `C-c C-k`    | Abort running compilation.                                   |
 | `C-c p`      | Prefix for the projectile command map. E.g. `C-c p b`.       |
 | `C-c o`      | Prefix for Origami commands.                                 |
-| `C-c y`      | Prefix for YCMD commands.                                    |
+| `C-c y`      | Prefix for LSP commands.                                     |
 | `C-c C-f`    | ClangFormat region.                                          |
 | `C-c c p`    | Clang-Rename symbol at point.                                |
 | `C-c c q`    | Clang-Rename qualified identifier.                           |
