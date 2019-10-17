@@ -890,6 +890,8 @@
                                     "-j=4"
                                     "--suggest-missing-includes"
                                     "--pch-storage=memory"))
+  (setq lsp-enable-on-type-formatting nil)
+  ;; (setq lsp-before-save-edits nil)
   ;; Use flycheck instead of flymake
   (setq lsp-prefer-flymake nil)
 
