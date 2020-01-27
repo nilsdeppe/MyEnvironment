@@ -8,6 +8,18 @@
 ;; Defines global variables that are later used to customize and set
 ;; up packages.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Specify the ycmd server command and path to the ycmd directory *inside* the
+;; cloned ycmd directory
+(defvar my:ycmd-server-command '("python" "/home/nils/Research/ycmd/ycmd"))
+(defvar my:ycmd-extra-conf-whitelist '("~/.ycm_extra_conf.py"))
+(defvar my:ycmd-global-config "~/.ycm_extra_conf.py")
+;; In order to get python code completion with ycmd+jedi you must specify
+;; the path to the python executable you're using.
+(defvar my:ycmd-python-binary-path "/usr/bin/python")
+
+;; Set to t if you want to use ycmd-goto in C/C++/Rust mode
+(defvar my:use-ycmd-goto t)
+
 ;; Specify the jupyter executable name, and the start dir of the server
 (defvar my:jupyter_location (executable-find "jupyter"))
 (defvar my:jupyter_start_dir "/home/nils")
@@ -825,6 +837,101 @@
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Package: ycmd (YouCompleteMeDaemon)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Set up YouCompleteMe for emacs:
+;; https://github.com/Valloric/ycmd
+;; https://github.com/abingham/emacs-ycmd
+(defvar my:python-location (executable-find (nth 0 my:ycmd-server-command)))
+(if (not my:python-location)
+    (message
+     "Could not start YouCompleteMeDaemon because the python executable could
+not be found.\nSpecified executable is: '%s'\nPlease set my:ycmd-server-command
+appropriately in ~/.emacs.el.\n" (nth 0 my:ycmd-server-command)))
+(if (not (file-directory-p (nth 1 my:ycmd-server-command)))
+    (message "Could not YouCompleteMeDaemon because the specified directory does
+not exist.\nSpecified directory is: '%s'
+Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
+             (nth 1 my:ycmd-server-command)))
+(if (and my:python-location
+         (file-directory-p (nth 1 my:ycmd-server-command)))
+    (use-package ycmd
+      :ensure t
+      :diminish ycmd-mode
+      :hook (c-mode-common . ycmd-mode)
+      :init
+      ;; (eval-when-compile
+      ;;   ;; Silence missing function warnings
+      ;;   (declare-function global-ycmd-mode "ycmd.el"))
+      ;; (add-hook 'after-init-hook #'ycmd-mode)
+      :config
+      (progn
+        (set-variable 'ycmd-server-command my:ycmd-server-command)
+        (set-variable 'ycmd-extra-conf-whitelist my:ycmd-extra-conf-whitelist)
+        (set-variable 'ycmd-global-config my:ycmd-global-config)
+        (set-variable 'ycmd-python-binary-path my:ycmd-python-binary-path)
+        (setq ycmd-force-semantic-completion t)
+        ;; Use "C-c y" instead of "C-c Y" for the prefix
+        (define-key ycmd-mode-map ycmd-keymap-prefix nil)
+        (setq ycmd-keymap-prefix (kbd "C-c y"))
+        ;; Switch around some of the ycmd keybindings to make them easier to
+        ;; use. Mainly, fewer capital letters.
+        (setq ycmd-command-map
+              (let ((map (make-sparse-keymap)))
+                (define-key map "b" 'ycmd-parse-buffer)
+                (define-key map "o" 'ycmd-open)
+                (define-key map "c" 'ycmd-close)
+                (define-key map "." 'ycmd-goto)
+                (define-key map "gi" 'ycmd-goto-include)
+                (define-key map "gd" 'ycmd-goto-definition)
+                (define-key map "gD" 'ycmd-goto-declaration)
+                (define-key map "gm" 'ycmd-goto-implementation)
+                (define-key map "gp" 'ycmd-goto-imprecise)
+                (define-key map "gr" 'ycmd-goto-references)
+                (define-key map "gt" 'ycmd-goto-type)
+                (define-key map "s" 'ycmd-toggle-force-semantic-completion)
+                (define-key map "v" 'ycmd-show-debug-info)
+                (define-key map "V" 'ycmd-version)
+                (define-key map "d" 'ycmd-show-documentation)
+                (define-key map "C" 'ycmd-clear-compilation-flag-cache)
+                (define-key map "O" 'ycmd-restart-semantic-server)
+                (define-key map "t" 'ycmd-get-type)
+                (define-key map "p" 'ycmd-get-parent)
+                (define-key map "f" 'ycmd-fixit)
+                (define-key map "r" 'ycmd-refactor-rename)
+                (define-key map "x" 'ycmd-completer)
+                map))
+
+        (define-key ycmd-mode-map ycmd-keymap-prefix ycmd-command-map)
+        ;; Only override the CTags shortcut if my:use-ycmd-goto is t
+        (when my:use-ycmd-goto
+          (add-hook 'c-mode-common-hook
+                    '(lambda ()
+                       (local-set-key (kbd "M-.") 'ycmd-goto))))
+
+        (use-package company-ycmd
+          :ensure t
+          :init
+          (eval-when-compile
+            ;; Silence missing function warnings
+            (declare-function company-ycmd-setup "company-ycmd.el"))
+          :config
+          (company-ycmd-setup)
+          )
+
+        (use-package flycheck-ycmd
+          :ensure t
+          :init
+          (add-hook 'c-mode-common-hook 'flycheck-ycmd-setup)
+          (add-hook 'rust-mode-hook 'flycheck-ycmd-setup)
+          )
+
+        ;; Add displaying the function arguments in mini buffer using El Doc
+        (require 'ycmd-eldoc)
+        (add-hook 'ycmd-mode-hook 'ycmd-eldoc-setup))
+      ))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Package: lsp (language server protocol mode)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; A code completion, syntax checker, etc. engine that uses the LSP to
@@ -833,7 +940,8 @@
 (use-package lsp-mode
   :ensure t
   :hook (;; C++ completers are: ccls, clangd, or cquery. I use clangd.
-         (c-mode-common . lsp)
+         ;; I use ycmd for C/C++ completion so disable lsp for that.
+         ;; (c-mode-common . lsp)
          ;; Python on Linux/mac OS is pyls (python language server)
          (python-mode . lsp)
          ;; Rust RLS (Rust Language Server) https://github.com/rust-lang/rls
