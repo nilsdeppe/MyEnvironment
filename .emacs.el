@@ -27,8 +27,11 @@
 ;; Compilation command for C/C++
 (defvar my:compile-command "clang++ -Wall -Wextra -std=c++14 ")
 
-;; Which theme to use. Either: spacemacs-dark, or sourcerer
-(defvar my:use-theme "spacemacs-dark")
+;; Which theme to use.
+;; - spacemacs-dark
+;; - sourcerer
+;; - doom-* (the doom themes https://github.com/hlissner/emacs-doom-themes)
+(defvar my:use-theme 'doom-one)
 
 ;; Set my:use-dvorak-bindings to t if you use a Dvorak keyboard layout
 (defvar my:use-dvorak-bindings t)
@@ -1475,6 +1478,24 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
 ;; appears black in Aquamacs. This can be fixed by setting
 ;; the font color under Menu Bar->Options->Appearance->Font For...
 ;; and then setting "Adopt Face and Frame Parameter as Frame Default"
+(when (string-match "doom-*" (symbol-name my:use-theme))
+  (use-package doom-themes
+    :ensure t
+    :config
+    ;; Global settings (defaults)
+
+    ;; if nil, bold is universally disabled
+    (setq doom-themes-enable-bold t)
+    ;; if nil, italics is universally disabled
+    (setq doom-themes-enable-italic t)
+    (load-theme 'doom-vibrant t)
+
+    (require 'doom-themes-ext-org)
+    ;; Corrects (and improves) org-mode's native fontification.
+    (doom-themes-org-config)
+    )
+  )
+
 (when (string-equal my:use-theme "spacemacs-dark")
   (use-package spacemacs-common
     :ensure spacemacs-theme
