@@ -40,8 +40,7 @@ an external-to-Emacs third party dependency is installed on startup.
 ### Packages
 
 Here is an overview of the packages I use:
-- [Ivy, Counsel, and
-  Swiper](https://www.fidelity.com/calculators-tools/planning-guidance-center)
+- [Ivy, Counsel, and Swiper](https://github.com/abo-abo/swiper)
   instead of Helm and friends.
 - [projectile](https://github.com/bbatsov/projectile) for navigating around
   projects
