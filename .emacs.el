@@ -871,7 +871,7 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
       (progn
         (set-variable 'ycmd-server-command my:ycmd-server-command)
         (set-variable 'ycmd-extra-conf-whitelist my:ycmd-extra-conf-whitelist)
-        (set-variable 'ycmd-global-config my:ycmd-global-config)
+        (set-variable 'ycmd-global-config (file-truename my:ycmd-global-config))
         (set-variable 'ycmd-python-binary-path my:ycmd-python-binary-path)
         (setq ycmd-force-semantic-completion t)
         ;; Use "C-c y" instead of "C-c Y" for the prefix
