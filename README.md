@@ -31,9 +31,10 @@ but most of the configuration should work without any changes.
 5. Restart Emacs three times
 
 Everything except [Jupyter](https://jupyter.org),
-[ClangFormat](https://clang.llvm.org/docs/ClangFormat.html), and
-[Clang-Rename](https://clang.llvm.org/extra/clang-rename.html) will have
-installed itself, as well as any completers fol
+[ClangFormat](https://clang.llvm.org/docs/ClangFormat.html),
+[Clang-Rename](https://clang.llvm.org/extra/clang-rename.html), and
+[YouCompleteMeDaemon](https://github.com/ycm-core/ycmd/) will have
+installed itself, as well as any completers for
 [lsp-mode](https://github.com/emacs-lsp/lsp-mode) That is, everything that isn't
 an external-to-Emacs third party dependency is installed on startup.
 
@@ -153,6 +154,16 @@ post](https://nilsdeppe.com/posts/emacs-c++-ide2) about what you're seeing. If
 there isn't an issue, please feel free to file an issue or add a comment on the
 [blog post](https://nilsdeppe.com/posts/emacs-c++-ide2) with steps to
 reproduce.
+
+### YouCompleteMe
+
+This setup uses YouCompleteMe (ycm) for code completion in C++. clangd is also
+supported via LSP-mode if one wants to use that instead. I have also included my
+`.ycm_extra_conf.py` file that I use to preprocess compilation flags to deal
+with things like precompiled headers that break YCM. It also sets up the default
+flags for compilation. I've had to symlink the file into various project
+directories because I haven't managed to get emacs-ycmd to tell ycm to load the
+conf file from `~/`.
 
 ## License
 Unless stated otherwise the code in this repository will be distributed under
