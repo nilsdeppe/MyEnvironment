@@ -601,9 +601,9 @@
       (progn
         (setenv "INSIDE_EMACS" (format "%s,comint" emacs-version))
         (pinentry-start))
-    (message
-     (concat "WARNING: You must have allow-emacs-pinentry in your "
-             "~/.gnupg/gpg-agent.conf"))
+    (user-error "%s%s"
+                "You must have allow-emacs-pinentry in your "
+                "~/.gnupg/gpg-agent.conf")
     ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
