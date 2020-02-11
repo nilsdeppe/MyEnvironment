@@ -165,6 +165,28 @@ flags for compilation. I've had to symlink the file into various project
 directories because I haven't managed to get emacs-ycmd to tell ycm to load the
 conf file from `~/`.
 
+### Signature verification failed Emacs 26.1
+
+The GNU package signature changed with Emacs 26.3, so Emacs 26.1 and 26.2 cannot
+authenticate the GNU package repo giving the following error:
+```
+Failed to verify signature archive-contents.sig:
+No public key for 066DAFCB81E42C40 created at 2020-02-10T14:05:02-0800 using RSA
+Command output:
+gpg: Signature made Mon 10 Feb 2020 02:05:02 PM PST
+gpg:                using RSA key C433554766D3DDC64221BFAA066DAFCB81E42C40
+gpg: Can't check signature: No public key
+```
+
+One simple workaround for this is to temporarily disable the archive signature
+checking by adding:
+```elisp
+(setq package-check-signature nil)
+```
+to your Emacs init file. Remember to remove or comment it out after you've done
+the core installation! Other options are discussed
+[here](http://elpa.gnu.org/packages/gnu-elpa-keyring-update.html).
+
 ## License
 Unless stated otherwise the code in this repository will be distributed under
 the Boost Software License v1. Third party code that I store here will have the
