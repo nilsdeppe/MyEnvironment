@@ -581,6 +581,32 @@
   :defer 1)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; pinentry
+;; Allows typing in the password for the GPG agent from inside Emacs
+;;
+;; Note that you must have the line:
+;;   allow-emacs-pinentry
+;; inside ~/.gnupg/gpg-agent.conf and gpg 2.15+ and pinentry 0.9.5+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package pinentry
+  :ensure t
+  :config
+  (if (and
+       (file-exists-p (file-truename "~/.gnupg/gpg-agent.conf"))
+       (string-match ".*allow-emacs-pinentry.*"
+                     (with-temp-buffer
+                       (insert-file-contents
+                        (file-truename "~/.gnupg/gpg-agent.conf"))
+                       (buffer-string))))
+      (progn
+        (setenv "INSIDE_EMACS" (format "%s,comint" emacs-version))
+        (pinentry-start))
+    (message
+     (concat "WARNING: You must have allow-emacs-pinentry in your "
+             "~/.gnupg/gpg-agent.conf"))
+    ))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Edit server to allow editing of things in Chrome with Emacs
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package edit-server
