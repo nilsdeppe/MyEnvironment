@@ -1,4 +1,4 @@
-># If you come from bash you might have to change your $PATH.
+# If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # If you want to profile the ZSH startup time to get an idea of
