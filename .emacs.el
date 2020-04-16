@@ -131,6 +131,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; General Tweaks
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Only allow encrypted auth sources
+(setq auth-sources '((:source "~/.authinfo.gpg")))
+
 ;; turn on highlight matching brackets when cursor is on one
 (show-paren-mode t)
 ;; Overwrite region selected
