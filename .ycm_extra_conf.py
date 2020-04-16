@@ -31,7 +31,7 @@ import os
 
 import ycm_core
 
-default_flags = ['-x', 'c++', '-Wall', '-Wextra', '-Werror', '-std=c++14']
+default_flags = ['-x', 'c++', '-Wall', '-Wextra', '-Werror', '-std=c++17']
 
 cpp_source_extensions = ['.cpp', '.cxx', '.cc', '.c', '.m', '.mm']
 
