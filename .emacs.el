@@ -615,9 +615,15 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ripgrep
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package ripgrep
-  :ensure t
-  :defer 1)
+(when (executable-find "rg")
+  (use-package rg
+    :ensure t
+    :defer 1
+    :commands (rg rg-project rg-dwim )
+    :config
+    (rg-enable-default-bindings)
+    )
+  )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; pinentry
