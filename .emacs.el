@@ -17,6 +17,11 @@
 ;; the path to the python executable you're using.
 (defvar my:ycmd-python-binary-path "/usr/bin/python")
 
+;; When t use smart-hungry-delete
+;; (https://github.com/hrehfeld/emacs-smart-hungry-delete).
+;; When nil use hungry-delete
+(defvar my:use-smart-hungry-delete t)
+
 ;; Set to t if you want to use ycmd-goto in C/C++/Rust mode
 (defvar my:use-ycmd-goto t)
 
@@ -1240,15 +1245,31 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
 ;; Load hungry Delete, caus we're lazy
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Set hungry delete:
-(use-package hungry-delete
-  :ensure t
-  :diminish hungry-delete-mode
-  :init
-  (eval-when-compile
-    ;; Silence missing function warnings
-    (declare-function global-hungry-delete-mode "hungry-delete.el"))
-  :config
-  (global-hungry-delete-mode t)
+(if my:use-smart-hungry-delete
+    (use-package smart-hungry-delete
+      :ensure t
+      :bind (("<backspace>" . smart-hungry-delete-backward-char)
+             ("C-h" . smart-hungry-delete-backward-char)
+             ("C-d" . smart-hungry-delete-forward-char))
+      :init
+      (eval-when-compile
+        ;; Silence missing function warnings
+        (declare-function
+         smart-hungry-delete-add-default-hooks "smart-hungry-delete.el"))
+      :config
+      ;; (require 'smart-hungry-delete)
+      (smart-hungry-delete-add-default-hooks)
+      )
+  (use-package hungry-delete
+    :ensure t
+    :diminish hungry-delete-mode
+    :init
+    (eval-when-compile
+      ;; Silence missing function warnings
+      (declare-function global-hungry-delete-mode "hungry-delete.el"))
+    :config
+    (global-hungry-delete-mode t)
+    )
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
