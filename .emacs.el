@@ -43,6 +43,11 @@
 ;;       how to fix yet.
 (defvar my:use-evil-mode nil)
 
+;; Set my:use-prescient to t if you want to use prescient for sorting
+;;
+;; https://github.com/raxod502/prescient.el
+(defvar my:use-prescient t)
+
 ;; Set my:byte-compile-init to t if you want to compile the init file.
 ;; This will improve startup time by ~2-3 times, but makes getting certain
 ;; packages to load correctly more difficult. Most of the packages work
@@ -380,6 +385,18 @@
   (global-set-key (kbd "C-c C-r") 'ivy-resume)
   ;; Show #/total when scrolling buffers
   (setq ivy-count-format "%d/%d ")
+  )
+
+;; Using prescient for sorting results with ivy:
+;; https://github.com/raxod502/prescient.el
+(when my:use-prescient
+  (use-package ivy-prescient
+               :ensure t
+               :after (counsel)
+               :config
+               (ivy-prescient-mode t)
+               (prescient-persist-mode t)
+               )
   )
 
 (use-package swiper
@@ -1057,6 +1074,18 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
   (setq company-backends (delete 'company-clang company-backends))
   (setq company-backends (delete 'company-bbdb company-backends))
   (setq company-backends (delete 'company-oddmuse company-backends))
+  )
+
+;; Use prescient for sorting results with company:
+;; https://github.com/raxod502/prescient.el
+(when my:use-prescient
+  (use-package company-prescient
+    :ensure t
+    :after company
+    :config
+    (company-prescient-mode t)
+    (prescient-persist-mode t)
+    )
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
