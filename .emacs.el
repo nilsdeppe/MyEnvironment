@@ -1032,11 +1032,11 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
     :config (add-to-list 'company-backends 'company-lsp))
 
   ;; lsp-ivy is not yet on Melpa...
-  ;; (use-package lsp-ivy
-  ;;   :ensure t
-  ;;   :diminish
-  ;;   :after (lsp-mode ivy-mode)
-  ;;   )
+  (use-package lsp-ivy
+    :ensure t
+    :diminish
+    :after (lsp-mode ivy-mode)
+    )
 
   :config
   ;; Extra flags passed to clangd. See 'clangd --help' for info
