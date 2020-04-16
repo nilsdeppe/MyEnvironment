@@ -1304,6 +1304,9 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
   :init
   (use-package dash
     :ensure t)
+  (use-package forge
+    :ensure t
+    :after magit)
   :config
   (add-hook 'magit-mode-hook (lambda () (setq whitespace-mode -1)))
   (setq magit-completing-read-function 'ivy-completing-read)
