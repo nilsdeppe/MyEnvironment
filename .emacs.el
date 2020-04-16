@@ -1515,7 +1515,8 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
     (setq doom-themes-enable-bold t)
     ;; if nil, italics is universally disabled
     (setq doom-themes-enable-italic t)
-    (load-theme 'doom-vibrant t)
+    ;; Load the selected theme
+    (load-theme my:use-theme t)
 
     (require 'doom-themes-ext-org)
     ;; Corrects (and improves) org-mode's native fontification.
