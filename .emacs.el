@@ -69,6 +69,20 @@
   (setq exec-path (append exec-path '("/Library/TeX/texbin/")))
   (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin")))
 
+;; I find it much easier to use underline rather than actual
+;; highlighting to read.
+(defun my:set-custom-faces()
+  "Set custom faces after the theme is loaded."
+  (custom-set-faces
+   '(ivy-current-match
+     ((t (:background nil :underline t))))
+   '(company-tooltip
+     ((t (:background nil))))
+   '(company-tooltip-selection
+     ((t (:background nil :underline t))))
+   )
+  )
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Set packages to install
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1636,6 +1650,8 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
    '(ivy-minibuffer-match-face-4
      ((t (:background "#680a0a" :weight bold))))
    '(which-func ((t (:foreground "#8fb28f"))))))
+
+(my:set-custom-faces)
 
 ;; I don't care to see the splash screen
 (setq inhibit-splash-screen t)
