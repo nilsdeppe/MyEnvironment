@@ -493,6 +493,17 @@
           (counsel-grep initial-input))))
     )
 
+  (use-package counsel-projectile
+    :ensure t
+    :after (:all counsel projectile)
+    :bind (("C-x M-f" . counsel-projectile-find-file))
+    :init
+    (eval-when-compile
+      ;; Silence missing function warnings
+      (declare-function counsel-projectile-mode "counsel-projectile.el"))
+    :config
+    (counsel-projectile-mode))
+
   ;; Use universal ctags to build the tags database for the project.
   ;; When you first want to build a TAGS database run 'touch TAGS'
   ;; in the root directory of your project.
@@ -628,18 +639,12 @@
   (projectile-mode t)
   (setq projectile-enable-caching t)
   (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+  (when my:use-ivy
+    (setq projectile-completion-system 'ivy))
+  (when my:use-selectrum
+    (global-set-key (kbd "C-x M-f") 'projectile-find-file)
+    (setq projectile-completion-system 'default))
   )
-
-(use-package counsel-projectile
-  :ensure t
-  :after projectile
-  :bind (("C-x M-f" . counsel-projectile-find-file))
-  :init
-  (eval-when-compile
-    ;; Silence missing function warnings
-    (declare-function counsel-projectile-mode "counsel-projectile.el"))
-  :config
-  (counsel-projectile-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Window numbering
