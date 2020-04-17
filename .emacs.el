@@ -682,6 +682,9 @@
     :commands (rg rg-project rg-dwim )
     :config
     (rg-enable-default-bindings)
+    (when my:use-selectrum
+      (global-set-key (kbd "C-c g") 'rg-project)
+      (global-set-key (kbd "C-c r") 'rg-project))
     )
   )
 
