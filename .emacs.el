@@ -1234,8 +1234,7 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
       :config
       (when my:byte-compile-init
         (require 'ein)
-        (require 'ein-notebook)
-        (require 'ein-subpackages))
+        (require 'ein-notebook))
       ;; when editing the emacs.el file, we do not want to start a new
       ;; Jupyter server each time we save, so we only start a new Jupyter
       ;; server if there currently isn't one running.
