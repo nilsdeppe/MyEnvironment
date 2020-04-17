@@ -85,6 +85,8 @@
      ((t (:background nil))))
    '(company-tooltip-selection
      ((t (:background nil :underline t))))
+   '(highlight
+     ((t (:background "nil" :foreground "nil" :underline t))))
    )
   )
 
