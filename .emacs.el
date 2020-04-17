@@ -63,6 +63,11 @@
 ;; started doesn't always work correctly so this is a workaround for that.
 (defvar my:force-server-start nil)
 
+;; Specify the search backend. Must be either:
+;; - ivy https://github.com/abo-abo/swiper
+;; - selectrum https://github.com/raxod502/selectrum
+(defvar my:search-backend "ivy")
+
 ;; TEX is installed in a different location on macOS
 (when (string-equal system-type "darwin")
   (setenv "PATH" (concat (getenv "PATH") ":/Library/TeX/texbin/"))
@@ -391,176 +396,226 @@
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Select search backend
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defvar my:use-ivy nil)
+(defvar my:use-selectrum nil)
+(if (string-match "ivy" my:search-backend)
+    (setq my:use-ivy t)
+  (if (string-match "selectrum" my:search-backend)
+      (setq my:use-selectrum t)
+    (warn "my:search-backend must be to 'ivy' or 'selectrum'")
+    ))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Ivy config
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package ivy
-  :ensure t
-  :diminish ivy-mode
-  :commands (ivy-mode)
-  :config
-  (when my:byte-compile-init
-    (require 'ivy))
-  (ivy-mode t)
-  (setq ivy-use-virtual-buffers t)
-  (setq enable-recursive-minibuffers t)
-  (setq ivy-wrap t)
-  (global-set-key (kbd "C-c C-r") 'ivy-resume)
-  ;; Show #/total when scrolling buffers
-  (setq ivy-count-format "%d/%d ")
-  )
+(when my:use-ivy
+  (use-package ivy
+    :ensure t
+    :diminish ivy-mode
+    :commands (ivy-mode)
+    :config
+    (when my:byte-compile-init
+      (require 'ivy))
+    (ivy-mode t)
+    (setq ivy-use-virtual-buffers t)
+    (setq enable-recursive-minibuffers t)
+    (setq ivy-wrap t)
+    (global-set-key (kbd "C-c C-r") 'ivy-resume)
+    ;; Show #/total when scrolling buffers
+    (setq ivy-count-format "%d/%d ")
+    )
 
-;; Using prescient for sorting results with ivy:
-;; https://github.com/raxod502/prescient.el
-(when my:use-prescient
-  (use-package ivy-prescient
-               :ensure t
-               :after (counsel)
-               :config
-               (ivy-prescient-mode t)
-               (prescient-persist-mode t)
-               )
-  )
+  ;; Using prescient for sorting results with ivy:
+  ;; https://github.com/raxod502/prescient.el
+  (when my:use-prescient
+    (use-package ivy-prescient
+      :ensure t
+      :after (counsel)
+      :config
+      (ivy-prescient-mode t)
+      (prescient-persist-mode t)
+      )
+    )
 
-(use-package swiper
-  :ensure t
-  )
+  (use-package swiper
+    :ensure t
+    )
 
-(use-package counsel
-  :ensure t
-  :bind (("M-x" . counsel-M-x)
-         ("C-x C-f" . counsel-find-file)
-         ("<f1> f" . counsel-describe-function)
-         ("<f1> v" . counsel-describe-variable)
-         ("<f1> l" . counsel-find-library)
-         ("C-c i" . counsel-info-lookup-symbol)
-         ("C-c u" . counsel-unicode-char)
-         ("C-s" . buffer-dependent-swiper)
-         ("C-r" . buffer-dependent-swiper)
-         ("C-c g" . counsel-git-grep)
-         ("C-c j" . counsel-git)
-         ("C-c k" . counsel-ag)
-         ("C-c r" . counsel-rg)
-         ("C-x l" . counsel-locate)
-         :map minibuffer-local-map
-         ("C-r" . counsel-minibuffer-add)
-         )
-  :config
-  (if (executable-find "rg")
-      ;; use ripgrep instead of grep because it's way faster
-      (setq counsel-grep-base-command
-            "rg -i -M 120 --no-heading --line-number --color never %s %s"
-            counsel-rg-base-command
-            "rg -i -M 120 --no-heading --line-number --color never %s .")
-    (warn "\nWARNING: Could not find the ripgrep executable. It "
-          "is recommended you install ripgrep."))
+  (use-package counsel
+    :ensure t
+    :bind (("M-x" . counsel-M-x)
+           ("C-x C-f" . counsel-find-file)
+           ("<f1> f" . counsel-describe-function)
+           ("<f1> v" . counsel-describe-variable)
+           ("<f1> l" . counsel-find-library)
+           ("C-c i" . counsel-info-lookup-symbol)
+           ("C-c u" . counsel-unicode-char)
+           ("C-s" . buffer-dependent-swiper)
+           ("C-r" . buffer-dependent-swiper)
+           ("C-c g" . counsel-git-grep)
+           ("C-c j" . counsel-git)
+           ("C-c k" . counsel-ag)
+           ("C-c r" . counsel-rg)
+           ("C-x l" . counsel-locate)
+           :map minibuffer-local-map
+           ("C-r" . counsel-minibuffer-add)
+           )
+    :config
+    (if (executable-find "rg")
+        ;; use ripgrep instead of grep because it's way faster
+        (setq counsel-grep-base-command
+              "rg -i -M 120 --no-heading --line-number --color never %s %s"
+              counsel-rg-base-command
+              "rg -i -M 120 --no-heading --line-number --color never %s .")
+      (warn "\nWARNING: Could not find the ripgrep executable. It "
+            "is recommended you install ripgrep."))
 
-  ;; Switch whether we use swiper or counsel-grep depending on the major mode.
-  ;; This is because for certain themes font highlighting is very expensive
-  ;; in some modes (e.g. C++ mode)
-  (defun buffer-dependent-swiper (&optional initial-input)
-    (interactive)
-    (if (or (not buffer-file-name)
-            (ignore-errors
-              (file-remote-p (buffer-file-name)))
-            (if (or (eq major-mode 'org-mode)
-                    (eq major-mode 'c++-mode))
-                (<= (buffer-size) 50000)
-              ;; The value 300000 is the default number of characters
-              ;; before falling back to counsel-grep from swiper.
-              (<= (buffer-size) 300000)))
-        (swiper initial-input)
-      (progn
-        (when (file-writable-p buffer-file-name)
-          (save-buffer))
-        (counsel-grep initial-input))))
-  )
+    ;; Switch whether we use swiper or counsel-grep depending on the major mode.
+    ;; This is because for certain themes font highlighting is very expensive
+    ;; in some modes (e.g. C++ mode)
+    (defun buffer-dependent-swiper (&optional initial-input)
+      (interactive)
+      (if (or (not buffer-file-name)
+              (ignore-errors
+                (file-remote-p (buffer-file-name)))
+              (if (or (eq major-mode 'org-mode)
+                      (eq major-mode 'c++-mode))
+                  (<= (buffer-size) 50000)
+                ;; The value 300000 is the default number of characters
+                ;; before falling back to counsel-grep from swiper.
+                (<= (buffer-size) 300000)))
+          (swiper initial-input)
+        (progn
+          (when (file-writable-p buffer-file-name)
+            (save-buffer))
+          (counsel-grep initial-input))))
+    )
 
-;; Use universal ctags to build the tags database for the project.
-;; When you first want to build a TAGS database run 'touch TAGS'
-;; in the root directory of your project.
-(use-package counsel-etags
-  :ensure t
-  :init
-  (eval-when-compile
-    ;; Silence missing function warnings
-    (declare-function counsel-etags-virtual-update-tags "counsel-etags.el")
-    (declare-function counsel-etags-guess-program "counsel-etags.el")
-    (declare-function counsel-etags-locate-tags-file "counsel-etags.el"))
-  :bind (
-         ("M-." . counsel-etags-find-tag-at-point)
-         ("M-t" . counsel-etags-grep-symbol-at-point))
-  :config
-  ;; Ignore files above 800kb
-  (setq counsel-etags-max-file-size 800)
-  ;; Ignore build directories for tagging
-  (add-to-list 'counsel-etags-ignore-directories '"build*")
-  (add-to-list 'counsel-etags-ignore-directories '".vscode")
-  (add-to-list 'counsel-etags-ignore-filenames '".clang-format")
-  ;; Don't ask before rereading the TAGS files if they have changed
-  (setq tags-revert-without-query t)
-  ;; Don't warn when TAGS files are large
-  (setq large-file-warning-threshold nil)
-  ;; How many seconds to wait before rerunning tags for auto-update
-  (setq counsel-etags-update-interval 180)
-  ;; Set up auto-update
-  (add-hook
-   'prog-mode-hook
-   (lambda () (add-hook 'after-save-hook
-                        (lambda ()
-                          (counsel-etags-virtual-update-tags)))))
+  ;; Use universal ctags to build the tags database for the project.
+  ;; When you first want to build a TAGS database run 'touch TAGS'
+  ;; in the root directory of your project.
+  (use-package counsel-etags
+    :ensure t
+    :init
+    (eval-when-compile
+      ;; Silence missing function warnings
+      (declare-function counsel-etags-virtual-update-tags "counsel-etags.el")
+      (declare-function counsel-etags-guess-program "counsel-etags.el")
+      (declare-function counsel-etags-locate-tags-file "counsel-etags.el"))
+    :bind (
+           ("M-." . counsel-etags-find-tag-at-point)
+           ("M-t" . counsel-etags-grep-symbol-at-point))
+    :config
+    ;; Ignore files above 800kb
+    (setq counsel-etags-max-file-size 800)
+    ;; Ignore build directories for tagging
+    (add-to-list 'counsel-etags-ignore-directories '"build*")
+    (add-to-list 'counsel-etags-ignore-directories '".vscode")
+    (add-to-list 'counsel-etags-ignore-filenames '".clang-format")
+    ;; Don't ask before rereading the TAGS files if they have changed
+    (setq tags-revert-without-query t)
+    ;; Don't warn when TAGS files are large
+    (setq large-file-warning-threshold nil)
+    ;; How many seconds to wait before rerunning tags for auto-update
+    (setq counsel-etags-update-interval 180)
+    ;; Set up auto-update
+    (add-hook
+     'prog-mode-hook
+     (lambda () (add-hook 'after-save-hook
+                          (lambda ()
+                            (counsel-etags-virtual-update-tags)))))
 
-  ;; The function provided by counsel-etags is broken (at least on Linux)
-  ;; and doesn't correctly exclude directories, leading to an excessive
-  ;; amount of incorrect tags. The issue seems to be that the trailing '/'
-  ;; in e.g. '*dirname/*' causes 'find' to not correctly exclude all files
-  ;; in that directory, only files in sub-directories of the dir set to be
-  ;; ignore.
-  (defun my-scan-dir (src-dir &optional force)
-    "Create tags file from SRC-DIR. \
+    ;; The function provided by counsel-etags is broken (at least on Linux)
+    ;; and doesn't correctly exclude directories, leading to an excessive
+    ;; amount of incorrect tags. The issue seems to be that the trailing '/'
+    ;; in e.g. '*dirname/*' causes 'find' to not correctly exclude all files
+    ;; in that directory, only files in sub-directories of the dir set to be
+    ;; ignore.
+    (defun my-scan-dir (src-dir &optional force)
+      "Create tags file from SRC-DIR. \
      If FORCE is t, the commmand is executed without \
      checking the timer."
-    (let* ((find-pg (or
-                     counsel-etags-find-program
-                     (counsel-etags-guess-program "find")))
-           (ctags-pg (or
-                      counsel-etags-tags-program
-                      (format "%s -e -L" (counsel-etags-guess-program
-                                          "ctags"))))
-           (default-directory src-dir)
-           ;; run find&ctags to create TAGS
-           (cmd (format
-                 "%s . \\( %s \\) -prune -o -type f -not -size +%sk %s | %s -"
-                 find-pg
-                 (mapconcat
-                  (lambda (p)
-                    (format "-iwholename \"*%s*\"" p))
-                  counsel-etags-ignore-directories " -or ")
-                 counsel-etags-max-file-size
-                 (mapconcat (lambda (n)
-                              (format "-not -name \"%s\"" n))
-                            counsel-etags-ignore-filenames " ")
-                 ctags-pg))
-           (tags-file (concat (file-name-as-directory src-dir) "TAGS"))
-           (doit (or force (not (file-exists-p tags-file)))))
-      ;; always update cli options
-      (when doit
-        (message "%s at %s" cmd default-directory)
-        (async-shell-command cmd)
-        (visit-tags-table tags-file t))))
+      (let* ((find-pg (or
+                       counsel-etags-find-program
+                       (counsel-etags-guess-program "find")))
+             (ctags-pg (or
+                        counsel-etags-tags-program
+                        (format "%s -e -L" (counsel-etags-guess-program
+                                            "ctags"))))
+             (default-directory src-dir)
+             ;; run find&ctags to create TAGS
+             (cmd (format
+                   "%s . \\( %s \\) -prune -o -type f -not -size +%sk %s | %s -"
+                   find-pg
+                   (mapconcat
+                    (lambda (p)
+                      (format "-iwholename \"*%s*\"" p))
+                    counsel-etags-ignore-directories " -or ")
+                   counsel-etags-max-file-size
+                   (mapconcat (lambda (n)
+                                (format "-not -name \"%s\"" n))
+                              counsel-etags-ignore-filenames " ")
+                   ctags-pg))
+             (tags-file (concat (file-name-as-directory src-dir) "TAGS"))
+             (doit (or force (not (file-exists-p tags-file)))))
+        ;; always update cli options
+        (when doit
+          (message "%s at %s" cmd default-directory)
+          (async-shell-command cmd)
+          (visit-tags-table tags-file t))))
 
-  (setq counsel-etags-update-tags-backend
-        (lambda ()
-          (interactive)
-          (let* ((tags-file (counsel-etags-locate-tags-file)))
-            (when tags-file
-              (my-scan-dir (file-name-directory tags-file) t)
-              (run-hook-with-args
-               'counsel-etags-after-update-tags-hook tags-file)
-              (unless counsel-etags-quiet-when-updating-tags
-                (message "%s is updated!" tags-file))))))
+    (setq counsel-etags-update-tags-backend
+          (lambda ()
+            (interactive)
+            (let* ((tags-file (counsel-etags-locate-tags-file)))
+              (when tags-file
+                (my-scan-dir (file-name-directory tags-file) t)
+                (run-hook-with-args
+                 'counsel-etags-after-update-tags-hook tags-file)
+                (unless counsel-etags-quiet-when-updating-tags
+                  (message "%s is updated!" tags-file))))))
+    )
+
+  (use-package flyspell-correct-ivy
+    :ensure t
+    :after (:all flyspell ivy))
+
+  (use-package lsp-ivy
+    :ensure t
+    :diminish
+    :after (:all lsp-mode ivy))
   )
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Selectrum config
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(when my:use-selectrum
+  (use-package selectrum
+    :ensure t
+    :config
+    (selectrum-mode t)
+    (when my:use-prescient
+      (use-package selectrum-prescient
+        :ensure t
+        :config
+        (selectrum-prescient-mode t)
+        (prescient-persist-mode t)))
+    )
+
+  (use-package ctrlf
+    :ensure t
+    :bind (("C-s" . ctrlf-forward-fuzzy-regexp)
+           ("C-r" . ctrlf-backward-fuzzy-regexp)
+           )
+    :config
+    (ctrlf-mode t))
+  )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Set up projectile
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package projectile
   :ensure t
   :diminish projectile-mode
@@ -1059,13 +1114,6 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
     (defvar company-lsp-async t)
     :config (add-to-list 'company-backends 'company-lsp))
 
-  ;; lsp-ivy is not yet on Melpa...
-  (use-package lsp-ivy
-    :ensure t
-    :diminish
-    :after (lsp-mode ivy-mode)
-    )
-
   :config
   ;; Extra flags passed to clangd. See 'clangd --help' for info
   (defvar lsp-clients-clangd-args '("--clang-tidy"
@@ -1330,16 +1378,13 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
   (global-set-key (kbd "<f8>") 'flyspell-correct-previous)
   (global-set-key (kbd "<f9>") 'flyspell-correct-next)
   )
-(use-package flyspell-correct-ivy
-  :ensure t
-  :after flyspell)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Magit
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package magit
   :ensure t
-  :after (ivy)
+  :after (:any ivy selectrum)
   :commands (magit-checkout)
   :bind (("M-g M-s" . magit-status)
          ("M-g M-c" . 'magit-checkout)
@@ -1352,7 +1397,8 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
     :after magit)
   :config
   (add-hook 'magit-mode-hook (lambda () (setq whitespace-mode -1)))
-  (setq magit-completing-read-function 'ivy-completing-read)
+  (when my:use-ivy
+    (setq magit-completing-read-function 'ivy-completing-read))
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1644,17 +1690,19 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
    '(company-tooltip-selection
      ((t (:background "DodgerBlue4" :foreground "CadetBlue1"))))
    '(header-line
-     ((t (:background "#003366"))))
-   '(ivy-minibuffer-match-face-1
-     ((((class color) (background light)) (:background "#555555"))
-      (((class color) (background dark)) (:background "#555555"))))
-   '(ivy-minibuffer-match-face-2
-     ((t (:background "#314f30" :weight bold))))
-   '(ivy-minibuffer-match-face-3
-     ((t (:background "#48225b" :weight bold))))
-   '(ivy-minibuffer-match-face-4
-     ((t (:background "#680a0a" :weight bold))))
-   '(which-func ((t (:foreground "#8fb28f"))))))
+     ((t (:background "#003366")))))
+  (when my:use-ivy
+    (custom-set-faces
+     '(ivy-minibuffer-match-face-1
+       ((((class color) (background light)) (:background "#555555"))
+        (((class color) (background dark)) (:background "#555555"))))
+     '(ivy-minibuffer-match-face-2
+       ((t (:background "#314f30" :weight bold))))
+     '(ivy-minibuffer-match-face-3
+       ((t (:background "#48225b" :weight bold))))
+     '(ivy-minibuffer-match-face-4
+       ((t (:background "#680a0a" :weight bold))))
+     '(which-func ((t (:foreground "#8fb28f")))))))
 
 (my:set-custom-faces)
 
