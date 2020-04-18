@@ -1714,8 +1714,6 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
        ((t (:background "#680a0a" :weight bold))))
      '(which-func ((t (:foreground "#8fb28f")))))))
 
-(my:set-custom-faces)
-
 ;; I don't care to see the splash screen
 (setq inhibit-splash-screen t)
 
@@ -1889,6 +1887,8 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
                   (powerline-render rhs)))))))
   (powerline-right-theme)
   )
+
+(my:set-custom-faces)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; evil-mode: Emacs Vi Layer to use Vi/Vim keybindings in Emacs.
