@@ -20,7 +20,7 @@
 ;; When t use smart-hungry-delete
 ;; (https://github.com/hrehfeld/emacs-smart-hungry-delete).
 ;; When nil use hungry-delete
-(defvar my:use-smart-hungry-delete t)
+(defvar my:use-smart-hungry-delete nil)
 
 ;; Set to t if you want to use ycmd-goto in C/C++/Rust mode
 (defvar my:use-ycmd-goto t)
