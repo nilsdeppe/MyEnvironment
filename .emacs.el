@@ -88,6 +88,28 @@
    '(highlight
      ((t (:background "nil" :foreground "nil" :underline t))))
    )
+
+  ;; Customize powerline colors. I like purple pink-ish
+  (custom-set-faces
+   '(powerline-active1
+     ((t (:background "black" :foreground "#c678dd" :bold t :underline t))))
+   '(powerline-active2
+     ((t (:background "black" :foreground "#c678dd" :bold t :underline t))))
+   )
+
+  (set-face-attribute 'powerline-inactive1 nil :background
+                      (face-attribute 'powerline-active1 :background))
+  (set-face-attribute 'powerline-inactive2 nil :background
+                      (face-attribute 'powerline-active2 :background))
+  (set-face-attribute 'powerline-inactive1 nil :foreground
+                      (face-attribute 'powerline-active1 :foreground))
+  (set-face-attribute 'powerline-inactive2 nil :foreground
+                      (face-attribute 'powerline-active2 :foreground))
+
+  ;; Custom face for avy
+  (custom-set-faces
+   '(avy-lead-face
+     ((t (:foreground "black" :background "#c678dd" :bold t :underline t)))))
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
