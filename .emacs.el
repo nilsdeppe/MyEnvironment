@@ -17,6 +17,10 @@
 ;; the path to the python executable you're using.
 (defvar my:ycmd-python-binary-path "/usr/bin/python")
 
+;; Enable ycmd-eldoc support. Eldoc can cause delays when working with
+;; template-heavy C++ code.
+(defvar my:use-ycmd-eldoc nil)
+
 ;; When t use smart-hungry-delete
 ;; (https://github.com/hrehfeld/emacs-smart-hungry-delete).
 ;; When nil use hungry-delete
@@ -1089,8 +1093,10 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
           )
 
         ;; Add displaying the function arguments in mini buffer using El Doc
-        (require 'ycmd-eldoc)
-        (add-hook 'ycmd-mode-hook 'ycmd-eldoc-setup))
+        (when my:use-ycmd-eldoc
+          (require 'ycmd-eldoc)
+          (add-hook 'ycmd-mode-hook 'ycmd-eldoc-setup))
+        )
       ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
