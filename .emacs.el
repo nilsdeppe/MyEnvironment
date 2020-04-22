@@ -220,6 +220,10 @@
 ;; Disable auto-fill-mode in programming mode
 (add-hook 'prog-mode-hook (lambda () (auto-fill-mode -1)))
 
+;; Disable Emacs help on translation, e.g. C-x C-h actually
+;; can do things now
+(define-key key-translation-map [?\C-h] [?\C-?])
+
 ;; Global Keyboard Shortcuts
 ;; Set help to C-?
 (global-set-key (kbd "C-?") 'help-command)
