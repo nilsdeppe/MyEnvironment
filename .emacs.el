@@ -561,7 +561,7 @@
     ("g" (progn (when (not buffer-read-only)
                   (undo)
                   (setq buffer-undo-list x-hydra-buffer-undo-list))
-                (magit-status)))
+                (call-interactively 'magit-status)))
     ("h" (progn (cancel-timer x-hydra-timer)
                 (when (not buffer-read-only)
                   (undo)
