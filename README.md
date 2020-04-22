@@ -55,8 +55,8 @@ Here is an overview of the packages I use:
   for regexp-replacements
 - Google Style Guide for C/C++ projects (you may need to change that for your
   projects :) )
-- [lsp-mode](https://github.com/emacs-lsp/lsp-mode) for code completion in Python,
-  C/C++, and Rust (I currently don't use other languages).
+- [lsp-mode](https://github.com/emacs-lsp/lsp-mode) for code completion in
+  Python, C/C++, and Rust (I currently don't use other languages).
 - [company](https://github.com/company-mode/company-mode) for general completion
   (hooking into LSP)
 - [flycheck](https://github.com/flycheck/flycheck) for syntax checking
@@ -70,6 +70,7 @@ Here is an overview of the packages I use:
 - [magit](https://magit.vc/),
   [gitgutter](https://github.com/syohex/emacs-git-gutter), and
   [gitignore-mode](https://github.com/magit/git-modes) for git
+- [hydra](https://github.com/abo-abo/hydra) for reducing modifier presses
 - [evil-mode](https://github.com/emacs-evil/evil) for vi users (I personally am
   not one, but figured others might find it useful, plus I might learn some day
   :) )
@@ -108,6 +109,7 @@ by `meta-n`.
 | `C-M-s`      | Visual regexp forward search.                                |
 | `C-M-r`      | Visual regexp reverse search.                                |
 | `M-1`, `M-2` | Used to go to windows 1, 2, 3, 4, etc.                       |
+| `C-c h`      | A hydra dispatch to other hydras                             |
 
 #### Basic Editing
 

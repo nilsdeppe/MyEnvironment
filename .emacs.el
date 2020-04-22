@@ -50,6 +50,21 @@
 ;; Set my:use-dvorak-bindings to t if you use a Dvorak keyboard layout
 (defvar my:use-dvorak-bindings t)
 
+;; Set to t in order to enable using hydra with only x as the activation
+;; key. The commands are:
+;; - xb starts switch-buffer
+;; - xf starts find-file or counsel-find-file
+;; - xg starts Magit status
+;; - xh starts hydra-dispatch
+;; - xn starts hydra-move
+;; - xx does save-buffer
+;;
+;; I've found that this leads to instability and causes Emacs to crash
+;; fairly frequently, at least when run in daemon mode.
+;;
+;; A hydra-dispatch can be accessed using 'C-c h'
+(defvar my:use-no-modifier-hydra nil)
+
 ;; Set my:use-evil-mode to t if you want to use Evil mode
 ;;
 ;; Note: Currently there is a warning about evil-want-integration not
@@ -445,6 +460,151 @@
     ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; hydra config
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package hydra
+  :ensure t
+  :config
+  ;; Define a hydra for movement
+  (defhydra hydra-move ()
+    "move"
+    ("n" next-line)
+    ("p" previous-line)
+    ("f" forward-char)
+    ("b" backward-char)
+    ("a" beginning-of-line)
+    ("e" move-end-of-line)
+    ("u" forward-word)
+    ("o" backward-word)
+    ("M-f" forward-word)
+    ("M-b" backward-word)
+    ("h" backward-delete-char)
+    ("d" delete-forward-char)
+    ("M-h" backward-kill-word)
+    ("M-d" kill-word)
+    ("s" save-buffer)
+    ("/" undo-tree-undo)
+    ("x" goto-line)
+    ("m" newline-and-indent)
+    ("t" transpose-chars)
+    ("c" avy-goto-word-1)
+    (";" (call-interactively 'commend-or-uncomment-region))
+
+    ;; Selection
+    ("r" (if (region-active-p)
+             (deactivate-mark)
+           (rectangle-mark-mode t)))
+    ("M-w" (when (or (bound-and-true-p rectangle-mark-mode)
+                     (region-active-p))
+             (call-interactively 'kill-ring-save)
+             ))
+    ("w" (when (or (bound-and-true-p rectangle-mark-mode)
+                     (region-active-p))
+             (call-interactively 'kill-region)
+             ))
+    ("SPC" (call-interactively 'set-mark-command))
+    ("y" (call-interactively 'yank))
+    ("k" (if (bound-and-true-p rectangle-mark-mode)
+             (call-interactively 'kill-rectangle)
+           (call-interactively 'kill-line)))
+
+    ;; Scrolling
+    ("v" scroll-up-command)
+    ("M-v" scroll-down-command)
+    ("l" recenter-top-bottom)
+    ("g" nil "cancel" :color blue)
+    )
+
+  (defhydra hydra-dispatch
+    (:color blue :hint nil)
+    ("f" (call-interactively #'hydra-flyspell-correct/body) "Flyspell")
+    ("m" (call-interactively #'hydra-move/body) "Move")
+    ("o" (call-interactively #'hydra-origami/body) "Origami")
+    ("p" (call-interactively #'hydra-projectile/body) "Projectile")
+    ("s" (call-interactively #'hydra-string-inflection/body)
+     "String inflection")
+    ("g" nil "cancel")
+    )
+
+  ;; We define a global x-hydra-timer because we need to be able to
+  ;; cancel the timer in order to enter projectile from 'xp'
+  (defvar x-hydra-timer)
+  ;; We save the buffer-undo-list because we want to be able to
+  ;; remove inserting the 'x' character from the undo history in the
+  ;; case where we entered hydra
+  (defvar x-hydra-buffer-undo-list)
+  (defun x-hydra-pre ()
+    (when (not buffer-read-only)
+      (setq x-hydra-buffer-undo-list buffer-undo-list)
+      (undo-boundary)
+      (insert "x")
+      )
+    (setq x-hydra-timer (timer-create))
+    (timer-set-time x-hydra-timer (timer-relative-time (current-time) 0.5))
+    (timer-set-function x-hydra-timer 'hydra-keyboard-quit)
+    (timer-activate x-hydra-timer))
+
+  (defhydra x-hydra (:body-pre x-hydra-pre
+                               :color blue
+                               :hint nil)
+    ;; Some Emacs functions like find-file must receive one argument,
+    ;; but we want to call it interactively so we need to use
+    ;; (call-interactively 'find-file)
+    ("b" (progn (when (not buffer-read-only)
+                  (undo)
+                  (setq buffer-undo-list x-hydra-buffer-undo-list))
+                (call-interactively 'switch-to-buffer)))
+    ("f" (progn (when (not buffer-read-only)
+                  (undo)
+                  (setq buffer-undo-list x-hydra-buffer-undo-list))
+                (call-interactively 'find-file)))
+    ("g" (progn (when (not buffer-read-only)
+                  (undo)
+                  (setq buffer-undo-list x-hydra-buffer-undo-list))
+                (magit-status)))
+    ("h" (progn (cancel-timer x-hydra-timer)
+                (when (not buffer-read-only)
+                  (undo)
+                  (setq buffer-undo-list x-hydra-buffer-undo-list))
+                (call-interactively #'hydra-dispatch/body)))
+    ("n" (progn (cancel-timer x-hydra-timer)
+                (when (not buffer-read-only)
+                  (undo)
+                  (setq buffer-undo-list x-hydra-buffer-undo-list))
+                (call-interactively #'hydra-move/body)))
+    ("x" (progn (when (not buffer-read-only)
+                  (undo)
+                  (setq buffer-undo-list x-hydra-buffer-undo-list))
+                (save-buffer)))
+    ("3" (progn (when (not buffer-read-only)
+                  (undo)
+                  (setq buffer-undo-list x-hydra-buffer-undo-list))
+                (call-interactively 'split-window-right)))
+    ("2" (progn (when (not buffer-read-only)
+                  (undo)
+                  (setq buffer-undo-list x-hydra-buffer-undo-list))
+                (call-interactively 'split-window-below)))
+    ("1" (progn (when (not buffer-read-only)
+                  (undo)
+                  (setq buffer-undo-list x-hydra-buffer-undo-list))
+                (call-interactively 'delete-other-windows)))
+    ("0" (progn (when (not buffer-read-only)
+                  (undo)
+                  (setq buffer-undo-list x-hydra-buffer-undo-list))
+                (call-interactively 'delete-window)))
+    )
+  (when my:use-no-modifier-hydra
+    (global-set-key "x" #'x-hydra/body))
+
+  ;; Dispatch to hydra
+  (global-set-key (kbd "C-c h") #'hydra-dispatch/body)
+  )
+
+(use-package use-package-hydra
+  :ensure t
+  :after hydra)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Ivy config
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (when my:use-ivy
@@ -668,6 +828,43 @@
   :ensure t
   :diminish projectile-mode
   :defer 1
+  :hydra
+  (hydra-projectile (:color teal :hint nil)
+    "
+     PROJECTILE: %(projectile-project-root)
+
+     Find File            Search/Tags          Buffers                Cache
+------------------------------------------------------------------------------------------
+_s-f_: file            _a_: ag                _i_: Ibuffer           _c_: cache clear
+ _ff_: file dwim     _s-g_: update gtags      _b_: switch to buffer  _x_: remove known project
+ _fd_: file curr dir   _o_: multi-occur     _s-k_: Kill all buffers  _X_: cleanup non-existing
+  _r_: recent file                                               ^^^^_z_: cache current
+  _d_: dir
+
+"
+    ("a"   projectile-ag)
+    ("b"   projectile-switch-to-buffer)
+    ("c"   projectile-invalidate-cache)
+    ("d"   projectile-find-dir)
+    ("s-f" projectile-find-file)
+    ("ff"  projectile-find-file-dwim)
+    ("fd"  projectile-find-file-in-directory)
+    ("s-g" ggtags-update-tags)
+    ("i"   projectile-ibuffer)
+    ("K"   projectile-kill-buffers)
+    ("s-k" projectile-kill-buffers)
+    ("m"   projectile-multi-occur)
+    ("o"   projectile-multi-occur)
+    ("s-p" projectile-switch-project "switch project")
+    ("p"   projectile-switch-project)
+    ("s"   projectile-switch-project)
+    ("r"   projectile-recentf)
+    ("x"   projectile-remove-known-project)
+    ("X"   projectile-cleanup-known-projects)
+    ("z"   projectile-cache-current-file)
+    ("`"   hydra-projectile-other-window/body "other window")
+    ("q"   nil "cancel" :color blue)
+    ("g"   nil "cancel" :color blue))
   :init
   (eval-when-compile
     ;; Silence missing function warnings
@@ -784,6 +981,18 @@
               ("C-c o U" . origami-redo)
               ("C-c o C-r" . origami-reset)
               )
+  :hydra (hydra-origami (:color pink :columns 4)
+                        "Origami Folds"
+                        ("t" origami-recursively-toggle-node "Toggle")
+                        ("s" origami-show-only-node "Single")
+                        ("r" origami-redo "Redo")
+                        ("u" origami-undo "Undo")
+                        ("o" origami-open-all-nodes "Open")
+                        ("c" origami-close-all-nodes "Close")
+                        ("n" origami-next-fold "Next")
+                        ("p" origami-previous-fold "Previous")
+                        ("q" nil "Quit" :color blue)
+                        ("g" nil "cancel" :color blue))
   :config
   (setq origami-show-fold-header t)
   ;; The python parser currently doesn't fold if/for/etc. blocks, which is
@@ -1257,6 +1466,16 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
          ("C-c c c" . string-inflection-camelcase)
          ("C-c c s" . string-inflection-underscore)
          ("C-c c u" . string-inflection-upcase))
+  :hydra (hydra-string-inflection
+          ()
+          "Inflection"
+          ("i" string-inflection-cycle "Cycle")
+          ("l" string-inflection-lower-camelcase "camelCase")
+          ("c" string-inflection-camelcase "CamelCase")
+          ("s" string-inflection-underscore "Underscore")
+          ("u" string-inflection-upcase "Upcase")
+          ("q" nil "Quit" :color blue)
+          ("g" nil "Quit" :color blue))
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1407,6 +1626,17 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
   :hook ((text-mode . flyspell-mode)
          (prog-mode . flyspell-prog-mode)
          (org-mode . flyspell-mode))
+  :hydra
+  (hydra-flyspell-correct
+   (:color blue)
+   "Flyspell Correct"
+   ("a" flyspell-correct-auto-mode "Auto Mode" :color red)
+   ("b" flyspell-buffer "Check buffer")
+   ("r" flyspell-region "Check region")
+   ("n" flyspell-check-next-highlighted-word "Next Word")
+   ("p" flyspell-check-previous-highlighted-word "Previous Word")
+   ("w" flyspell-correct-word-generic "Word at Point")
+   )
   :init
   (eval-when-compile
     ;; Silence missing function warnings
