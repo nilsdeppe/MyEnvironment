@@ -997,7 +997,7 @@
       ;; Silence missing function warnings
       (declare-function global-whitespace-mode "whitespace.el"))
   :config
-  (setq whitespace-style '(lines-tail trailing tabs tab-mark))
+  (setq whitespace-style '(face lines-tail trailing tabs tab-mark))
   ;; Turn on whitespace mode globally.
   (global-whitespace-mode t)
   )
