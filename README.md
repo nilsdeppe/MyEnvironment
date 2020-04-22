@@ -76,6 +76,10 @@ Here is an overview of the packages I use:
   :) )
 - [evil-collection](https://github.com/emacs-evil/evil-collection) is used to
   supplement evil-mode
+- [selectrum](https://github.com/raxod502/selectrum) for improving search
+  without the extra overhead of Ivy or helm
+- [prescient](https://github.com/raxod502/prescient.el) for better sorting of
+  results
 
 I've added an option to the change some of the packages' default shortcuts to be
 better-suited for fellow Dvorak users.
