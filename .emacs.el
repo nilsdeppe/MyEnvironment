@@ -10,7 +10,12 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Specify the ycmd server command and path to the ycmd directory *inside* the
 ;; cloned ycmd directory
-(defvar my:ycmd-server-command '("python" "/home/nils/Research/ycmd/ycmd"))
+(if (file-exists-p "~/WrapPython.sh")
+    (defvar my:ycmd-server-command
+      '("~/WrapPython.sh" "/home/nils/Research/ycmd/ycmd"))
+  (defvar my:ycmd-server-command '("python" "/home/nils/Research/ycmd/ycmd"))
+  )
+
 (defvar my:ycmd-extra-conf-whitelist '("~/.ycm_extra_conf.py"))
 (defvar my:ycmd-global-config "~/.ycm_extra_conf.py")
 ;; In order to get python code completion with ycmd+jedi you must specify
