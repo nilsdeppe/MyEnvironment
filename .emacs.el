@@ -90,7 +90,7 @@
 ;; Specify the search backend. Must be either:
 ;; - ivy https://github.com/abo-abo/swiper
 ;; - selectrum https://github.com/raxod502/selectrum
-(defvar my:search-backend "ivy")
+(defvar my:search-backend "selectrum")
 
 ;; TEX is installed in a different location on macOS
 (when (string-equal system-type "darwin")
@@ -1216,9 +1216,14 @@ _s-f_: file            _a_: ag                _i_: Ibuffer           _c_: cache 
       (declare-function global-whitespace-mode "whitespace.el"))
   :config
   (setq whitespace-style '(face lines-tail trailing tabs tab-mark))
-  ;; Turn on whitespace mode globally.
-  (global-whitespace-mode t)
   )
+
+;; Turn on whitespace mode globally except in magit-mode
+(define-global-minor-mode my-global-whitespace-mode whitespace-mode
+  (lambda ()
+    (unless (derived-mode-p 'magit-mode)
+      (whitespace-mode t))))
+(my-global-whitespace-mode t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Package: ycmd (YouCompleteMeDaemon)
@@ -1673,7 +1678,6 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
     :ensure t
     :after magit)
   :config
-  (add-hook 'magit-mode-hook (lambda () (setq whitespace-mode -1)))
   (when my:use-ivy
     (setq magit-completing-read-function 'ivy-completing-read))
   )
