@@ -693,7 +693,7 @@
   (use-package counsel-projectile
     :ensure t
     :after (:all counsel projectile)
-    :bind (("C-x M-f" . counsel-projectile-find-file))
+    :bind (("C-x M-f" . counsel-projectile-find-file-dwim))
     :init
     (eval-when-compile
       ;; Silence missing function warnings
@@ -876,7 +876,7 @@ _s-f_: file            _a_: ag                _i_: Ibuffer           _c_: cache 
   (when my:use-ivy
     (setq projectile-completion-system 'ivy))
   (when my:use-selectrum
-    (global-set-key (kbd "C-x M-f") 'projectile-find-file)
+    (global-set-key (kbd "C-x M-f") 'projectile-find-file-dwim)
     (setq projectile-completion-system 'default))
   )
 
