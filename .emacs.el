@@ -450,6 +450,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package ws-butler
   :ensure t
+  :diminish ws-butler-mode
   :config
   (setq ws-butler-global-exempt-modes my:ws-butler-global-exempt-modes)
   (ws-butler-global-mode 1))
@@ -1210,6 +1211,7 @@
 (use-package whitespace
   :ensure t
   :diminish global-whitespace-mode
+  :diminish whitespace-mode
   :init
   (eval-when-compile
       ;; Silence missing function warnings
