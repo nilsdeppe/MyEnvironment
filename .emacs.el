@@ -1654,7 +1654,7 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
    ("r" flyspell-region "Check region")
    ("n" flyspell-check-next-highlighted-word "Next Word")
    ("p" flyspell-check-previous-highlighted-word "Previous Word")
-   ("w" flyspell-correct-word-generic "Word at Point")
+   ("w" (call-interactively 'flyspell-correct-at-point) "Word at Point")
    )
   :init
   (eval-when-compile
