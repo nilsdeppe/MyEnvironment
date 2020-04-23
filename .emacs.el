@@ -861,8 +861,15 @@
   (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
   (when my:use-ivy
     (setq projectile-completion-system 'ivy))
+
+  (defun my:projectile-find-file-dwim ()
+    "Find the file in the project using DWIM, if not in the use find-file"
+    (interactive)
+    (if (projectile-project-p)
+        (call-interactively 'projectile-find-file-dwim)
+      (call-interactively 'projectile-find-file)))
   (when my:use-selectrum
-    (global-set-key (kbd "C-x M-f") 'projectile-find-file-dwim)
+    (global-set-key (kbd "C-x M-f") 'my:projectile-find-file-dwim)
     (setq projectile-completion-system 'default))
   )
 
