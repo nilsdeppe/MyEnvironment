@@ -92,6 +92,9 @@
 ;; - selectrum https://github.com/raxod502/selectrum
 (defvar my:search-backend "selectrum")
 
+;; A list of modes for which to disable whitespace mode
+(defvar my:ws-disable-modes '(magit-mode help-mode))
+
 ;; Modes in which to disable auto-deleting of trailing whitespace
 (defvar my:ws-butler-global-exempt-modes
   '(markdown-mode ein:notebook-multilang-mode))
@@ -1223,8 +1226,17 @@
 ;; Turn on whitespace mode globally except in magit-mode
 (define-global-minor-mode my-global-whitespace-mode whitespace-mode
   (lambda ()
-    (unless (derived-mode-p 'magit-mode)
-      (whitespace-mode t))))
+    (let* ((allow-ws-mode t))
+      (progn
+        (dolist (element my:ws-disable-modes)
+          (when (derived-mode-p element)
+            (setq allow-ws-mode nil)
+            )
+          )
+        (message "%s" allow-ws-mode)
+        (when allow-ws-mode
+          (whitespace-mode t))))
+    ))
 (my-global-whitespace-mode t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
