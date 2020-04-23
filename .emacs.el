@@ -830,38 +830,24 @@
   :defer 1
   :hydra
   (hydra-projectile (:color teal :hint nil)
-    "
-     PROJECTILE: %(projectile-project-root)
-
-     Find File            Search/Tags          Buffers                Cache
-------------------------------------------------------------------------------------------
-_s-f_: file            _a_: ag                _i_: Ibuffer           _c_: cache clear
- _ff_: file dwim     _s-g_: update gtags      _b_: switch to buffer  _x_: remove known project
- _fd_: file curr dir   _o_: multi-occur     _s-k_: Kill all buffers  _X_: cleanup non-existing
-  _r_: recent file                                               ^^^^_z_: cache current
-  _d_: dir
-
-"
-    ("a"   projectile-ag)
-    ("b"   projectile-switch-to-buffer)
-    ("c"   projectile-invalidate-cache)
-    ("d"   projectile-find-dir)
-    ("s-f" projectile-find-file)
-    ("ff"  projectile-find-file-dwim)
-    ("fd"  projectile-find-file-in-directory)
-    ("s-g" ggtags-update-tags)
-    ("i"   projectile-ibuffer)
-    ("K"   projectile-kill-buffers)
-    ("s-k" projectile-kill-buffers)
-    ("m"   projectile-multi-occur)
-    ("o"   projectile-multi-occur)
-    ("s-p" projectile-switch-project "switch project")
-    ("p"   projectile-switch-project)
-    ("s"   projectile-switch-project)
-    ("r"   projectile-recentf)
-    ("x"   projectile-remove-known-project)
-    ("X"   projectile-cleanup-known-projects)
-    ("z"   projectile-cache-current-file)
+    ("a"   projectile-ag "ag")
+    ("b"   projectile-switch-to-buffer "Switch buffer")
+    ("c"   projectile-invalidate-cache "Invalidate cache")
+    ("d"   projectile-find-dir "Find dir")
+    ("sf"  projectile-find-file "Find file")
+    ("ff"  projectile-find-file-dwim "Find file dwim")
+    ("fd"  projectile-find-file-in-directory "Find file in dir")
+    ("sg"  ggtags-update-tags "Update tags")
+    ("i"   projectile-ibuffer "ibuffer")
+    ("K"   projectile-kill-buffers "Kill buffers")
+    ("sk"  projectile-kill-buffers "Kill buffers")
+    ("m"   projectile-multi-occur "Multi-occur")
+    ("o"   projectile-multi-occur "Multi-occur")
+    ("sp"  projectile-switch-project "Switch project")
+    ("r"   projectile-recentf "Recent")
+    ("x"   projectile-remove-known-project "Remove project")
+    ("X"   projectile-cleanup-known-projects "Cleanup projects")
+    ("z"   projectile-cache-current-file "Cache file")
     ("`"   hydra-projectile-other-window/body "other window")
     ("q"   nil "cancel" :color blue)
     ("g"   nil "cancel" :color blue))
