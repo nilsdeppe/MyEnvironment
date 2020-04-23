@@ -355,30 +355,30 @@ if ! in_container; then
     container() {
         if [ "$1" = "spectre" ] && \
                [ -f $HOME/Research/singularity/spectre.img ]; then
-            module purge && \
-                singularity shell \
-                            $HOME/Research/singularity/spectre.img && \
-                load_modules
+            module purge
+            singularity shell \
+                        $HOME/Research/singularity/spectre.img
+            load_modules
         elif [ "$1" = "spec" ] && \
              [ -f $HOME/Research/singularity/spec.img ]; then
-            module purge && \
-                singularity shell \
-                            $HOME/Research/singularity/spec.img && \
-                load_modules
+            module purge
+            singularity shell \
+                        $HOME/Research/singularity/spec.img
+            load_modules
         elif [ "$1" = "arch" ] && \
              [ -f $HOME/Research/singularity/arch.simg ]; then
-            module purge && \
-                singularity exec \
-                            $HOME/Research/singularity/arch.simg \
-                            /bin/zsh && \
-                load_modules
+            module purge
+            singularity exec \
+                        $HOME/Research/singularity/arch.simg \
+                        /bin/zsh
+            load_modules
         elif [ "$1" = "ubuntu" ] && \
-             [ -f $HOME/Research/singularity/ubuntu.simg ]; then
-            module purge && \
-                singularity exec \
-                            $HOME/Research/singularity/ubuntu.simg \
-                            /bin/zsh && \
-                load_modules
+                 [ -f $HOME/Research/singularity/ubuntu.simg ]; then
+            module purge
+            singularity exec \
+                        $HOME/Research/singularity/ubuntu.simg \
+                        /bin/zsh
+            load_modules
         else
             echo "No matching container found. Receive $@"
         fi
