@@ -106,7 +106,6 @@ def TraverseSubdirsExcept(dir_to_traverse,
         os.path.abspath(dir_to_traverse + '/' + x)
         for x in next(os.walk(dir_to_traverse))[1]
     ]
-    print(not_this_dir)
     if not_this_dir != '' and os.path.abspath(not_this_dir) in subdirs:
         subdirs.remove(os.path.abspath(not_this_dir))
     # Try find compilation flags in each subdir, so a breadth first
@@ -223,7 +222,6 @@ def FlagsForFile(filename, **kwargs):
     used by ycmd is different than the system libclang. The solution seems
     to be setting ycmd to use the system libclang.
     """
-
     def basic_flags():
         """Returns the default flags if no database is found"""
         return {
