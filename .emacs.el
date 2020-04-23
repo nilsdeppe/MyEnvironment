@@ -92,6 +92,10 @@
 ;; - selectrum https://github.com/raxod502/selectrum
 (defvar my:search-backend "selectrum")
 
+;; Modes in which to disable auto-deleting of trailing whitespace
+(defvar my:ws-butler-global-exempt-modes
+  '(markdown-mode ein:notebook-multilang-mode))
+
 ;; TEX is installed in a different location on macOS
 (when (string-equal system-type "darwin")
   (setenv "PATH" (concat (getenv "PATH") ":/Library/TeX/texbin/"))
@@ -219,14 +223,6 @@
 (global-hl-line-mode t)
 ;; Disable the toolbar at the top since it's useless
 (if (functionp 'tool-bar-mode) (tool-bar-mode -1))
-
-;; Remove trailing white space upon saving
-;; Note: because of a bug in EIN we only delete trailing whitespace
-;; when not in EIN mode.
-(add-hook 'before-save-hook
-          (lambda ()
-            (when (not (derived-mode-p 'ein:notebook-multilang-mode))
-              (delete-trailing-whitespace))))
 
 ;; Auto-wrap at 80 characters
 (setq-default auto-fill-function 'do-auto-fill)
@@ -446,6 +442,17 @@
   (diminish 'eldoc-mode)
   (diminish 'auto-revert-mode)
   )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; ws-butler-mode
+;;
+;; Remove trailing white space upon saving
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package ws-butler
+  :ensure t
+  :config
+  (setq ws-butler-global-exempt-modes my:ws-butler-global-exempt-modes)
+  (ws-butler-global-mode 1))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Select search backend
