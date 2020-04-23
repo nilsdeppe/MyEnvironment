@@ -68,6 +68,7 @@ Here is an overview of the packages I use:
   notebooks
 - [flyspell](https://www.emacswiki.org/emacs/FlySpell) for spell-check
 - [magit](https://magit.vc/),
+  [git-timemachine](https://gitlab.com/pidu/git-timemachine),
   [gitgutter](https://github.com/syohex/emacs-git-gutter), and
   [gitignore-mode](https://github.com/magit/git-modes) for git
 - [hydra](https://github.com/abo-abo/hydra) for reducing modifier presses
@@ -132,6 +133,7 @@ by `meta-n`.
 | `C-c c u`    | String inflection to `SCREAMING_SNAKE_CASE`.                 |
 | `M-g M-s`    | Open Magit status.                                           |
 | `M-g M-c`    | Magit checkout.                                              |
+| `M-g M-t`    | Start git-timemachine.                                       |
 | `<f7>`       | Run FlySpell over buffer.                                    |
 | `<f8>`       | Jump to previous FlySpell error.                             |
 | `<f9>`       | Jump to next FlySpell error.                                 |
