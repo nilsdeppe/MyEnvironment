@@ -32,7 +32,7 @@
 (defvar my:use-smart-hungry-delete nil)
 
 ;; Set to t if you want to use ycmd-goto in C/C++/Rust mode
-(defvar my:use-ycmd-goto t)
+(defvar my:use-ycmd-goto nil)
 
 ;; Specify the jupyter executable name, and the start dir of the server
 (defvar my:jupyter_location (executable-find "jupyter"))
@@ -837,6 +837,28 @@
     :config
     (ctrlf-mode t))
   )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Set up GNU Global Tags (ggtags)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(when (executable-find "global")
+  (use-package ggtags
+    :ensure t
+    :diminish ggtags-mode
+    :hook ((c-mode-common . ggtags-mode)
+           (python-mode . ggtags-mode))
+    :config
+    ;; Don't try to update GTAGS on each save;
+    ;; makes the system sluggish for huge projects.
+    (setq ggtags-update-on-save t)
+    ;; Don't auto-highlight tag at point.. makes the system really sluggish!
+    (setq ggtags-highlight-tag nil)
+    ;; Enabling nearness requires global 6.5+
+    (setq ggtags-sort-by-nearness t)
+    (setq ggtags-navigation-mode-lighter nil)
+    (setq ggtags-mode-line-project-name nil)
+    (setq ggtags-oversize-limit (* 30 1024 1024)) ; 30 MB
+    ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Set up projectile
