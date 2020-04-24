@@ -26,6 +26,9 @@
 ;; template-heavy C++ code.
 (defvar my:use-ycmd-eldoc nil)
 
+;; Choose ycmd or lsp for C/C++ completion
+(defvar my:cxx-completer "ycmd")
+
 ;; When t use smart-hungry-delete
 ;; (https://github.com/hrehfeld/emacs-smart-hungry-delete).
 ;; When nil use hungry-delete
@@ -1281,18 +1284,19 @@
 ;; https://github.com/Valloric/ycmd
 ;; https://github.com/abingham/emacs-ycmd
 (defvar my:python-location (executable-find (nth 0 my:ycmd-server-command)))
-(if (not my:python-location)
+(when (not my:python-location)
     (message
      "Could not start YouCompleteMeDaemon because the python executable could
 not be found.\nSpecified executable is: '%s'\nPlease set my:ycmd-server-command
 appropriately in ~/.emacs.el.\n" (nth 0 my:ycmd-server-command)))
-(if (not (file-directory-p (nth 1 my:ycmd-server-command)))
+(when (not (file-directory-p (nth 1 my:ycmd-server-command)))
     (message "Could not YouCompleteMeDaemon because the specified directory does
 not exist.\nSpecified directory is: '%s'
 Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
              (nth 1 my:ycmd-server-command)))
-(if (and my:python-location
-         (file-directory-p (nth 1 my:ycmd-server-command)))
+(when (and my:python-location
+           (file-directory-p (nth 1 my:ycmd-server-command))
+           (string-equal my:cxx-completer "ycmd"))
     (use-package ycmd
       :ensure t
       :diminish ycmd-mode
@@ -1379,10 +1383,7 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
 ;; https://github.com/emacs-lsp/lsp-mode
 (use-package lsp-mode
   :ensure t
-  :hook (;; C++ completers are: ccls, clangd, or cquery. I use clangd.
-         ;; I use ycmd for C/C++ completion so disable lsp for that.
-         ;; (c-mode-common . lsp)
-         ;; Python on Linux/mac OS is pyls (python language server)
+  :hook (;; Python on Linux/mac OS is pyls (python language server)
          (python-mode . lsp)
          ;; Rust RLS (Rust Language Server) https://github.com/rust-lang/rls
          (rust-mode . lsp)
@@ -1424,7 +1425,20 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
     (defvar company-lsp-async t)
     :config (add-to-list 'company-backends 'company-lsp))
 
+  ;; Use as C++ completer if desired. We use the clangd backend
+  (when (string-equal my:cxx-completer "lsp")
+    (add-hook 'c-mode-common-hook 'lsp-mode))
+
   :config
+  ;; Set GC threshold to 25MB since LSP mode is very memory hungry and
+  ;; produces a lot of garbage
+  (setq gc-cons-threshold 25000000)
+
+  ;; Increase the amount of data which Emacs reads from the process. The emacs
+  ;; default is too low 4k considering that the some of the language server
+  ;; responses are in 800k - 3M range. Set to 1MB
+  (setq read-process-output-max (* 1024 1024))
+
   ;; Extra flags passed to clangd. See 'clangd --help' for info
   (defvar lsp-clients-clangd-args '("--clang-tidy"
                                     "--fallback-style=google"
