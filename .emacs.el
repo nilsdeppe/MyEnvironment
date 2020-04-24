@@ -2283,7 +2283,7 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Load SpEC files in specinput mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(if (file-exists-p "~/.emacs.d/plugins/specinput-mode.el")
+(when (file-exists-p (expand-file-name "~/.emacs.d/plugins/specinput-mode.el"))
     (use-package specinput-mode
       :mode ("\\.input\\'" "\\.output\\'")
       ))
