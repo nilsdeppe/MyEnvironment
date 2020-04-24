@@ -1239,7 +1239,6 @@
             (setq allow-ws-mode nil)
             )
           )
-        (message "%s" allow-ws-mode)
         (when allow-ws-mode
           (whitespace-mode t))))
     ))
