@@ -38,6 +38,12 @@
 (defvar my:jupyter_location (executable-find "jupyter"))
 (defvar my:jupyter_start_dir "/home/nils")
 
+;; In order to get EIN to work with byte-compiling we must explicitly
+;; load some of the EIN files. Which files need to be loaded seems to change
+;; over time, so to make maintenance easier we provide a variable here that
+;; can be updated.
+(defvar my:ein-explicit-load-files '(ein ein-notebook ein-jupyter))
+
 ;; Compilation command for C/C++
 (defvar my:compile-command "clang++ -Wall -Wextra -std=c++17 ")
 
@@ -1553,32 +1559,29 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
 ;; ein - ipython notebooks in gui emacs
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Only launch if the executable exists.
-(when (and my:jupyter_location
-           my:jupyter_start_dir)
-    ;; Skewer mode is used by ein for running javascript in the notebook
-    (use-package skewer-mode
-      :ensure t
-      :defer t)
-    (use-package ein
-      :ensure t
-      :requires skewer-mode
-      :commands (ein:jupyter-server-start)
-      :defer 5
-      :config
-      (when my:byte-compile-init
-        (require 'ein)
-        (require 'ein-notebook))
-      ;; when editing the emacs.el file, we do not want to start a new
-      ;; Jupyter server each time we save, so we only start a new Jupyter
-      ;; server if there currently isn't one running.
-      (defvar my-found-ein-server nil)
-      (dolist (my-current-process (process-list))
-        (when (string-match "EIN: Jupyter*" (process-name my-current-process))
-          (setq my-found-ein-server t))
-        )
-      (when (not my-found-ein-server)
-        (ein:jupyter-server-start my:jupyter_location my:jupyter_start_dir))
+(when (and my:jupyter_location my:jupyter_start_dir)
+  ;; Skewer mode is used by ein for running javascript in the notebook
+  (use-package skewer-mode
+    :ensure t)
+  (use-package ein
+    :ensure t
+    :requires skewer-mode
+    :defer 5
+    :config
+    (when my:byte-compile-init
+      (dolist (ein-file my:ein-explicit-load-files)
+        (require ein-file)))
+    ;; when editing the emacs.el file, we do not want to start a new
+    ;; Jupyter server each time we save, so we only start a new Jupyter
+    ;; server if there currently isn't one running.
+    (defvar my-found-ein-server nil)
+    (dolist (my-current-process (process-list))
+      (when (string-match "EIN: Jupyter*" (process-name my-current-process))
+        (setq my-found-ein-server t))
       )
+    (when (not my-found-ein-server)
+      (ein:jupyter-server-start my:jupyter_location my:jupyter_start_dir))
+    )
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
