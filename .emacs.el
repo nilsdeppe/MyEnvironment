@@ -153,6 +153,11 @@
   (custom-set-faces
    '(avy-lead-face
      ((t (:foreground "black" :background "#c678dd" :bold t :underline t)))))
+
+  ;; Make the background pure black because I find that easier to read
+  (custom-set-faces
+   '(default
+      ((t (:background "color-16")))))
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
