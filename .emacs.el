@@ -102,7 +102,7 @@
 (defvar my:search-backend "selectrum")
 
 ;; A list of modes for which to disable whitespace mode
-(defvar my:ws-disable-modes '(magit-mode help-mode))
+(defvar my:ws-disable-modes '(magit-mode help-mode Buffer-menu-mode))
 
 ;; Modes in which to disable auto-deleting of trailing whitespace
 (defvar my:ws-butler-global-exempt-modes
