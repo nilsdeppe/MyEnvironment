@@ -114,6 +114,9 @@
   (setq exec-path (append exec-path '("/Library/TeX/texbin/")))
   (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin")))
 
+;; Set font size. Font size is set to my:font-size/10
+(defvar my:font-size 90)
+
 ;; I find it much easier to use underline rather than actual
 ;; highlighting to read.
 (defun my:set-custom-faces()
@@ -2067,11 +2070,10 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
 
 ;; Hide the scroll bar
 (scroll-bar-mode -1)
-(defvar my-font-size 90)
 ;; Make mode bar small
-(set-face-attribute 'mode-line nil  :height my-font-size)
+(set-face-attribute 'mode-line nil  :height my:font-size)
 ;; Set the header bar font
-(set-face-attribute 'header-line nil  :height my-font-size)
+(set-face-attribute 'header-line nil  :height my:font-size)
 ;; Set default window size and position
 (setq default-frame-alist
       '((top . 0) (left . 0) ;; position
@@ -2080,7 +2082,7 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
 ;; Enable line numbers on the LHS
 (global-linum-mode -1)
 ;; Set the font to size 9 (90/10).
-(set-face-attribute 'default nil :height my-font-size)
+(set-face-attribute 'default nil :height my:font-size)
 
 (setq-default indicate-empty-lines t)
 (when (not indicate-empty-lines)
