@@ -9,10 +9,11 @@
 ;; up packages.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Specify the ycmd server command and path to the ycmd directory *inside* the
-;; cloned ycmd directory
-(if (file-exists-p "~/WrapPython.sh")
+;; cloned ycmd directory. I use a wrapper to add the path to the ycmd clang
+;; directories.
+(if (file-exists-p "~/.PythonYcmd.sh")
     (defvar my:ycmd-server-command
-      '("~/WrapPython.sh" "/home/nils/Research/ycmd/ycmd"))
+      '("~/.PythonYcmd.sh" "~/Research/ycmd/ycmd"))
   (defvar my:ycmd-server-command '("python" "/home/nils/Research/ycmd/ycmd"))
   )
 
