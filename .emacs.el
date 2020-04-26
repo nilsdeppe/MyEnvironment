@@ -27,7 +27,7 @@
 ;; template-heavy C++ code.
 (defvar my:use-ycmd-eldoc nil)
 
-;; Choose ycmd or lsp for C/C++ completion
+;; Choose ycmd or lsp for C/C++ completion. lsp or ycmd
 (defvar my:cxx-completer "ycmd")
 
 ;; When t use smart-hungry-delete
