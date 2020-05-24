@@ -1718,6 +1718,10 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
     (declare-function flyspell-mode "flyspell.el")
     (declare-function flyspell-prog-mode "flyspell.el"))
   (setq flyspell-issue-welcome-flag nil)
+  (use-package flyspell-correct
+    :ensure t
+    :diminish flyspell-correct-mode
+    :after flyspell)
   :config
   (defun flyspell-check-next-highlighted-word ()
     "Custom function to spell check next highlighted word."
