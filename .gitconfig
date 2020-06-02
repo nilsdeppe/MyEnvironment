@@ -1,0 +1,8 @@
+[user]
+	email = nd357@cornell.edu
+	name = Nils Deppe
+	signingkey = FCAF830E1D0B4103
+[commit]
+	gpgsign = true
+[github]
+	user = nilsdeppe
