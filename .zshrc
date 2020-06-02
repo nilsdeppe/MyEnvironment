@@ -415,7 +415,7 @@ fi
 # Just use command line emacs. I installed a command line emacs
 if command -v systemctl > /dev/null 2>&1 \
        && command -v emacs > /dev/null 2>&1; then
-    alias restart-emacs="systemctl --user restart emacsd.service"
+    alias restart-emacs="systemctl --user restart emacs.service"
 fi
 
 #############################################################################
