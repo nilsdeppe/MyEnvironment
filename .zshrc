@@ -73,13 +73,29 @@ COMPLETION_WAITING_DOTS="true"
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
+# Clone fast-syntax-highlighting
+if [ ! -d ${ZSH_CUSTOM:=~/.oh-my-zsh/custom}/plugins/fast-syntax-highlighting ]; then
+    git clone https://github.com/zdharma/fast-syntax-highlighting.git \
+        ${ZSH_CUSTOM:=~/.oh-my-zsh/custom}/plugins/fast-syntax-highlighting
+fi
+
+# Clone zsh-autosuggestions
+if [ ! -d ${ZSH_CUSTOM:=~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions ]; then
+    git clone https://github.com/zsh-users/zsh-autosuggestions \
+        ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+fi
+
+# Clone zsh-completions
+if [ ! -d ${ZSH_CUSTOM:=~/.oh-my-zsh/custom}/plugins/zsh-completions ]; then
+    git clone https://github.com/zsh-users/zsh-completions \
+        ${ZSH_CUSTOM:=~/.oh-my-zsh/custom}/plugins/zsh-completions
+fi
+
+# Which plugins would you like to load? (plugins can be found in
+# ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-#
-# Special clones:
-# git clone https://github.com/zdharma/fast-syntax-highlighting
 plugins=(
     archlinux
     docker
