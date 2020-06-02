@@ -307,6 +307,14 @@ if command -v ninja > /dev/null 2>&1; then
     export NINJA_STATUS="[%r:%f/%t-%e]"
     # Shortcut to clear screen and run ninja
     alias cninja="clear && clear && ninja"
+
+    # Set up ninja completion
+    COMP_DIR=${ZSH_CUSTOM:=~/.oh-my-zsh/custom}/plugins/
+    if [ ! -f ${COMP_DIR}/ninja-completion  ]; then
+        wget https://raw.githubusercontent.com/ninja-build/ninja/master/misc/zsh-completion \
+             -O ${COMP_DIR}/ninja-completion
+    fi
+    fpath=(${COMP_DIR}/_ninja $fpath)
 fi
 
 #############################################################################
