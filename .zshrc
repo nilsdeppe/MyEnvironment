@@ -97,26 +97,36 @@ fi
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-    archlinux
+    cargo
+    command-not-found
     docker
     emoji
+    extract
     gem
     gpg-agent
     git
     gitfast
     git-extras
     history
+    mosh
     per-directory-history
     pep8
     pip
+    pipenv
     pylint
     python
+    ripgrep
+    ubuntu
     wd
     web-search
     zsh-autosuggestions
+    zsh-completions
     # fast-syntax-highlighting must be at the end!
     fast-syntax-highlighting
 )
+
+# Support bash-completions
+autoload -U compinit && compinit
 
 if [ -f $ZSH/oh-my-zsh.sh ]; then
     source $ZSH/oh-my-zsh.sh
