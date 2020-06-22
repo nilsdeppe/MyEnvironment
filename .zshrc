@@ -388,10 +388,9 @@ if ! in_container; then
     # Drop into a Singularity dev environment, reset modules after
     container() {
         if [ "$1" = "spectre" ] && \
-               [ -f $HOME/Research/singularity/spectre.img ]; then
+               [ -f $HOME/Research/spectre.sif ]; then
             module purge
-            singularity shell \
-                        $HOME/Research/singularity/spectre.img
+            singularity shell $HOME/Research/spectre.sif
             load_modules
         elif [ "$1" = "spec" ] && \
              [ -f $HOME/Research/singularity/spec.img ]; then
@@ -414,7 +413,7 @@ if ! in_container; then
                         /bin/zsh
             load_modules
         else
-            echo "No matching container found. Receive $@"
+            echo "No matching container found. Received $@"
         fi
     }
 fi
