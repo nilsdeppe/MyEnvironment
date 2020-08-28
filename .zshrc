@@ -470,3 +470,7 @@ RUST_HOME=$HOME/.cargo/bin
 if [ -d "$RUST_HOME" ]; then
     export PATH="$RUST_HOME:$PATH"
 fi
+
+if [ -d /usr/local/go/bin ]; then
+    export PATH=/usr/local/go/bin:$PATH
+fi
