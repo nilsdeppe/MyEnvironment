@@ -158,7 +158,7 @@
   ;; Make the background pure black because I find that easier to read
   (custom-set-faces
    '(default
-      ((t (:background "color-16")))))
+      ((t (:background "black")))))
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
