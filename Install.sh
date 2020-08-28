@@ -1,8 +1,8 @@
 #!/bin/bash
 
 create_symlink() {
-    if [ -f $1 ] && [ ! -f $2 ]; then
-        ln -s $(realpath $1) $2
+    if [ -f $(realpath $1) ] && [ ! -f $(realpath $2) ]; then
+        ln -s $(realpath $1) $(realpath $2)
     fi
 }
 
@@ -17,4 +17,4 @@ chmod +x ~/.PythonYcmd.sh
 create_symlink ./.screenrc ~/.screenrc
 create_symlink ./.tmux.conf ~/.tmux.conf
 create_symlink ./.zshrc ~/.zshrc
-create_symlink ./agnoster-mine.zsh-theme ~/.oh-my-zsh/custom/themes/
+create_symlink ./agnoster-mine.zsh-theme ~/.oh-my-zsh/custom/themes/agnoster-mine.zsh-theme
