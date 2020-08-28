@@ -855,7 +855,14 @@
            ("C-r" . ctrlf-backward-fuzzy-regexp)
            )
     :config
-    (ctrlf-mode t))
+    (ctrlf-mode t)
+    ;; It seems sometimes the ctrlf-mode-bindings are reloaded overriding our
+    ;; bindings above. To ensure this isn't an issue, we set everything to
+    ;; use fuzzy-regexp
+    (setq ctrlf-mode-bindings
+          '(("C-s"   . ctrlf-forward-fuzzy-regexp)
+            ("C-r"   . ctrlf-backward-fuzzy-regexp)))
+    )
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
