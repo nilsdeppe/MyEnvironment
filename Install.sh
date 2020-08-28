@@ -17,3 +17,4 @@ chmod +x ~/.PythonYcmd.sh
 create_symlink ./.screenrc ~/.screenrc
 create_symlink ./.tmux.conf ~/.tmux.conf
 create_symlink ./.zshrc ~/.zshrc
+create_symlink ./agnoster-mine.zsh-theme ~/.oh-my-zsh/custom/themes/
