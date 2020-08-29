@@ -16,5 +16,6 @@ create_symlink ./.PythonYcmd.sh ~/.PythonYcmd.sh
 chmod +x ~/.PythonYcmd.sh
 create_symlink ./.screenrc ~/.screenrc
 create_symlink ./.tmux.conf ~/.tmux.conf
+create_symlink ./.ycm_extra_conf.py ~/.ycm_extra_conf.py
 create_symlink ./.zshrc ~/.zshrc
 create_symlink ./agnoster-mine.zsh-theme ~/.oh-my-zsh/custom/themes/agnoster-mine.zsh-theme
