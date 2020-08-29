@@ -474,3 +474,17 @@ fi
 if [ -d /usr/local/go/bin ]; then
     export PATH=/usr/local/go/bin:$PATH
 fi
+
+#############################################################################
+# SSHFS for nooblx, but only if the
+if command -v sshfs > /dev/null 2>&1; then
+    if [ ! -d ~/nooblx ]; then
+        mkdir ~/nooblx/
+    fi
+    mount-nooblx() {
+        sshfs -o idmap=user nooblx:$HOME ~/nooblx
+    }
+    umount-nooblx() {
+        fusermount -u ~/nooblx/
+    }
+fi
