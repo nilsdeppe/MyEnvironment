@@ -942,15 +942,29 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Window numbering
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Package window-numbering installed from package list
-;; Allows switching between buffers using meta-(# key)
-(use-package window-numbering
+;; Package winum (actively maintained replacement of window-numbering)
+;; installed from package list. Allows switching between buffers using
+;; meta-(# key)
+(use-package winum
   :ensure t
+  :init
+  (defvar winum-keymap
+        (let ((map (make-sparse-keymap)))
+          (define-key map (kbd "M-0") 'winum-select-window-0-or-10)
+          (define-key map (kbd "M-1") 'winum-select-window-1)
+          (define-key map (kbd "M-2") 'winum-select-window-2)
+          (define-key map (kbd "M-3") 'winum-select-window-3)
+          (define-key map (kbd "M-4") 'winum-select-window-4)
+          (define-key map (kbd "M-5") 'winum-select-window-5)
+          (define-key map (kbd "M-6") 'winum-select-window-6)
+          (define-key map (kbd "M-7") 'winum-select-window-7)
+          (define-key map (kbd "M-8") 'winum-select-window-8)
+          map))
   :config
   (eval-when-compile
     ;; Silence missing function warnings
-    (declare-function window-numbering-mode "window-numbering.el"))
-  (window-numbering-mode t)
+    (declare-function winum-mode "winum.el"))
+  (winum-mode t)
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
