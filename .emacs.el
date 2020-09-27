@@ -1843,7 +1843,7 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
     (make-directory "~/.emacs.d/plugins/"))
 (if (not (file-exists-p "~/.emacs.d/plugins/protobuf-mode.el"))
     (url-copy-file
-     "https://raw.githubusercontent.com/google/protobuf/master/editors/protobuf-mode.el"
+     "https://raw.githubusercontent.com/protocolbuffers/protobuf/master/editors/protobuf-mode.el"
      "~/.emacs.d/plugins/protobuf-mode.el"))
 (if (file-exists-p "~/.emacs.d/plugins/protobuf-mode.el")
     (use-package protobuf-mode
