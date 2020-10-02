@@ -70,7 +70,10 @@ prompt_end() {
   else
     echo -n "%{%k%}"
   fi
-  echo -n "%{%f%}"
+  # echo -n "%{%f%}"
+  # Have a multiline prompt and have new promp start with a green $
+  echo -n "%{%F{green}%}
+ $%{%f%}"
   CURRENT_BG=''
 }
 
