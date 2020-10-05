@@ -146,6 +146,30 @@ fi
 #   export EDITOR='mvim'
 # fi
 
+# Since we use a multiline prompt, make it so that we don't clutter the backlog
+# with the extra prompt info such as the path and version control info.
+clean_past_prompt() {
+    # Borrowed from:
+    # https://www.reddit.com/r/zsh/comments/j06vmp/
+    #         multiline_prompts_without_pollution/
+
+    # Clear last 2 lines (command and extra line with path+version control info)
+    printf "\033[2A\033[2K"
+    # Do a bunch of regex stuff...
+    0="${1//\\/\\\\\\\\}"
+    0="${0//\\n/\\\\n}"
+    0="${0//\$/\\\\$}"
+    0="${0//\`/\\\\\`}"
+    0="${0//\%/%%}"
+    # Print a blank line followed by the command entered
+    print -P -- "$0"
+    print -P -- "$0"
+}
+
+if [[ "$TERM" == (alacritty*|gnome*|konsole*|putty*|rxvt*|screen*|tmux*|xterm*) ]]; then
+    add-zsh-hook -Uz preexec clean_past_prompt
+fi
+
 # Compilation flags
 export ARCHFLAGS="-arch x86_64"
 
