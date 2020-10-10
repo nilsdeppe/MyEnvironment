@@ -461,6 +461,13 @@ if command -v systemctl > /dev/null 2>&1 \
 fi
 
 #############################################################################
+# Just use command line emacs. I installed a command line emacs
+if command -v swapoff > /dev/null 2>&1 \
+       && command -v swapon > /dev/null 2>&1; then
+    alias clear-swap="sudo swapoff -a && sudo swapon -a"
+fi
+
+#############################################################################
 # Command to restart WiFi driver on MacBooks
 if command -v rmmod > /dev/null 2>&1 \
        && command -v emacs > /dev/null 2>&1; then
