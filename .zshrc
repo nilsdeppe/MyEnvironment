@@ -8,14 +8,6 @@
 # and at the end of your .zshrc add:
 # zprof
 
-# Check if we are running inside a container
-in_container() {
-    if [[ $IN_CONTAINER == "true" ]] || [ $SPECTRE_CONTAINER ]; then
-        return 0
-    fi
-    return 1
-}
-
 # Path to your oh-my-zsh installation.
 export ZSH=~/.oh-my-zsh
 
@@ -248,6 +240,15 @@ case "${UNAME_OUT=}" in
     MINGW*)     MACHINE_TYPE=MinGw;;
     *)          MACHINE_TYPE="UNKNOWN:${unameOut}"
 esac
+
+#############################################################################
+# Check if we are running inside a container
+in_container() {
+    if [[ $IN_CONTAINER == "true" ]] || [ $SPECTRE_CONTAINER ]; then
+        return 0
+    fi
+    return 1
+}
 
 ############################################################################
 # Function to replace a string everywhere in the git repo
