@@ -13,7 +13,7 @@
 ;; directories.
 (if (file-exists-p "~/.PythonYcmd.sh")
     (defvar my:ycmd-server-command
-      '("~/.PythonYcmd.sh" "~/Research/ycmd/ycmd"))
+      '("~/.PythonYcmd.sh" "/home/nils/Research/ycmd/ycmd"))
   (defvar my:ycmd-server-command '("python" "/home/nils/Research/ycmd/ycmd"))
   )
 
