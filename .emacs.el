@@ -2015,10 +2015,12 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Appearance
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; The deeper blue theme is loaded but the resulting text
-;; appears black in Aquamacs. This can be fixed by setting
-;; the font color under Menu Bar->Options->Appearance->Font For...
-;; and then setting "Adopt Face and Frame Parameter as Frame Default"
+(when (string-equal my:use-theme "darcula")
+  (use-package jetbrains-darcula-theme
+    :ensure t
+    :config
+    (load-theme 'jetbrains-darcula t)))
+
 (when (string-match "doom-*" (symbol-name my:use-theme))
   (use-package doom-themes
     :ensure t
