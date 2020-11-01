@@ -964,7 +964,7 @@
   (eval-when-compile
     ;; Silence missing function warnings
     (declare-function winum-mode "winum.el"))
-  (setq winum-scope 'visible)
+  (setq winum-scope 'frame-local)
   (winum-mode t)
   )
 
