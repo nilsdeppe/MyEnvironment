@@ -2225,43 +2225,31 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
                (face0 (if active 'powerline-active0 'powerline-inactive0))
                (face1 (if active 'powerline-active1 'powerline-inactive1))
                (face2 (if active 'powerline-active2 'powerline-inactive2))
-               (separator-left
-                (intern (format "powerline-%s-%s"
-                                (powerline-current-separator)
-                                (car powerline-default-separator-dir))))
-               (separator-right
-                (intern (format "powerline-%s-%s"
-                                (powerline-current-separator)
-                                (cdr powerline-default-separator-dir))))
-               (lhs (list (powerline-raw "%*" face0 'l)
-                          (powerline-buffer-size face0 'l)
-                          (powerline-buffer-id `(mode-line-buffer-id ,face0) 'l)
-                          (powerline-raw " ")
-                          (funcall separator-left face0 face1)
-                          (powerline-narrow face1 'l)
-                          (powerline-vc face1)))
-               (center (list (powerline-raw global-mode-string face1 'r)
-                             (powerline-raw "%4l" face1 'r)
-                             (powerline-raw ":" face1)
-                             (powerline-raw "%3c" face1 'r)
-                             (funcall separator-right face1 face0)
-                             (powerline-raw " ")
-                             (powerline-raw "%6p" face0 'r)
-                             (powerline-hud face2 face1)
-                             ))
-               (rhs (list (powerline-raw " " face1)
-                          (funcall separator-left face1 face2)
-                          (when (and (boundp 'erc-track-minor-mode)
-                                     erc-track-minor-mode)
-                            (powerline-raw erc-modified-channels-object
-                                           face2 'l))
-                          (powerline-major-mode face2 'l)
-                          (powerline-process face2)
-                          (powerline-raw " :" face2)
-                          (powerline-minor-modes face2 'l)
-                          (powerline-raw " " face2)
-                          (funcall separator-right face2 face1)
-                          ))
+               ;; The 'r and 'l means "add padding on right/left"
+               (lhs (list (powerline-raw
+                           (format "W%s|" (winum-get-number-string)) face1)
+                          (powerline-raw "L%5l|C%3c|" face1)
+                          (powerline-vc face1)
+                          (when vc-mode (powerline-raw "|" face1 'l))))
+               (center (list
+                        (powerline-raw global-mode-string face1 'r)
+                        (powerline-buffer-id `(mode-line-buffer-id ,face1))
+                        ;; %p is the percentage of the way down the file
+                        ;; that we are viewing
+                        ;; (powerline-raw "%6p" face1 'r)
+                        ))
+               (rhs (list ;; Channel tracking if using erc IRC mode
+                     (when (and (boundp 'erc-track-minor-mode)
+                                erc-track-minor-mode)
+                       (powerline-raw erc-modified-channels-object
+                                      face2 'l))
+                     ;; Show major mode
+                     (powerline-raw "|" face1 'l)
+                     (powerline-major-mode face2)
+                     (powerline-process face2)
+                     (powerline-raw "|" face2)
+                     (powerline-minor-modes face2)
+                     ))
                )
           (concat (powerline-render lhs)
                   (powerline-fill-center
