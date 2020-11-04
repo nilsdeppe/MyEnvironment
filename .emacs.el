@@ -1452,18 +1452,9 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
     (add-hook 'shell-mode-hook 'set-local-keybinds-lsp-ui)
     )
 
-  (use-package company-lsp
-    :ensure t
-    :diminish
-    :after (company lsp-mode)
-    :init
-    (defvar company-lsp-enable-recompletion t)
-    (defvar company-lsp-async t)
-    :config (add-to-list 'company-backends 'company-lsp))
-
   ;; Use as C++ completer if desired. We use the clangd backend
   (when (string-equal my:cxx-completer "lsp")
-    (add-hook 'c-mode-common-hook 'lsp-mode))
+    (add-hook 'c-mode-common-hook #'lsp))
 
   :config
   ;; Set GC threshold to 25MB since LSP mode is very memory hungry and
