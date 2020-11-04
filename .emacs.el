@@ -171,6 +171,9 @@
 ;; anyway in case of interpreted .emacs, or we don't want slow
 ;; initizlization in case of byte-compiled .emacs.elc.
 (setq package-enable-at-startup nil)
+;; Disable magically opening remote files during init
+(defvar file-name-handler-alist-old file-name-handler-alist)
+(setq file-name-handler-alist nil)
 ;; Ask package.el to not add (package-initialize) to .emacs.
 (setq package--init-file-ensured t)
 ;; set use-package-verbose to t for interpreted .emacs,
@@ -203,10 +206,13 @@
 ;; By default Emacs triggers garbage collection at ~0.8MB which makes
 ;; startup really slow. Since most systems have at least 64MB of memory,
 ;; we increase it during initialization.
-(setq gc-cons-threshold 64000000)
-(add-hook 'after-init-hook #'(lambda ()
-                               ;; restore after startup
-                               (setq gc-cons-threshold 800000)))
+(setq gc-cons-threshold 128000000)
+(add-hook 'after-init-hook
+          #'(lambda ()
+              ;; restore after startup
+              (setq gc-cons-threshold 8000000
+                    file-name-handler-alist file-name-handler-alist-old
+                    )))
 
 ;; Extra plugins and config files are stored here
 (if (not (file-directory-p "~/.emacs.d/plugins/"))
