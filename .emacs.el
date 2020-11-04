@@ -1052,6 +1052,7 @@
 (use-package origami
   :ensure t
   :commands (origami-mode)
+  :hook (prog-mode . origami-mode)
   :bind (:map origami-mode-map
               ("C-c o :" . origami-recursively-toggle-node)
               ("C-c o a" . origami-toggle-all-nodes)
@@ -1081,8 +1082,6 @@
   ;; the line of the if/for/etc. statement you want to collapse. You cannot
   ;; fold the statement by toggling in the body of the if/for/etc.
   (add-to-list 'origami-parser-alist '(python-mode . origami-indent-parser))
-  :init
-  (add-hook 'prog-mode-hook 'origami-mode)
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
