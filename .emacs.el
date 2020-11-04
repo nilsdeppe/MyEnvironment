@@ -886,8 +886,16 @@
   (use-package ggtags
     :ensure t
     :diminish ggtags-mode
-    :hook ((c-mode-common . ggtags-mode)
-           (python-mode . ggtags-mode))
+    :defer t
+    :init
+    ;; More complicated hook logic so we don't interfere with LSP
+    ;; or ycmd-goto
+    (when (and (not (string-equal my:cxx-completer "lsp"))
+               (not my:use-ycmd-goto))
+      (add-hook 'c-mode-common-hook
+                (lambda ()
+                  (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
+                    (ggtags-mode t)))))
     :config
     ;; Don't try to update GTAGS on each save;
     ;; makes the system sluggish for huge projects.
