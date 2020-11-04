@@ -1530,7 +1530,7 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
 (use-package flycheck
   :ensure t
   :diminish flycheck-mode
-  :defer t
+  :hook (prog-mode . flycheck-mode)
   :init
   (eval-when-compile
     ;; Silence missing function warnings
