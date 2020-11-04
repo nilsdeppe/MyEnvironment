@@ -899,7 +899,6 @@
 (use-package projectile
   :ensure t
   :diminish projectile-mode
-  :defer 1
   :hydra
   (hydra-projectile (:color teal :hint nil)
     ("a"   projectile-ag "ag")
@@ -992,7 +991,6 @@
 (when (executable-find "rg")
   (use-package rg
     :ensure t
-    :defer 1
     :commands (rg rg-project rg-dwim )
     :config
     (rg-enable-default-bindings)
@@ -1116,6 +1114,8 @@
 (use-package which-key
   :ensure t
   :diminish which-key-mode
+  :commands which-key-mode
+  :defer 5
   :init
   (eval-when-compile
     ;; Silence missing function warnings
@@ -1177,7 +1177,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package realgud
   :ensure t
-  :defer 2
+  :after (c-mode-common python-mode)
   :init
   (setenv "TERM" "dumb")
   :config
@@ -1202,8 +1202,7 @@
 
 (use-package yapfify
   :ensure t
-  :init
-  (add-hook 'python-mode-hook 'yapf-mode))
+  :hook (python-mode . yapf-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Clang-format
@@ -1238,6 +1237,7 @@
 (use-package modern-cpp-font-lock
   :ensure t
   :diminish modern-c++-font-lock-mode
+  :hook (c++-mode . modern-c++-font-lock-mode)
   :init
   (eval-when-compile
       ;; Silence missing function warnings
