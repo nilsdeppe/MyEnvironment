@@ -1131,7 +1131,7 @@
   :ensure t
   :diminish which-key-mode
   :commands which-key-mode
-  :defer 5
+  :defer 2
   :init
   (eval-when-compile
     ;; Silence missing function warnings
