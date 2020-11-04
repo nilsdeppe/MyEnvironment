@@ -48,6 +48,14 @@
 ;; can be updated.
 (defvar my:ein-explicit-load-files '(ein ein-notebook ein-jupyter))
 
+;; In order to get lsp-mode to work properly when byte-compiling the init file
+;; we must explicitly load its files. This list is produced from all the .el
+;; files at:
+;;   https://github.com/emacs-lsp/lsp-mode
+(defvar my:lsp-explicit-load-files
+  '(lsp-completion lsp-diagnostics lsp-headerline lsp-lens lsp-mode
+                   lsp-modeline lsp-protocol lsp))
+
 ;; Compilation command for C/C++
 (defvar my:compile-command "clang++ -Wall -Wextra -std=c++17 ")
 
@@ -1457,6 +1465,9 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
     (add-hook 'c-mode-common-hook #'lsp))
 
   :config
+  (when my:byte-compile-init
+      (dolist (lsp-file my:lsp-explicit-load-files)
+        (require lsp-file)))
   ;; Set GC threshold to 25MB since LSP mode is very memory hungry and
   ;; produces a lot of garbage
   (setq gc-cons-threshold 25000000)
@@ -1470,6 +1481,7 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
   (defvar lsp-clients-clangd-args '("--clang-tidy"
                                     "--fallback-style=google"
                                     "-j=4"
+                                    "--enable-config"
                                     "--suggest-missing-includes"
                                     "--pch-storage=memory"))
   (setq lsp-enable-on-type-formatting nil)
