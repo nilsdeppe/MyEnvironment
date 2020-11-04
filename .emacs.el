@@ -1673,7 +1673,7 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
   (use-package ein
     :ensure t
     :requires skewer-mode
-    :defer 5
+    :commands (ein:login ein:jupyter-server-start)
     :config
     (when my:byte-compile-init
       (dolist (ein-file my:ein-explicit-load-files)
@@ -1686,8 +1686,6 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
       (when (string-match "EIN: Jupyter*" (process-name my-current-process))
         (setq my-found-ein-server t))
       )
-    (when (not my-found-ein-server)
-      (ein:jupyter-server-start my:jupyter_location my:jupyter_start_dir))
     )
   )
 
