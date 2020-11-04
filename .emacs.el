@@ -1490,17 +1490,42 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
 (use-package company
   :ensure t
   :diminish company-mode
+  :hook (prog-mode . global-company-mode)
+  :commands (company-mode company-indent-or-complete-common)
+  :init
+  (setq company-minimum-prefix-length 2
+        company-tooltip-limit 14
+        company-tooltip-align-annotations t
+        company-require-match 'never
+        company-global-modes '(not erc-mode message-mode help-mode gud-mode)
+
+        ;; These auto-complete the current selection when
+        ;; `company-auto-complete-chars' is typed. This is too magical. We
+        ;; already have the much more explicit RET and TAB.
+        company-auto-complete nil
+        company-auto-complete-chars nil
+
+        ;; Only search the current buffer for `company-dabbrev' (a backend that
+        ;; suggests text your open buffers). This prevents Company from causing
+        ;; lag once you have a lot of buffers open.
+        company-dabbrev-other-buffers nil
+
+        ;; Make `company-dabbrev' fully case-sensitive, to improve UX with
+        ;; domain-specific words with particular casing.
+        company-dabbrev-ignore-case nil
+        company-dabbrev-downcase nil)
+
   :config
+  (defvar my:company-explicit-load-files '(company company-capf))
+  (when my:byte-compile-init
+    (dolist (company-file my:company-explicit-load-files)
+      (require company-file)))
   ;; Zero delay when pressing tab
   (setq company-idle-delay 0)
-  (add-hook 'after-init-hook 'global-company-mode)
-  ;; remove unused backends
-  (setq company-backends (delete 'company-semantic company-backends))
+  ;; remove backends for packages that are dead
   (setq company-backends (delete 'company-eclim company-backends))
-  (setq company-backends (delete 'company-xcode company-backends))
   (setq company-backends (delete 'company-clang company-backends))
-  (setq company-backends (delete 'company-bbdb company-backends))
-  (setq company-backends (delete 'company-oddmuse company-backends))
+  (setq company-backends (delete 'company-xcode company-backends))
   )
 
 ;; Use prescient for sorting results with company:
