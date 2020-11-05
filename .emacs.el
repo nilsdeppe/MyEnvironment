@@ -38,6 +38,9 @@
 ;; Set to t if you want to use ycmd-goto in C/C++/Rust mode
 (defvar my:use-ycmd-goto nil)
 
+;; Set to t if you want to use lsp-find-definition in C/C++/Rust mode
+(defvar my:use-lsp-goto nil)
+
 ;; Specify the jupyter executable name, and the start dir of the server
 (defvar my:jupyter_location (executable-find "jupyter"))
 (defvar my:jupyter_start_dir "/home/nils")
@@ -890,8 +893,10 @@
     :init
     ;; More complicated hook logic so we don't interfere with LSP
     ;; or ycmd-goto
-    (when (and (not (string-equal my:cxx-completer "lsp"))
-               (not my:use-ycmd-goto))
+    (when (and (not (and (string-equal my:cxx-completer "lsp")
+                         my:use-lsp-goto))
+               (not (and (string-equal my:cxx-completer "ycmd")
+                         my:use-ycmd-goto)))
       (add-hook 'c-mode-common-hook
                 (lambda ()
                   (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
@@ -1358,6 +1363,12 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
       ;;   ;; Silence missing function warnings
       ;;   (declare-function global-ycmd-mode "ycmd.el"))
       ;; (add-hook 'after-init-hook #'ycmd-mode)
+
+      ;; Only override the CTags shortcut if my:use-ycmd-goto is t
+      (when my:use-ycmd-goto
+        (add-hook 'c-mode-common-hook
+                  '(lambda ()
+                     (local-set-key (kbd "M-.") 'ycmd-goto))))
       :config
       (progn
         (set-variable 'ycmd-server-command my:ycmd-server-command)
@@ -1397,11 +1408,6 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
                 map))
 
         (define-key ycmd-mode-map ycmd-keymap-prefix ycmd-command-map)
-        ;; Only override the CTags shortcut if my:use-ycmd-goto is t
-        (when my:use-ycmd-goto
-          (add-hook 'c-mode-common-hook
-                    '(lambda ()
-                       (local-set-key (kbd "M-.") 'ycmd-goto))))
 
         (use-package company-ycmd
           :ensure t
@@ -1468,9 +1474,14 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
     (add-hook 'shell-mode-hook 'set-local-keybinds-lsp-ui)
     )
 
-  ;; Use as C++ completer if desired. We use the clangd backend
+  ;; Use as C++ completer if desired. We use the clangd backend.
   (when (string-equal my:cxx-completer "lsp")
-    (add-hook 'c-mode-common-hook #'lsp))
+    (add-hook 'c-mode-common-hook #'lsp)
+    ;;
+    (add-hook 'lsp-mode-hook
+              '(lambda ()
+                 (when my:use-lsp-goto
+                   (local-set-key (kbd "M-.") 'lsp-find-definition)))))
 
   :config
   (when my:byte-compile-init
