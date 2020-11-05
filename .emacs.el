@@ -1507,12 +1507,14 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
   ;; (setq lsp-before-save-edits nil)
   ;; Use flycheck instead of flymake
   (setq lsp-prefer-flymake nil)
+  ;; Change prefix to C-c y (like ycmd)
+  (define-key lsp-mode-map (kbd "C-c y") lsp-command-map)
 
   ;; Set keybindings
   (local-set-key (kbd "C-c y n") 'lsp-rename)
   (local-set-key (kbd "C-c y o") 'lsp-restart-workspace)
   (local-set-key (kbd "C-c y c") 'lsp-disconnect)
-  (local-set-key (kbd "C-c f") 'lsp-format-region)
+  (local-set-key (kbd "C-c y f") 'lsp-format-region)
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
