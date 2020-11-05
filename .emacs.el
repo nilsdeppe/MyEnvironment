@@ -1457,10 +1457,6 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
     :after lsp-mode
     :hook (lsp-mode . lsp-ui-mode)
     :config
-    ;; Set useful keybindings
-    (local-set-key (kbd "C-c y l") 'lsp-ui-flycheck-list)
-    (local-set-key (kbd "C-c y i") 'lsp-ui-imenu)
-
     ;; Use find references and definitions key bindings instead of CTags.
     (defun set-local-keybinds-lsp-ui ()
       "Sets keybindings for lsp mode"
