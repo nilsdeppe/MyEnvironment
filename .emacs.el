@@ -1827,25 +1827,38 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; GitGutter
+;; diff-hl
+;;
+;; git-gutter is no longer maintained so use diff-hl instead.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package git-gutter
+(use-package diff-hl
   :ensure t
-  :diminish git-gutter-mode
-  :defer 2
+  :hook ((prog-mode . diff-hl-mode)
+         (org-mode . diff-hl-mode)
+         (dired-mode . diff-hl-dired-mode)
+         ;; (magit-pre-refresh . diff-hl-magit-pre-refresh)
+         (magit-post-refresh . diff-hl-magit-post-refresh)
+         )
+  :commands (diff-hl-mode)
   :init
-  (eval-when-compile
-    ;; Silence missing function warnings
-    (declare-function global-git-gutter-mode "git-gutter.el"))
+  (use-package diff-hl-amend
+    :commands (diff-hl-amend-mode)
+    )
+  (use-package diff-hl-dired
+    :commands (diff-hl-dired-mode)
+    )
+  (use-package diff-hl-flydiff
+    :commands (diff-hl-flydiff-mode)
+    )
+  (use-package diff-hl-margin
+    :commands (diff-hl-margin-mode)
+    )
   :config
-  ;; If you enable global minor mode
-  (global-git-gutter-mode t)
-  ;; Auto update every 5 seconds
-  (custom-set-variables
-   '(git-gutter:update-interval 5))
-
-  ;; Set the foreground color of modified lines to something obvious
-  (set-face-foreground 'git-gutter:modified "purple")
+  ;; Use purple to show diffs
+  (custom-set-faces
+     '(diff-hl-change
+       ((t (:background "#5f00af" :foreground "#5f00af")))))
+  (diff-hl-margin-mode t)
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
