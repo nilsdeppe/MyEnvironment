@@ -890,6 +890,7 @@
     :ensure t
     :diminish ggtags-mode
     :defer t
+    :commands (ggtags-mode)
     :init
     ;; More complicated hook logic so we don't interfere with LSP
     ;; or ycmd-goto
