@@ -1013,7 +1013,6 @@
 (when (executable-find "rg")
   (use-package rg
     :ensure t
-    :commands (rg rg-project rg-dwim )
     :config
     (rg-enable-default-bindings)
     (when my:use-selectrum
