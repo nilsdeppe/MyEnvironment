@@ -11,10 +11,36 @@
 # Path to your oh-my-zsh installation.
 export ZSH=~/.oh-my-zsh
 
+############################################################################
+# Set machine to Linux or Mac
+UNAME_OUT="$(uname -s)"
+case "${UNAME_OUT=}" in
+    Linux*)     MACHINE_TYPE=Linux;;
+    Darwin*)    MACHINE_TYPE=Mac;;
+    CYGWIN*)    MACHINE_TYPE=Cygwin;;
+    MINGW*)     MACHINE_TYPE=MinGw;;
+    *)          MACHINE_TYPE="UNKNOWN:${unameOut}"
+esac
+
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-if [ -f $ZSH/custom/themes/agnoster-mine.zsh-theme ]; then
+#
+# On macOS (probably Linux too) you can install PL10k via:
+# git clone --depth=1 https://github.com/romkatv/powerlevel10k.git \
+#     ~/.oh-my-zsh/custom/themes/powerlevel10k
+if [ -f $ZSH/custom/themes/powerlevel10k/powerlevel10k.zsh-theme ]; then
+    # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+    # Initialization code that may require console input (password prompts, [y/n]
+    # confirmations, etc.) must go above this block; everything else may go below.
+    if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+        source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+    fi
+
+    ZSH_THEME="powerlevel10k/powerlevel10k"
+    # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+    [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+elif [ -f $ZSH/custom/themes/agnoster-mine.zsh-theme ]; then
     ZSH_THEME="agnoster-mine"
 else
     ZSH_THEME=robbyrussell
@@ -95,7 +121,7 @@ plugins=(
     emoji
     extract
     gem
-    gpg-agent
+    gpg-agent # Need to setup GPG first. On macOS this means install via brew
     git
     gitfast
     git-extras
@@ -229,17 +255,6 @@ setopt HIST_REDUCE_BLANKS
 setopt HIST_VERIFY
 # Beep when accessing nonexistent history.
 setopt HIST_BEEP
-
-############################################################################
-# Set machine to Linux or Mac
-UNAME_OUT="$(uname -s)"
-case "${UNAME_OUT=}" in
-    Linux*)     MACHINE_TYPE=Linux;;
-    Darwin*)    MACHINE_TYPE=Mac;;
-    CYGWIN*)    MACHINE_TYPE=Cygwin;;
-    MINGW*)     MACHINE_TYPE=MinGw;;
-    *)          MACHINE_TYPE="UNKNOWN:${unameOut}"
-esac
 
 #############################################################################
 # Check if we are running inside a container
