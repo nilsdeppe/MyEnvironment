@@ -184,9 +184,9 @@ clean_past_prompt() {
     print -P -- "$0"
 }
 
-if [[ "$TERM" == (alacritty*|gnome*|konsole*|putty*|rxvt*|screen*|tmux*|xterm*) ]]; then
-    add-zsh-hook -Uz preexec clean_past_prompt
-fi
+# if [[ "$TERM" == (alacritty*|gnome*|konsole*|putty*|rxvt*|screen*|tmux*|xterm*) ]]; then
+#     add-zsh-hook -Uz preexec clean_past_prompt
+# fi
 
 # Compilation flags
 export ARCHFLAGS="-arch x86_64"
