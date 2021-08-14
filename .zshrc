@@ -497,7 +497,9 @@ fi
 
 #############################################################################
 # GPG key
-export GPG_TTY=$(tty)
+if [[ "$MACHINE_TYPE" == "Linux" ]]; then
+    export GPG_TTY=$(tty)
+fi
 
 #############################################################################
 # enable using "fuck" to correct last command
