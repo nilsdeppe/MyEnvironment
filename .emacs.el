@@ -2107,6 +2107,11 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
     :ensure spacemacs-theme
     :config (load-theme 'spacemacs-dark t)))
 
+(when (string-equal my:use-theme "spacemacs-light")
+  (use-package spacemacs-common
+    :ensure spacemacs-theme
+    :config (load-theme 'spacemacs-light t)))
+
 (when (string-equal my:use-theme "sourcerer")
   (use-package sourcerer-theme
     :ensure t
