@@ -2170,7 +2170,8 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
 (setq inhibit-splash-screen t)
 
 ;; Hide the scroll bar
-(scroll-bar-mode -1)
+(if (fboundp 'scroll-bar-mode)
+    (scroll-bar-mode -1))
 ;; Make mode bar small
 (set-face-attribute 'mode-line nil  :height my:font-size)
 ;; Set the header bar font
