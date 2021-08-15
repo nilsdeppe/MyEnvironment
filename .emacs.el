@@ -241,7 +241,8 @@
 ;; General Tweaks
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Only allow encrypted auth sources
-(setq auth-sources '((:source "~/.authinfo.gpg")))
+(if (file-exists-p "~/.authinfo.gpg")
+    (setq auth-sources '((:source "~/.authinfo.gpg"))))
 
 ;; turn on highlight matching brackets when cursor is on one
 (show-paren-mode t)
