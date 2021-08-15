@@ -525,15 +525,39 @@ if [ -d /usr/local/go/bin ]; then
 fi
 
 #############################################################################
-# SSHFS for nooblx, but only if the
+# Easily mount and unmount SSHFS volumes
 if command -v sshfs > /dev/null 2>&1; then
-    if [ ! -d ~/nooblx ]; then
-        mkdir ~/nooblx/
-    fi
-    mount-nooblx() {
-        sshfs -o idmap=user nooblx:$HOME ~/nooblx
+    mount-sshfs() {
+        if [ "$#" -eq 1 ] || [ "$#" -eq 2 ]; then
+            DIR_TO_MOUNT=~/$1
+            if [ "$#" -eq 2 ]; then
+                DIR_TO_MOUNT=$2
+            fi
+            echo "Mounting home directory of $1 to $DIR_TO_MOUNT"
+            if [ ! -d $DIR_TO_MOUNT ]; then
+                mkdir $DIR_TO_MOUNT
+            fi
+            sshfs -o idmap=user $1:$HOME $DIR_TO_MOUNT
+        else
+            echo "Usage: mount-sshfs SSH_HOSTNAME [DIR_NAME]"
+            echo "where the SSH_HOSTNAME matches one specified in ~/.ssh/config"
+            echo "the option DIR_NAME is where the SSHFS will be mounted"
+            return 1
+        fi
     }
-    umount-nooblx() {
-        fusermount -u ~/nooblx/
+    umount-sshfs() {
+        if [ "$#" -eq 1 ] || [ "$#" -eq 2 ]; then
+            DIR_TO_MOUNT=~/$1
+            if [ "$#" -eq 2 ]; then
+                DIR_TO_MOUNT=$2
+            fi
+            echo "Unmounting home directory of $1 from $DIR_TO_MOUNT"
+            fusermount -u $DIR_TO_MOUNT
+        else
+            echo "Usage: unmount-sshfs SSH_HOSTNAME [DIR_NAME]"
+            echo "where the SSH_HOSTNAME matches one specified in ~/.ssh/config"
+            echo "the option DIR_NAME is where the SSHFS is currently mounted"
+            return 1
+        fi
     }
 fi
