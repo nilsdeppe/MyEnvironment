@@ -2172,6 +2172,9 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
 ;; Hide the scroll bar
 (if (fboundp 'scroll-bar-mode)
     (scroll-bar-mode -1))
+;; Hide the menu bar
+(if (fboundp 'menu-bar-mode)
+    (menu-bar-mode -1))
 ;; Make mode bar small
 (set-face-attribute 'mode-line nil  :height my:font-size)
 ;; Set the header bar font
