@@ -1711,16 +1711,20 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
 ;; autopair
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Automatically at closing brace, bracket and quote
-(use-package autopair
-  :ensure t
-  :diminish autopair-mode
-  :init
-  (eval-when-compile
-    ;; Silence missing function warnings
-    (declare-function autopair-global-mode "autopair.el"))
-  :config
-  (autopair-global-mode t)
-  )
+;;
+;; NOTE: some or all of this functionality seems to be in Emacs and
+;;       I can't find this package in (m)elpa anymore.
+;;
+;; (use-package autopair
+;;   :ensure t
+;;   :diminish autopair-mode
+;;   :init
+;;   (eval-when-compile
+;;     ;; Silence missing function warnings
+;;     (declare-function autopair-global-mode "autopair.el"))
+;;   :config
+;;   (autopair-global-mode t)
+;;   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Load hungry Delete, caus we're lazy
