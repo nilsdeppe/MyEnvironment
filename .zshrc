@@ -571,3 +571,26 @@ if [[ "$MACHINE_TYPE" == "Mac" ]]; then
         emacs --daemon > /dev/null 2>&1
     fi
 fi
+
+#############################################################################
+# Force SSH agent socket location. Can use systemd service at
+# ~/.config/systemd/user/ssh-agent.service
+#
+#    [Unit]
+#    Description=SSH key agent
+#
+#    [Service]
+#    Type=forking
+#    Environment=SSH_AUTH_SOCK=%t/ssh-agent.socket
+#    ExecStart=/usr/bin/ssh-agent -a $SSH_AUTH_SOCK
+#
+#    [Install]
+#    WantedBy=default.target
+#
+# Run:
+#    systemctl --user enable ssh-agent
+#    systemctl --user start ssh-agent
+#
+# Make sure ~/.ssh/config has:
+#    AddKeysToAgent  yes
+export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
