@@ -399,6 +399,42 @@
 (global-set-key (kbd "C-c M-y") 'my-paste-from-xclipboard)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Function to set SSH_AUTH_SOCK env variable to socket
+;; created by systemd.
+;;
+;; Wrap in a function so we can control when and where to call.
+;;
+;; Can use systemd service at ;; ~/.config/systemd/user/ssh-agent.service
+;;
+;;    [Unit]
+;;    Description=SSH key agent
+;;
+;;    [Service]
+;;    Type=forking
+;;    Environment=SSH_AUTH_SOCK=%t/ssh-agent.socket
+;;    ExecStart=/usr/bin/ssh-agent -a $SSH_AUTH_SOCK
+;;
+;;    [Install]
+;;    WantedBy=default.target
+;;
+;; Run:
+;;    systemctl --user enable ssh-agent
+;;    systemctl --user start ssh-agent
+;;
+;; Make sure ~/.ssh/config has:
+;;    AddKeysToAgent  yes
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun my:set_ssh_auth_sock()
+  "If the file XDG_RUNTIME_DIR/ssh-agent.socket exists, use as SSH socket"
+  (when (file-exists-p (format "%s/ssh-agent.socket"
+                               (getenv "XDG_RUNTIME_DIR")))
+    (setenv "SSH_AUTH_SOCK"
+            (format "%s/ssh-agent.socket" (getenv "XDG_RUNTIME_DIR")))))
+
+;; Set env variable.
+(my:set_ssh_auth_sock)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; async - library for async/thread processing
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package async
@@ -1828,6 +1864,9 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
   :config
   (when my:use-ivy
     (setq magit-completing-read-function 'ivy-completing-read))
+  ;; Set SSH_AUTH_SOCK if necessary. This allows us to run the ssh-agent
+  ;; and emacs as daemons while having them work together.
+  (my:set_ssh_auth_sock)
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
