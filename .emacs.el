@@ -1876,7 +1876,7 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; gitignore-mode: highlighting in gitignore files
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package gitignore-mode
+(use-package git-modes
   :ensure t
   :diminish gitignore-mode
   :mode ("\\.gitignore\\'"))
