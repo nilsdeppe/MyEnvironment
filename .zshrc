@@ -593,6 +593,6 @@ fi
 #
 # Make sure ~/.ssh/config has:
 #    AddKeysToAgent  yes
-if [ -f "$XDG_RUNTIME_DIR/ssh-agent.socket" ]; then
+if [ -e "$XDG_RUNTIME_DIR/ssh-agent.socket" ]; then
     export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
 fi
