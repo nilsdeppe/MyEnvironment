@@ -1500,6 +1500,7 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
       (interactive)
       (local-set-key (kbd "M-.") 'lsp-ui-peek-find-definitions)
       (local-set-key (kbd "M-?") 'lsp-ui-peek-find-references)
+      (local-set-key (kbd "C-c y d") 'lsp-ui-doc-toggle)
       )
     (add-hook 'c-mode-common-hook 'set-local-keybinds-lsp-ui)
     (add-hook 'python-mode-hook 'set-local-keybinds-lsp-ui)
@@ -1534,7 +1535,7 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
                                     "--fallback-style=google"
                                     "-j=4"
                                     "--enable-config"
-                                    "--suggest-missing-includes"
+                                    "--malloc-trim"
                                     "--pch-storage=memory"))
   (setq lsp-enable-on-type-formatting nil)
   ;; (setq lsp-before-save-edits nil)
