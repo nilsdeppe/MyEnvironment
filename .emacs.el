@@ -28,7 +28,7 @@
 (defvar my:use-ycmd-eldoc nil)
 
 ;; Choose ycmd or lsp for C/C++ completion. lsp or ycmd
-(defvar my:cxx-completer "ycmd")
+(defvar my:cxx-completer "lsp")
 
 ;; When t use smart-hungry-delete
 ;; (https://github.com/hrehfeld/emacs-smart-hungry-delete).
