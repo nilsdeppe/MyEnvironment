@@ -476,6 +476,12 @@ if command -v systemctl > /dev/null 2>&1 \
 fi
 
 #############################################################################
+# When building Emacs lsp-mode enable plists, which are an optimization.
+#
+# Must also have (defvar lsp-use-plists t) in Emacs config.
+export LSP_USE_PLISTS=true
+
+#############################################################################
 # Just use command line emacs. I installed a command line emacs
 if command -v swapoff > /dev/null 2>&1 \
        && command -v swapon > /dev/null 2>&1; then

@@ -41,6 +41,9 @@
 ;; Set to t if you want to use lsp-find-definition in C/C++/Rust mode
 (defvar my:use-lsp-goto nil)
 
+;; lsp-mode performs better with plists (see LSP documentation)
+(defvar lsp-use-plists t)
+
 ;; Specify the jupyter executable name, and the start dir of the server
 (defvar my:jupyter_location (executable-find "jupyter"))
 (defvar my:jupyter_start_dir "/home/nils")
