@@ -39,7 +39,7 @@
 (defvar my:use-ycmd-goto nil)
 
 ;; Set to t if you want to use lsp-find-definition in C/C++/Rust mode
-(defvar my:use-lsp-goto nil)
+(defvar my:use-lsp-goto t)
 
 ;; lsp-mode performs better with plists (see LSP documentation)
 (defvar lsp-use-plists t)
