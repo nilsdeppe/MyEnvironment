@@ -88,7 +88,7 @@ compilation."
                                       (projectile-project-root))
                               ))))))
       (set (make-local-variable 'compile-command)
-           (format "cmake --build %s -j10 --target"
+           (format "cmake --build %s -j50 --target"
                    my:project-build-dir)
            ))))
 
