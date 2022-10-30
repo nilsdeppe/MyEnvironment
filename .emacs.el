@@ -65,6 +65,33 @@
 ;; Compilation command for C/C++
 (defvar my:compile-command "clang++ -Wall -Wextra -std=c++17 ")
 
+(defun my:compile-command-hook()
+  "Try to intelligently set the compilation command locally in the buffer.
+If a compile_commands.json file exists in the projectile directory then
+the build directory is extracted from the first file in the JSON file and
+set as the build directory for CMake.  By default 10 cores are used for
+compilation."
+  (require 'json)
+  (when (and (projectile-project-root)
+             (file-exists-p
+              (format "%s/compile_commands.json"
+                      (projectile-project-root)))
+             (file-exists-p
+              (format "%s/CMakeLists.txt"
+                      (projectile-project-root))))
+    (let ((my:project-build-dir
+           (gethash "directory"
+                    (first (let ((json-array-type 'list)
+                                 (json-object-type 'hash-table))
+                             (json-read-file
+                              (format "%s/compile_commands.json"
+                                      (projectile-project-root))
+                              ))))))
+      (set (make-local-variable 'compile-command)
+           (format "cmake --build %s -j10 --target"
+                   my:project-build-dir)
+           ))))
+
 ;; Which theme to use.
 ;; - spacemacs-dark
 ;; - sourcerer
@@ -1324,6 +1351,7 @@
   (define-key c++-mode-map (kbd "C-c C-k") 'kill-compilation)
   (setq compile-command my:compile-command)
   (custom-set-variables '(c-noise-macro-names '("constexpr")))
+  (add-hook 'c-mode-common-hook 'my:compile-command-hook)
   (use-package google-c-style
     :ensure t
     :config
