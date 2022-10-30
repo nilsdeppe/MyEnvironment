@@ -602,3 +602,13 @@ fi
 if [ -e "$XDG_RUNTIME_DIR/ssh-agent.socket" ]; then
     export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
 fi
+
+#############################################################################
+# To set display for ParaView output when doing SSH use:
+#   export DISPLAY=:1
+
+#############################################################################
+# Add .local bin since python now puts things there
+if [ ! -d ${HOME}/.local/bin ]; then
+    export PATH=$PATH:${HOME}/.local/bin
+fi
