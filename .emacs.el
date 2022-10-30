@@ -294,11 +294,16 @@ compilation."
 (if (functionp 'tool-bar-mode) (tool-bar-mode -1))
 
 ;; Auto-wrap at 80 characters
-(setq-default auto-fill-function 'do-auto-fill)
 (setq-default fill-column 80)
-(turn-on-auto-fill)
-;; Disable auto-fill-mode in programming mode
-(add-hook 'prog-mode-hook (lambda () (auto-fill-mode -1)))
+(add-hook 'text-mode-hook (lambda () (auto-fill-mode 1)))
+;; Only break in comments in programming mode.
+(add-hook 'c-mode-common-hook
+          (lambda ()
+            (auto-fill-mode 1)
+            (set (make-local-variable 'fill-nobreak-predicate)
+                 (lambda ()
+                   (not (eq (get-text-property (point) 'face)
+                            'font-lock-comment-face))))))
 
 ;; Disable Emacs help on translation, e.g. C-x C-h actually
 ;; can do things now
