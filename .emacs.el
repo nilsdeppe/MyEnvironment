@@ -1585,7 +1585,9 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
 
   ;; Set keybindings
   (local-set-key (kbd "C-c y n") 'lsp-rename)
-  (local-set-key (kbd "C-c y o") 'lsp-restart-workspace)
+  (if (functionp 'lsp-workspace-restart)
+      (local-set-key (kbd "C-c y o") 'lsp-workspace-restart)
+    (local-set-key (kbd "C-c y o") 'lsp-restart-workspace))
   (local-set-key (kbd "C-c y c") 'lsp-disconnect)
   (local-set-key (kbd "C-c y f") 'lsp-format-region)
   )
