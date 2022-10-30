@@ -1488,6 +1488,11 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
          ;; Bash uses bash-language-server
          ;; https://github.com/mads-hartmann/bash-language-server
          (shell-mode . lsp)
+         ;; CMake uses cmake-language-server
+         ;; https://github.com/regen100/cmake-language-server
+         ;;
+         ;; pip install cmake-language-server
+         (cmake-mode . lsp)
          )
   :init
   ;; Disable yasnippet. We re-enable when yasnippet is loaded.
@@ -1519,6 +1524,9 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
               '(lambda ()
                  (when my:use-lsp-goto
                    (local-set-key (kbd "M-.") 'lsp-find-definition)))))
+
+  (when (not (executable-find "cmake-language-server"))
+    (message "Could not find cmake-language-server"))
 
   :config
   (when my:byte-compile-init
