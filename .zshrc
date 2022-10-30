@@ -386,9 +386,9 @@ if ! in_container; then
         #############################################################################
         # Load useful modules
         load_modules() {
-            module load \
-                   brigand-master-gcc-9.1.0-gazgu4v \
-                   xsimd-7.2.3-gcc-9.1.0-bqasdid
+            # module load \
+            #        brigand-master-gcc-9.1.0-gazgu4v \
+            #        xsimd-7.2.3-gcc-9.1.0-bqasdid
         }
         load_modules
     fi
