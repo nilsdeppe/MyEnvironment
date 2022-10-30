@@ -1215,7 +1215,10 @@
   (eval-when-compile
     ;; Silence missing function warnings
     (declare-function global-undo-tree-mode "undo-tree.el"))
-  (global-undo-tree-mode))
+  (global-undo-tree-mode)
+  ;; Disable saving history to file. This would just generate a huge
+  ;; number of files
+  (setq undo-tree-auto-save-history nil))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; visual-regexp-steroids
