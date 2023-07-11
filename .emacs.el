@@ -1195,6 +1195,8 @@ compilation."
     ;; Silence missing function warnings
     (declare-function beacon-mode "beacon.el"))
   :config
+  (setq beacon-blink-duration 1.0)
+  (setq beacon-blink-delay 1.0)
   (beacon-mode t))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
