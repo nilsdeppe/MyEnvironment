@@ -612,3 +612,12 @@ fi
 if [ ! -d ${HOME}/.local/bin ]; then
     export PATH=$PATH:${HOME}/.local/bin
 fi
+
+#############################################################################
+# Set performance metrics
+function enable_perf() {
+    echo 0 | sudo tee /proc/sys/kernel/kptr_restrict
+    echo -1 | sudo tee /proc/sys/kernel/perf_event_paranoid
+    echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
+    echo always | sudo tee /sys/kernel/mm/transparent_hugepage/enabled
+}
