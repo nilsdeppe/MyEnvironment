@@ -6,3 +6,5 @@
 	gpgsign = true
 [github]
 	user = nilsdeppe
+[hub]
+	protocol = ssh
