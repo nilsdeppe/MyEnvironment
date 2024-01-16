@@ -167,9 +167,9 @@ compilation."
    '(ivy-current-match
      ((t (:background nil :underline t))))
    '(company-tooltip
-     ((t (:background nil))))
+     ((t (:background unspecified))))
    '(company-tooltip-selection
-     ((t (:background nil :underline t))))
+     ((t (:background unspecified :underline t))))
    '(highlight
      ((t (:background "nil" :foreground "nil" :underline t))))
    )
@@ -1421,7 +1421,8 @@ compilation."
      "Could not start YouCompleteMeDaemon because the python executable could
 not be found.\nSpecified executable is: '%s'\nPlease set my:ycmd-server-command
 appropriately in ~/.emacs.el.\n" (nth 0 my:ycmd-server-command)))
-(when (not (file-directory-p (nth 1 my:ycmd-server-command)))
+(when (and (string-equal my:cxx-completer "ycmd")
+           (not (file-directory-p (nth 1 my:ycmd-server-command))))
     (message "Could not YouCompleteMeDaemon because the specified directory does
 not exist.\nSpecified directory is: '%s'
 Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
