@@ -300,6 +300,31 @@ replace_all() {
     fi
 }
 
+############################################################################
+# function that creates a tarball of the files needed for a paper.
+#
+# Extracts the includegraphics statements
+create_paper_tarball() {
+    if [ "$#" -lt 1 ]; then
+        echo "Illegal number of parameters. Expected one or more parameters."
+        echo "1: paper prefix, eg 'paper' if 'paper.tex'"
+        echo "additional parameters are passed to the tar command."
+    else
+        if [[ "$MACHINE_TYPE" == "Mac" ]]; then
+            grep "includegraphics" ./$1.tex | \
+                sed -E 's/.*\{(.*)\}.*/\1*/g' | \
+                xargs -n 1 sh -c 'echo $0' | \
+                xargs tar czf $1.tar.gz $1.tex $1.bbl ${@:2}
+        elif [[ "$MACHINE_TYPE" == "Linux" ]]; then
+            grep "includegraphics" ./$1.tex | \
+                sed -r 's/.*\{(.*)\}.*/\1*/g' | \
+                xargs -n 1 sh -c 'echo $0' | \
+                xargs tar czf $1.tar.gz $1.tex $1.bbl ${@:2}
+        else
+            echo "Unknown machine for replace_all: $MACHINE_TYPE"
+        fi
+    fi
+}
 
 ############################################################################
 # Python
