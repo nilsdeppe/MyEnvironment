@@ -115,7 +115,6 @@ fi
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-    rust
     command-not-found
     docker
     emoji
@@ -134,6 +133,7 @@ plugins=(
     pylint
     python
     ripgrep
+    rust
     ubuntu
     wd
     web-search
@@ -569,6 +569,14 @@ if command -v sshfs > /dev/null 2>&1; then
 fi
 
 #############################################################################
+# Set homebrew path on macOS
+if [[ "$MACHINE_TYPE" == "Mac" ]]; then
+    if [ -d /opt/homebrew/opt/ruby/bin ]; then
+        export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
+    fi
+fi
+
+#############################################################################
 # On macOS homebrew's services don't seem to get the PATHs right, so launch
 # an Emacs daemon manually.
 if [[ "$MACHINE_TYPE" == "Mac" ]]; then
@@ -621,3 +629,20 @@ function enable_perf() {
     echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
     echo always | sudo tee /sys/kernel/mm/transparent_hugepage/enabled
 }
+
+if [[ "$MACHINE_TYPE" == "Mac" ]]; then
+    # >>> conda initialize >>>
+    # !! Contents within this block are managed by 'conda init' !!
+    __conda_setup="$('/Users/nils/opt/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+    if [ $? -eq 0 ]; then
+        eval "$__conda_setup"
+    else
+        if [ -f "/Users/nils/opt/anaconda3/etc/profile.d/conda.sh" ]; then
+            . "/Users/nils/opt/anaconda3/etc/profile.d/conda.sh"
+        elif [ -d /Users/nils/opt/anaconda3/bin ]; then
+            export PATH="/Users/nils/opt/anaconda3/bin:$PATH"
+        fi
+    fi
+    unset __conda_setup
+    # <<< conda initialize <<<
+fi
