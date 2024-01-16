@@ -1966,8 +1966,8 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package git-modes
   :ensure t
-  :diminish gitignore-mode
-  :mode ("\\.gitignore\\'"))
+  :diminish gitignore-mode gitattributes-mode gitconfig-mode
+  )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; cmake-mode
@@ -2277,7 +2277,10 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
         (width . 110) (height . 90) ;; size
         ))
 ;; Enable line numbers on the LHS
-(global-linum-mode -1)
+;;
+;; Emacs 29.1 switches to line-numbers-mode
+(when (< emacs-major-version 29)
+  (global-linum-mode -1))
 ;; Set the font to size 9 (90/10).
 (set-face-attribute 'default nil :height my:font-size)
 
