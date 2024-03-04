@@ -612,7 +612,7 @@ fi
 #############################################################################
 # On macOS homebrew's services don't seem to get the PATHs right, so launch
 # an Emacs daemon manually.
-if [[ "$MACHINE_TYPE" == "Mac" ]]; then
+if [[ "$MACHINE_TYPE" == "Mac" ]] || [[ $HOSTNAME_OUT == mbot* ]]; then
     EMACS_DAEMON_RUNNING=`ps ux | grep -v 'grep' | grep 'emacs --daemon' | wc -l`
     if [ $EMACS_DAEMON_RUNNING -eq 0 ]; then
         emacs --daemon > /dev/null 2>&1
