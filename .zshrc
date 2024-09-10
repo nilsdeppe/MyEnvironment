@@ -503,9 +503,12 @@ fi
 
 #############################################################################
 # Just use command line emacs. I installed a command line emacs
-if command -v systemctl > /dev/null 2>&1 \
-       && command -v emacs > /dev/null 2>&1; then
-    alias restart-emacs="systemctl --user restart emacs.service"
+if command -v emacs > /dev/null 2>&1; then
+    if [[ "$MACHINE_TYPE" == "Mac" ]]; then
+        alias restart-emacs="brew services restart emacs"
+    elif command -v systemctl > /dev/null 2>&1; then
+        alias restart-emacs="systemctl --user restart emacs.service"
+    fi
 fi
 
 #############################################################################
@@ -612,7 +615,7 @@ fi
 #############################################################################
 # On macOS homebrew's services don't seem to get the PATHs right, so launch
 # an Emacs daemon manually.
-if [[ "$MACHINE_TYPE" == "Mac" ]] || [[ $HOSTNAME_OUT == mbot* ]]; then
+if [[ $HOSTNAME_OUT == mbot* ]]; then
     EMACS_DAEMON_RUNNING=`ps ux | grep -v 'grep' | grep 'emacs --daemon' | wc -l`
     if [ $EMACS_DAEMON_RUNNING -eq 0 ]; then
         emacs --daemon > /dev/null 2>&1
