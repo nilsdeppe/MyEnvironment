@@ -154,7 +154,8 @@ compilation."
 (when (string-equal system-type "darwin")
   (setenv "PATH" (concat (getenv "PATH") ":/Library/TeX/texbin/"))
   (setq exec-path (append exec-path '("/Library/TeX/texbin/")))
-  (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin")))
+  (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
+  (setenv "PATH" (concat (getenv "PATH") ":/opt/homebrew/bin")))
 
 ;; Set font size. Font size is set to my:font-size/10
 (defvar my:font-size 90)
@@ -1578,12 +1579,21 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
   (setq read-process-output-max (* 1024 1024))
 
   ;; Extra flags passed to clangd. See 'clangd --help' for info
-  (defvar lsp-clients-clangd-args '("--clang-tidy"
-                                    "--fallback-style=google"
-                                    "-j=4"
-                                    "--enable-config"
-                                    "--malloc-trim"
-                                    "--pch-storage=memory"))
+  (if (string-equal system-type "darwin") ; Mac OS X
+      (defvar lsp-clients-clangd-args '("--clang-tidy"
+                                        "--fallback-style=google"
+                                        "-j=4"
+                                        "--enable-config"
+                                        "--pch-storage=disk"
+                                        "--rename-file-limit=0"))
+      (defvar lsp-clients-clangd-args '("--clang-tidy"
+                                        "--fallback-style=google"
+                                        "-j=8"
+                                        "--enable-config"
+                                        "--pch-storage=disk"
+                                        "--rename-file-limit=0"
+                                        "--malloc-trim"))
+      )
   (setq lsp-enable-on-type-formatting nil)
   ;; (setq lsp-before-save-edits nil)
   ;; Use flycheck instead of flymake
