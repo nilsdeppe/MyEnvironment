@@ -1,0 +1,64 @@
+// Custom settings. See keybindings.json for what extensions
+// you need to install. You can edit the settings in the GUI
+// and VSCode will save them here. The GUI is nice for settings
+// discovery, but I like my settings documented and organized,
+// so having a file is actually great!
+{
+    "cmake.pinnedCommands": [
+        "workbench.action.tasks.configureTaskRunner",
+        "workbench.action.tasks.runTask"
+    ],
+    // Notifications can be annoying, so disable them.
+    "cmake.showOptionsMovedNotification": false,
+    // Use 2-wide tabs because we aren't monsters.
+    "editor.tabSize": 2,
+    "editor.codeActionsOnSave": {
+
+    },
+    // No icons!!!!
+    "workbench.iconTheme": null,
+    "workbench.editor.editorActionsLocation": "titleBar",
+    // Hide the minimap. I find it more annoying than useful, mostly
+    // because it takes screen real estate and I have to click on it.
+    "editor.minimap.enabled": false,
+    "editor.minimap.maxColumn": 80,
+    // Use a block cursor style that's solid (no blinking).
+    "editor.cursorStyle": "block",
+    "editor.cursorBlinking": "solid",
+    // Configure Intellisense C and C++ extension.
+    "C_Cpp.default.cppStandard": "c++20",
+    "C_Cpp.default.intelliSenseMode": "macos-clang-arm64",
+    "C_Cpp.workspaceParsingPriority": "medium",
+    "C_Cpp.clang_format_fallbackStyle": "Google",
+    "C_Cpp.codeAnalysis.clangTidy.useBuildPath": true,
+    "C_Cpp.codeAnalysis.maxMemory": 600,
+    "C_Cpp.doxygen.generatedStyle": "/*!",
+    "C_Cpp.intelliSenseEngine": "disabled",
+    // For cpp language
+    "[cpp]": {
+        // set default formatter to clangd
+        "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd"
+    },
+    // clangd config:
+    "clangd.checkUpdates": true,
+    // find-it-faster (fif or ripgrep) config:
+    "find-it-faster.findWithinFiles.fuzzRipgrepQuery": true,
+    "find-it-faster.general.useTerminalInEditor": true,
+
+    "window.autoDetectColorScheme": true,
+    // Auto-inlays like documentation are really annoying. We only enable them
+    // on request.
+    "editor.inlayHints.enabled": "offUnlessPressed",
+    "hungryDelete.enableSmartBackspace": false,
+    // Custom dictionary words.
+    "cSpell.userWords": [
+        "Chebyshev"
+    ],
+    // W00t magit! No magit, no vscode. It's that simple.
+    "magit.quick-switch-enabled": true,
+    // Ahhh Zen mode. The only thing that makes vscode tolerable (aside
+    // from magit!)
+    "zenMode.showTabs": "none",
+    "zenMode.hideStatusBar": false,
+    "zenMode.fullScreen": false
+}
