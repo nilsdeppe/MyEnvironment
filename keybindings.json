@@ -1,0 +1,488 @@
+// Visual Studio Code keybindings
+//
+// Place your key bindings in this file to override the defaults
+[
+    // Allow sending through Emacs close command in terminal mode.
+    {
+        "key": "ctrl+x ctrl+c",
+        "command": "-workbench.action.closeWindow"
+    },
+    {
+        "key": "ctrl+x ctrl+c",
+        "when": "editorTextFocus",
+        "command": "workbench.action.closeWindow"
+    },
+    // END
+    // Projectile-like file open. There seems to be no great way to
+    // open a file without projectile. Cmd+o is the closest, but
+    // that's quite clumsy.
+    {
+        "key": "ctrl+x alt+f",
+        "command": "workbench.action.quickOpen"
+    },
+    {
+        "key": "cmd+p",
+        "command": "-workbench.action.quickOpen"
+    },
+    // END
+    // Go to line.
+    {
+        "key": "alt+g alt+g",
+        "command": "workbench.action.gotoLine"
+    },
+    {
+        "key": "ctrl+g",
+        "command": "-workbench.action.gotoLine"
+    },
+    // END
+    // Use alt+n/p to add cursors on line above or below.
+    // We also check if we currently have text selected, in
+    // which case we select the next check of the currently
+    // selected text.
+    {
+        "key": "alt+n",
+        "command": "editor.action.insertCursorBelow",
+        "when": "editorTextFocus && !editorHasSelection"
+    },
+    {
+        "key": "alt+n",
+        "command": "emacs-mcx.addSelectionToNextFindMatch",
+        "when": "editorTextFocus && editorHasSelection"
+    },
+    {
+        "key": "alt+p",
+        "command": "editor.action.insertCursorAbove",
+        "when": "editorTextFocus && !editorHasSelection"
+    },
+    {
+        "key": "alt+p",
+        "command": "emacs-mcx.addSelectionToPreviousFindMatch",
+        "when": "editorTextFocus && editorHasSelection"
+    },
+    {
+        "key": "alt+cmd+up",
+        "command": "-editor.action.insertCursorAbove",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "alt+cmd+down",
+        "command": "-editor.action.insertCursorBelow",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "ctrl+c ctrl+f",
+        "command": "editor.action.formatSelection",
+        "when": "editorHasDocumentSelectionFormattingProvider && editorTextFocus && !editorReadonly"
+    },
+    {
+        "key": "cmd+k cmd+f",
+        "command": "-editor.action.formatSelection",
+        "when": "editorHasDocumentSelectionFormattingProvider && editorTextFocus && !editorReadonly"
+    },
+    // END
+    // Change movement control during popup widget like completion selection
+    // to meta+n/p instead of ctrl+n/p. Select option using ctrl+m or Enter.
+    {
+        "key": "alt+n",
+        "command": "selectNextSuggestion",
+        "when": "suggestWidgetMultipleSuggestions && suggestWidgetVisible && textInputFocus"
+    },
+    {
+        "key": "ctrl+n",
+        "command": "-selectNextSuggestion",
+        "when": "suggestWidgetMultipleSuggestions && suggestWidgetVisible && textInputFocus"
+    },
+    {
+        "key": "alt+p",
+        "command": "selectPrevSuggestion",
+        "when": "suggestWidgetMultipleSuggestions && suggestWidgetVisible && textInputFocus"
+    },
+    {
+        "key": "ctrl+p",
+        "command": "-selectPrevSuggestion",
+        "when": "suggestWidgetMultipleSuggestions && suggestWidgetVisible && textInputFocus"
+    },
+    {
+        "key": "ctrl+m",
+        "command": "acceptSelectedSuggestion",
+        "when": "acceptSuggestionOnEnter && suggestWidgetHasFocusedSuggestion && suggestWidgetVisible && suggestionMakesTextEdit && textInputFocus"
+    },
+    {
+        "key": "enter",
+        "command": "acceptSelectedSuggestion",
+        "when": "acceptSuggestionOnEnter && suggestWidgetHasFocusedSuggestion && suggestWidgetVisible && suggestionMakesTextEdit && textInputFocus"
+    },
+    // END
+    // Magit config to match Emacs
+    {
+        "key": "alt+g alt+s",
+        "command": "magit.status"
+    },
+    {
+        "key": "alt+x g",
+        "command": "-magit.status"
+    },
+    {
+        "key": "ctrl+m",
+        "command": "magit.visit-at-point",
+        "when": "editorTextFocus && editorLangId == 'magit' && vim.mode =~ /^(?!SearchInProgressMode|CommandlineInProgress).*$/"
+    },
+    {
+        "key": "enter",
+        "command": "-magit.visit-at-point",
+        "when": "editorTextFocus && editorLangId == 'magit' && vim.mode =~ /^(?!SearchInProgressMode|CommandlineInProgress).*$/"
+    },
+    // Mimic quick window selection in Emacs
+    {
+        "key": "alt+1",
+        "command": "workbench.action.focusFirstEditorGroup",
+    },
+    {
+        "key": "alt+2",
+        "command": "workbench.action.focusSecondEditorGroup",
+    },
+    {
+        "key": "alt+3",
+        "command": "workbench.action.focusThirdEditorGroup",
+    },
+    {
+        "key": "alt+4",
+        "command": "workbench.action.focusFourthEditorGroup",
+    },
+    {
+        "key": "alt+5",
+        "command": "workbench.action.focusFifthEditorGroup",
+    },
+    {
+        "key": "alt+6",
+        "command": "workbench.action.focusSixthEditorGroup",
+    },
+    {
+        "key": "alt+7",
+        "command": "workbench.action.focusSeventhEditorGroup",
+    },
+    {
+        "key": "alt+8",
+        "command": "workbench.action.focusEighthEditorGroup",
+    },
+    {
+        "key": "ctrl+1",
+        "command": "-workbench.action.openEditorAtIndex1"
+    },
+    {
+        "key": "ctrl+2",
+        "command": "-workbench.action.openEditorAtIndex2"
+    },
+    {
+        "key": "ctrl+3",
+        "command": "-workbench.action.openEditorAtIndex3"
+    },
+    {
+        "key": "ctrl+4",
+        "command": "-workbench.action.openEditorAtIndex4"
+    },
+    {
+        "key": "ctrl+5",
+        "command": "-workbench.action.openEditorAtIndex5"
+    },
+    {
+        "key": "ctrl+6",
+        "command": "-workbench.action.openEditorAtIndex6"
+    },
+    {
+        "key": "ctrl+7",
+        "command": "-workbench.action.openEditorAtIndex7"
+    },
+    {
+        "key": "ctrl+8",
+        "command": "-workbench.action.openEditorAtIndex8"
+    },
+    {
+        "key": "ctrl+9",
+        "command": "-workbench.action.openEditorAtIndex9"
+    },
+    // Go to file side bar or close it
+    {
+        "key": "alt+0",
+        "command": "workbench.action.toggleSidebarVisibility",
+        "when": "!editorTextFocus && !inputFocus"
+    },
+    {
+        "key": "alt+0",
+        "command": "workbench.view.explorer",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "cmd+0",
+        "command": "-workbench.action.focusSideBar"
+    },
+    // END
+    // Set up Code Ace Jumper shortcut, which works like avy in Emacs
+    {
+        "key": "alt+s",
+        "command": "extension.aceJump",
+        "when": "editorTextFocus"
+    },
+    // END
+    // Create new file and directory in a sane manner
+    { 
+        "key": "cmd+n",
+        "command": "explorer.newFile",
+        // "when": "!editorFocus" 
+    },
+    {
+        "key": "cmd+shift+n",
+        "command": "explorer.newFolder",
+        // "when": "!editorFocus" 
+    },
+    // END
+    // Terminal mode page up/down so that navigation isn't slow.
+    {
+        "key": "alt+v",
+        "command": "workbench.action.terminal.scrollUpPage",
+        "when": "terminalFocus"
+    },
+    {
+        "key": "ctrl+v",
+        "command": "workbench.action.terminal.scrollDownPage",
+        "when": "terminalFocus"
+    },
+    // END
+    // Configure terminal and sidebar shortcuts
+    {
+        "key": "alt+t",
+        "command": "workbench.action.terminal.toggleTerminal",
+        "when": "terminal.active"
+    },
+    {
+        "key": "ctrl+`",
+        "command": "-workbench.action.terminal.toggleTerminal",
+        "when": "terminal.active"
+    },
+    // END
+    // Jump to definition and back.
+    {
+        "key": "alt+.",
+        "command": "editor.action.revealDefinition",
+        "when": "editorHasDefinitionProvider && editorTextFocus"
+    },
+    {
+        "key": "f12",
+        "command": "-editor.action.revealDefinition",
+        "when": "editorHasDefinitionProvider && editorTextFocus"
+    },
+    {
+        "key": "alt+,",
+        "command": "workbench.action.navigateBack",
+        "when": "canNavigateBack"
+    },
+    {
+        "key": "ctrl+-",
+        "command": "-workbench.action.navigateBack",
+        "when": "canNavigateBack"
+    },
+    // END
+    // Scroll through symbols in file
+    {
+        "key": "shift+cmd+.",
+        "command": "editor.action.accessibleViewGoToSymbol",
+        "when": "accessibilityHelpIsShown && accessibleViewGoToSymbolSupported || accessibleViewGoToSymbolSupported && accessibleViewIsShown"
+    },
+    {
+        "key": "shift+cmd+o",
+        "command": "-editor.action.accessibleViewGoToSymbol",
+        "when": "accessibilityHelpIsShown && accessibleViewGoToSymbolSupported || accessibleViewGoToSymbolSupported && accessibleViewIsShown"
+    },
+    // END
+    // Go to a symbol by name
+    {
+        "key": "shift+cmd+o",
+        "command": "workbench.action.gotoSymbol",
+        "when": "!accessibilityHelpIsShown && !accessibleViewIsShown"
+    },
+    {
+        "key": "shift+cmd+o",
+        "command": "-workbench.action.gotoSymbol",
+        "when": "!accessibilityHelpIsShown && !accessibleViewIsShown"
+    },
+    // END
+    // Show docs, etc. at point. This is like lsp-ui-doc
+    {
+        "key": "ctrl+c ctrl+i",
+        "command": "editor.action.showHover",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "cmd+k cmd+i",
+        "command": "-editor.action.showHover",
+        "when": "editorTextFocus"
+    },
+    // END
+    // Comment/uncomment selected lines
+    // TODO: would be nice if it was at point.
+    {
+        "key": "ctrl+c ;",
+        "command": "editor.action.commentLine",
+        "when": "editorTextFocus && !editorReadonly"
+    },
+    {
+        "key": "ctrl+;",
+        "command": "-editor.action.commentLine",
+        "when": "editorTextFocus && !editorReadonly"
+    },
+    // END
+    // ripgrep-like behavior with find-it-faster.
+    // TODO: Enable buffer and pane switching in FIF buffer so it can be
+    // backgrounded. This is a bit tricky because I think it's technically
+    // a terminal buffer.
+    {
+        "key": "ctrl+c g",
+        "command": "find-it-faster.findWithinFilesWithType"
+    },
+    {
+        "key": "ctrl+shift+cmd+u",
+        "command": "-find-it-faster.findWithinFilesWithType"
+    },
+    // END
+    // Navigate up/down or next/previous line with ctrl+n/p
+    {
+        "key": "ctrl+p",
+        "command": "emacs-mcx.previousLine",
+        "when": "terminalFocus"
+    },
+    {
+        "key": "up",
+        "command": "-emacs-mcx.previousLine",
+        "when": "terminalFocus"
+    },
+    {
+        "key": "ctrl+n",
+        "command": "emacs-mcx.nextLine",
+        "when": "terminalFocus"
+    },
+    {
+        "key": "down",
+        "command": "-emacs-mcx.nextLine",
+        "when": "terminalFocus"
+    },
+    {
+        "key": "ctrl+n",
+        "command": "emacs-mcx.nextLine",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "down",
+        "command": "-emacs-mcx.nextLine",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "ctrl+p",
+        "command": "emacs-mcx.previousLine",
+        "when": "editorTextFocus && !suggestWidgetVisible"
+    },
+    {
+        "key": "up",
+        "command": "-emacs-mcx.previousLine",
+        "when": "editorTextFocus && !suggestWidgetVisible"
+    },
+    // END
+    // Compile (with CMake) using ctrl+c ctrl+c.
+    //
+    // I don't think it's possible to check if a project uses CMake.
+    // It might even be that vscode requires CMake (or maybe some
+    // other build systems) be used. In Emacs I bind to CMake if
+    // the project uses that, to clang/gcc if it's not a project,
+    // and could set it up for other build systems if they can be
+    // identified.
+    {
+        "key": "ctrl+c ctrl+c",
+        "command": "cmake.buildWithTarget",
+        "when": "cmake:enableFullFeatureSet && !cmake:hideBuildCommand && editorLangId != 'git-commit' && editorLangId != 'git-rebase'"
+    },
+    {
+        "key": "shift+f7",
+        "command": "-cmake.buildWithTarget",
+        "when": "cmake:enableFullFeatureSet && !cmake:hideBuildCommand"
+    },
+    // END
+    // Hungry-delete or smart backspace.
+    //
+    // Also behaves differently from Emacs, but I believe I'd have to
+    // write my own plugin to make it reasonable. It's still better than
+    // the default.
+    {
+        "key": "backspace",
+        "command": "-extension.smartBackspace",
+        "when": "config.hungryDelete.enableSmartBackspace && editorTextFocus && !editorReadonly"
+    },
+    {
+        "key": "alt+backspace",
+        "command": "-extension.hungryDelete",
+        "when": "editorTextFocus && !editorReadonly"
+    },
+    {
+        "key": "alt+h",
+        "command": "emacs-mcx.backwardKillWord",
+        "when": "editorTextFocus && !config.emacs-mcx.useMetaPrefixMacCmd && !editorReadonly"
+    },
+    {
+        "key": "alt+backspace",
+        "command": "-emacs-mcx.backwardKillWord",
+        "when": "editorTextFocus && !config.emacs-mcx.useMetaPrefixMacCmd && !editorReadonly"
+    },
+    // END
+    // Go to end of function/class/member/etc.
+    //
+    // It appears vscode doesn't behave like Emacs, but by having slightly
+    // different behavior in C++ and python, it becomes more reasonably. Python
+    // is essentially treated as plain text.
+    {
+        "key": "ctrl+alt+e",
+        "command": "gotoNextPreviousMember.nextMember",
+        "when": "editorTextFocus && editorLangId == cpp",
+    },
+    {
+        "key": "ctrl+down",
+        "command": "-gotoNextPreviousMember.nextMember"
+    },
+    {
+        "key": "ctrl+alt+a",
+        "command": "gotoNextPreviousMember.previousMember",
+        "when": "editorTextFocus && editorLangId == cpp",
+    },
+    {
+        "key": "ctrl+up",
+        "command": "-gotoNextPreviousMember.previousMember"
+    },
+    {
+        "key": "ctrl+alt+a",
+        "command": "emacs-mcx.backwardParagraph",
+        "when": "editorTextFocus && !config.emacs-mcx.useMetaPrefixMacCmd && !suggestWidgetVisible && editorLangId != cpp"
+    },
+    {
+        "key": "ctrl+alt+e",
+        "command": "emacs-mcx.forwardParagraph",
+        "when": "editorTextFocus && !config.emacs-mcx.useMetaPrefixMacCmd && !suggestWidgetVisible && editorLangId != cpp"
+    },
+    {
+        "key": "shift+alt+[",
+        "command": "-emacs-mcx.backwardParagraph",
+        "when": "editorTextFocus && !config.emacs-mcx.useMetaPrefixMacCmd && !suggestWidgetVisible"
+    },
+    {
+        "key": "shift+cmd+[",
+        "command": "-emacs-mcx.backwardParagraph",
+        "when": "config.emacs-mcx.useMetaPrefixMacCmd && editorTextFocus && !suggestWidgetVisible"
+    },
+    {
+        "key": "shift+alt+]",
+        "command": "-emacs-mcx.forwardParagraph",
+        "when": "editorTextFocus && !config.emacs-mcx.useMetaPrefixMacCmd && !suggestWidgetVisible"
+    },
+    {
+        "key": "shift+cmd+]",
+        "command": "-emacs-mcx.forwardParagraph",
+        "when": "config.emacs-mcx.useMetaPrefixMacCmd && editorTextFocus && !suggestWidgetVisible"
+    },
+    // END
+]
