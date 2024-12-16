@@ -1,6 +1,39 @@
 // Visual Studio Code keybindings
 //
 // Place your key bindings in this file to override the defaults
+//
+// This emulates (reasonably closely) my Emacs configuration.
+// You will need several plugins to make it work:
+// - Awesome Emacs Keymap: https://github.com/whitphx/vscode-emacs-mcx
+// - clangd: https://github.com/clangd/vscode-clangd
+// - CMake: https://github.com/twxs/vs.language.cmake
+// - CMake Tools: https://github.com/microsoft/vscode-cmake-tools
+// - Code Ace Jumper: https://github.com/lucax88x/CodeAceJumper
+// - Code Spell Checker: https://github.com/streetsidesoftware/vscode-spell-checker
+// - edamagit: https://github.com/kahole/edamagit
+// - Find It Faster: https://github.com/tomrijndorp/vscode-finditfaster
+// - Go to Next/Previous Member: https://github.com/mishkinf/vscode-goto-next-previous-member
+// - Markdown+Math: https://github.com/goessner/mdmath
+// - Output Colorizer: https://github.com/IBM-Cloud/vscode-log-output-colorizer
+// - Pylance: https://github.com/microsoft/pylance-release
+// - Python: https://github.com/Microsoft/vscode-python
+// - Python Debugger: https://github.com/microsoft/vscode-python-debugger
+// - marimo notebooks: https://github.com/marimo-team/vscode-marimo
+// - Julia: https://github.com/julia-vscode/julia-vscode
+// - rust-analyzer: https://github.com/rust-lang/rust-analyzer
+// - Selected Lines Count: https://github.com/gurumukhi/vscode-extension-line-count
+//
+// To explore:
+// - Hungry delete: https://github.com/Jasonlhy/VSCode-Hungry-Delete
+//
+// I don't yet have hydro-like bindings, but this is possible as of 2023:
+// https://github.com/Microsoft/vscode/issues/6966
+//
+// Not related to keybindings, but commit signing with PGP keys
+// can be set up. See:
+//   https://github.com/microsoft/vscode/wiki/Commit-Signing
+// You'll need to be aware of the following:
+//   `defaults write org.gpgtools.common UseKeychain NO` 
 [
     // Allow sending through Emacs close command in terminal mode.
     {
