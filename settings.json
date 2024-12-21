@@ -54,11 +54,15 @@
     "cSpell.userWords": [
         "Chebyshev"
     ],
+    // Clean up files automatically on saves.
+    "files.insertFinalNewline": true,
+    "files.trimTrailingWhitespace": true,
     // W00t magit! No magit, no vscode. It's that simple.
     "magit.quick-switch-enabled": true,
     // Ahhh Zen mode. The only thing that makes vscode tolerable (aside
     // from magit!)
     "zenMode.showTabs": "none",
     "zenMode.hideStatusBar": false,
-    "zenMode.fullScreen": false
+    "zenMode.fullScreen": false,
+    "workbench.editor.empty.hint": "hidden",
 }
