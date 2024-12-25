@@ -33,7 +33,7 @@
 // can be set up. See:
 //   https://github.com/microsoft/vscode/wiki/Commit-Signing
 // You'll need to be aware of the following:
-//   `defaults write org.gpgtools.common UseKeychain NO` 
+//   `defaults write org.gpgtools.common UseKeychain NO`
 [
     // Allow sending through Emacs close command in terminal mode.
     {
@@ -56,6 +56,25 @@
     {
         "key": "cmd+p",
         "command": "-workbench.action.quickOpen"
+    },
+    // END
+    // By default Awesome Emacs disables the below in terminal
+    // windows, which I find annoying.
+    {
+        "key": "ctrl+x b",
+        "command": "-workbench.action.showAllEditorsByMostRecentlyUsed"
+    },
+    {
+        "key": "ctrl+x b",
+        "command": "workbench.action.showAllEditorsByMostRecentlyUsed"
+    },
+    {
+        "key": "ctrl+x o",
+        "command": "-workbench.action.navigateEditorGroups"
+    },
+    {
+        "key": "ctrl+x o",
+        "command": "workbench.action.navigateEditorGroups"
     },
     // END
     // Go to line.
@@ -258,15 +277,13 @@
     },
     // END
     // Create new file and directory in a sane manner
-    { 
+    {
         "key": "cmd+n",
         "command": "explorer.newFile",
-        // "when": "!editorFocus" 
     },
     {
         "key": "cmd+shift+n",
         "command": "explorer.newFolder",
-        // "when": "!editorFocus" 
     },
     // END
     // Terminal mode page up/down so that navigation isn't slow.
@@ -516,6 +533,38 @@
         "key": "shift+cmd+]",
         "command": "-emacs-mcx.forwardParagraph",
         "when": "config.emacs-mcx.useMetaPrefixMacCmd && editorTextFocus && !suggestWidgetVisible"
+    },
+    // END
+    // Add key chords for changing case:
+    // PascalCase (sometimes called CamelCase): C-c c u
+    // lower_snake_case: C-c c l
+    // SCREAMING_SNAKE_CASE: C-c c s
+    {
+        "key": "ctrl+c c u",
+        "command": "editor.action.transformToPascalcase",
+        "when": "!terminalFocus",
+    },
+    {
+        "key": "ctrl+c c l",
+        "command": "runCommands",
+        "args": {
+            "commands": [
+                "editor.action.transformToSnakecase",
+                "editor.action.transformToLowercase",
+            ],
+        },
+        "when": "!terminalFocus",
+    },
+    {
+        "key": "ctrl+c c s",
+        "command": "runCommands",
+        "args": {
+            "commands": [
+                "editor.action.transformToSnakecase",
+                "editor.action.transformToUppercase",
+            ],
+        },
+        "when": "!terminalFocus",
     },
     // END
 ]
