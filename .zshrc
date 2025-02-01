@@ -158,6 +158,10 @@ if [ -f $ZSH/oh-my-zsh.sh ]; then
     source $ZSH/oh-my-zsh.sh
 fi
 
+# wd nowadays binds
+bindkey -r '^B'
+bindkey '^B' backward-char
+
 # User configuration
 
 # export MANPATH="/usr/local/man:$MANPATH"
