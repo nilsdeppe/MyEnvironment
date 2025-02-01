@@ -682,3 +682,8 @@ if [[ "$MACHINE_TYPE" == "Mac" ]]; then
     unset __conda_setup
     # <<< conda initialize <<<
 fi
+
+function show_queue() {
+    squeue -o "%.18i %.9P %.20j %.8u %.2t %.10M %.6D %R" "$@" | \
+        sed "s/spec1182/amacedo/g; s/spec1168/ffoucart/g; s/spec1170/acarpenter/g; s/spec1162/knelli/g; s/spec1164/glovelace/g; s/spec1167/nora/g"
+}
