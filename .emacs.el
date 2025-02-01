@@ -8,9 +8,9 @@
 ;; Defines global variables that are later used to customize and set
 ;; up packages.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Specify the ycmd server command and path to the ycmd directory *inside* the
-;; cloned ycmd directory. I use a wrapper to add the path to the ycmd clang
-;; directories.
+;; Specify the ycmd server command and path to the ycmd directory
+;; *inside* the cloned ycmd directory. I use a wrapper to add the
+;; path to the ycmd clang directories.
 (if (file-exists-p "~/.PythonYcmd.sh")
     (defvar my:ycmd-server-command
       '("~/.PythonYcmd.sh" "/home/nils/Research/ycmd/ycmd"))
@@ -20,7 +20,7 @@
 (defvar my:ycmd-extra-conf-whitelist '("~/.ycm_extra_conf.py"))
 (defvar my:ycmd-global-config "~/.ycm_extra_conf.py")
 ;; In order to get python code completion with ycmd+jedi you must specify
-;; the path to the python executable you're using.
+;; the path to the python executable you are using.
 (defvar my:ycmd-python-binary-path "/usr/bin/python")
 
 ;; Enable ycmd-eldoc support. Eldoc can cause delays when working with
@@ -110,16 +110,16 @@ compilation."
 ;; - xn starts hydra-move
 ;; - xx does save-buffer
 ;;
-;; I've found that this leads to instability and causes Emacs to crash
+;; I have found that this leads to instability and causes Emacs to crash
 ;; fairly frequently, at least when run in daemon mode.
 ;;
-;; A hydra-dispatch can be accessed using 'C-c h'
+;; A hydra-dispatch can be accessed using "C-c h"
 (defvar my:use-no-modifier-hydra nil)
 
 ;; Set my:use-evil-mode to t if you want to use Evil mode
 ;;
 ;; Note: Currently there is a warning about evil-want-integration not
-;;       being set to nil during compilation that I haven't figured out
+;;       being set to nil during compilation that I have not figured out
 ;;       how to fix yet.
 (defvar my:use-evil-mode nil)
 
@@ -135,7 +135,7 @@ compilation."
 (defvar my:byte-compile-init t)
 
 ;; Force Emacs to try to start a server. On macOS checking if a server is
-;; started doesn't always work correctly so this is a workaround for that.
+;; started does not always work correctly so this is a workaround for that.
 (defvar my:force-server-start nil)
 
 ;; Specify the search backend. Must be either:
@@ -210,7 +210,7 @@ compilation."
                          ("melpa" . "https://melpa.org/packages/")
                          ("gnu" . "http://elpa.gnu.org/packages/")))
 ;; Disable package initialize after us.  We either initialize it
-;; anyway in case of interpreted .emacs, or we don't want slow
+;; anyway in case of interpreted .emacs, or we do not want slow
 ;; initizlization in case of byte-compiled .emacs.elc.
 (setq package-enable-at-startup nil)
 ;; Disable magically opening remote files during init
@@ -291,7 +291,7 @@ compilation."
               search-highlight t) ;hilit matches when searching
 ;; Highlight the line we are currently on
 (global-hl-line-mode t)
-;; Disable the toolbar at the top since it's useless
+;; Disable the toolbar at the top since it is useless
 (if (functionp 'tool-bar-mode) (tool-bar-mode -1))
 
 ;; Auto-wrap at 80 characters
@@ -330,17 +330,17 @@ compilation."
 ;; Load the compile ocmmand
 (global-set-key (kbd "C-c C-c") 'compile)
 
-;; We don't want to type yes and no all the time so, do y and n
+;; We do not want to type yes and no all the time so, do y and n
 (defalias 'yes-or-no-p 'y-or-n-p)
 ;; Disable the horrid auto-save
 (setq auto-save-default nil)
 
-;; Disable the menu bar since we don't use it, especially not in the
+;; Disable the menu bar since we do not use it, especially not in the
 ;; terminal
 (when (and (not (eq system-type 'darwin)) (fboundp 'menu-bar-mode))
   (menu-bar-mode -1))
 
-;; Don't ring the bell
+;; Do not ring the bell
 (setq ring-bell-function 'ignore)
 
 ;; Non-nil means draw block cursor as wide as the glyph under it.
@@ -360,7 +360,7 @@ compilation."
 (add-hook 'prog-mode-hook
           (lambda ()
             ;; Highlighting in cmake-mode this way interferes with
-            ;; cmake-font-lock, which is something I don't yet understand.
+            ;; cmake-font-lock, which is something I do not yet understand.
             (when (not (derived-mode-p 'cmake-mode))
               (font-lock-add-keywords
                nil
@@ -384,7 +384,7 @@ compilation."
   :ensure t
   :init
   (setq esup-child-max-depth 0)
-  ;; Use a hook so the message doesn't get clobbered by other messages.
+  ;; Use a hook so the message does not get clobbered by other messages.
   (add-hook
    'emacs-startup-hook
    (lambda ()
@@ -583,7 +583,7 @@ compilation."
     (setq my:use-ivy t)
   (if (string-match "selectrum" my:search-backend)
       (setq my:use-selectrum t)
-    (warn "my:search-backend must be to 'ivy' or 'selectrum'")
+    (warn "my:search-backend must be to \"ivy\" or \"selectrum\"")
     ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -654,10 +654,10 @@ compilation."
     )
 
   ;; We define a global x-hydra-timer because we need to be able to
-  ;; cancel the timer in order to enter projectile from 'xp'
+  ;; cancel the timer in order to enter projectile from "xp"
   (defvar x-hydra-timer)
   ;; We save the buffer-undo-list because we want to be able to
-  ;; remove inserting the 'x' character from the undo history in the
+  ;; remove inserting the "x" character from the undo history in the
   ;; case where we entered hydra
   (defvar x-hydra-buffer-undo-list)
   (defun x-hydra-pre ()
@@ -788,7 +788,7 @@ compilation."
            )
     :config
     (if (executable-find "rg")
-        ;; use ripgrep instead of grep because it's way faster
+        ;; use ripgrep instead of grep because it is way faster
         (setq counsel-grep-base-command
               "rg -i -M 120 --no-heading --line-number --color never %s %s"
               counsel-rg-base-command
@@ -796,9 +796,9 @@ compilation."
       (warn "\nWARNING: Could not find the ripgrep executable. It "
             "is recommended you install ripgrep."))
 
-    ;; Switch whether we use swiper or counsel-grep depending on the major mode.
-    ;; This is because for certain themes font highlighting is very expensive
-    ;; in some modes (e.g. C++ mode)
+    ;; Switch whether we use swiper or counsel-grep depending on the
+    ;; major mode. This is because for certain themes font highlighting
+    ;; is very expensive in some modes (e.g. C++ mode)
     (defun buffer-dependent-swiper (&optional initial-input)
       (interactive)
       (if (or (not buffer-file-name)
@@ -829,7 +829,7 @@ compilation."
     (counsel-projectile-mode))
 
   ;; Use universal ctags to build the tags database for the project.
-  ;; When you first want to build a TAGS database run 'touch TAGS'
+  ;; When you first want to build a TAGS database run "touch TAGS"
   ;; in the root directory of your project.
   (use-package counsel-etags
     :ensure t
@@ -849,9 +849,9 @@ compilation."
     (add-to-list 'counsel-etags-ignore-directories '"build*")
     (add-to-list 'counsel-etags-ignore-directories '".vscode")
     (add-to-list 'counsel-etags-ignore-filenames '".clang-format")
-    ;; Don't ask before rereading the TAGS files if they have changed
+    ;; Do not ask before rereading the TAGS files if they have changed
     (setq tags-revert-without-query t)
-    ;; Don't warn when TAGS files are large
+    ;; Do not warn when TAGS files are large
     (setq large-file-warning-threshold nil)
     ;; How many seconds to wait before rerunning tags for auto-update
     (setq counsel-etags-update-interval 180)
@@ -863,14 +863,15 @@ compilation."
                             (counsel-etags-virtual-update-tags)))))
 
     ;; The function provided by counsel-etags is broken (at least on Linux)
-    ;; and doesn't correctly exclude directories, leading to an excessive
-    ;; amount of incorrect tags. The issue seems to be that the trailing '/'
-    ;; in e.g. '*dirname/*' causes 'find' to not correctly exclude all files
+    ;; and does not correctly exclude directories, leading to an excessive
+    ;; amount of incorrect tags. The issue seems to be that the trailing "/"
+    ;; in e.g. "*dirname/"' causes "find" to not correctly exclude all files
     ;; in that directory, only files in sub-directories of the dir set to be
     ;; ignore.
     (defun my-scan-dir (src-dir &optional force)
-      "Create tags file from SRC-DIR. \
-     If FORCE is t, the commmand is executed without \
+      "Create tags file from SRC-DIR.
+
+     If FORCE is t, the commmand is executed without
      checking the timer."
       (let* ((find-pg (or
                        counsel-etags-find-program
@@ -962,7 +963,7 @@ compilation."
     :defer t
     :commands (ggtags-mode)
     :init
-    ;; More complicated hook logic so we don't interfere with LSP
+    ;; More complicated hook logic so we do not interfere with LSP
     ;; or ycmd-goto
     (when (and (not (and (string-equal my:cxx-completer "lsp")
                          my:use-lsp-goto))
@@ -973,10 +974,10 @@ compilation."
                   (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
                     (ggtags-mode t)))))
     :config
-    ;; Don't try to update GTAGS on each save;
+    ;; Do not try to update GTAGS on each save;
     ;; makes the system sluggish for huge projects.
     (setq ggtags-update-on-save t)
-    ;; Don't auto-highlight tag at point.. makes the system really sluggish!
+    ;; Do not auto-highlight tag at point.. makes the system really sluggish!
     (setq ggtags-highlight-tag nil)
     ;; Enabling nearness requires global 6.5+
     (setq ggtags-sort-by-nearness t)
@@ -1165,7 +1166,7 @@ compilation."
                         ("g" nil "cancel" :color blue))
   :config
   (setq origami-show-fold-header t)
-  ;; The python parser currently doesn't fold if/for/etc. blocks, which is
+  ;; The python parser currently does not fold if/for/etc. blocks, which is
   ;; something we want. However, the basic indentation parser does support
   ;; this with one caveat: you must toggle the node when your cursor is on
   ;; the line of the if/for/etc. statement you want to collapse. You cannot
@@ -2306,7 +2307,7 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
        ((t (:background "#680a0a" :weight bold))))
      '(which-func ((t (:foreground "#8fb28f")))))))
 
-;; I don't care to see the splash screen
+;; I do not care to see the splash screen
 (setq inhibit-splash-screen t)
 
 ;; Hide the scroll bar
@@ -2502,7 +2503,7 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
       :ensure t
       :init
       (when my:byte-compile-init
-        ;; We need company-tng when byte-compiling, otherwise don't load it
+        ;; We need company-tng when byte-compiling, otherwise do not load it
         ;; since it'll slow down startup times.
         (require 'company-tng))
       (eval-when-compile
