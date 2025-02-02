@@ -75,11 +75,11 @@
 
 (defun my:compile-command-hook()
   "Try to intelligently set the compilation command locally in the buffer.
+
 If a compile_commands.json file exists in the projectile directory then
 the build directory is extracted from the first file in the JSON file and
 set as the build directory for CMake.  By default 10 cores are used for
 compilation."
-  (require 'json)
   (when (and (projectile-project-root)
              (file-exists-p
               (format "%s/compile_commands.json"
@@ -87,18 +87,45 @@ compilation."
              (file-exists-p
               (format "%s/CMakeLists.txt"
                       (projectile-project-root))))
-    (let ((my:project-build-dir
-           (gethash "directory"
-                    (first (let ((json-array-type 'list)
-                                 (json-object-type 'hash-table))
-                             (json-read-file
-                              (format "%s/compile_commands.json"
-                                      (projectile-project-root))
-                              ))))))
+    (require 'f)
+    (let*
+        ((compile-commands-db
+            (f-read-text
+             (format "%s/compile_commands.json"
+                     (projectile-project-root))))
+           (build-path-start
+            (+ (search "\"" compile-commands-db
+                       :start2
+                       (+ (search
+                           "directory"
+                           compile-commands-db)
+                          11)) 1))
+           (build-path-end
+            (search "\"," compile-commands-db
+                    :start2 build-path-start))
+           (my:project-build-dir
+            (substring compile-commands-db
+                       build-path-start build-path-end))
+           )
       (set (make-local-variable 'compile-command)
            (format "cmake --build %s -j50 --target"
-                   my:project-build-dir)
-           ))))
+                   my:project-build-dir))
+      (when (not my:project-build-dir)
+        ;; Use a json parse as the fallback. This is extremely
+        ;; slow when Emacs isn't compiled with native JSON support.
+        (require 'json)
+        (set (make-local-variable 'compile-command)
+             (format "cmake --build %s -j50 --target"
+                     (gethash "directory"
+                              (first (let ((json-array-type 'list)
+                                           (json-object-type 'hash-table))
+                                       (json-read-file
+                                        (format "%s/compile_commands.json"
+                                                (projectile-project-root))
+                                        ))))))
+        )
+      )
+    ))
 
 ;; Which theme to use.
 ;; - spacemacs-dark
