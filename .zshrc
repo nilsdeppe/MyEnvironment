@@ -5,7 +5,7 @@
 HOSTNAME_OUT="$(hostname)"
 if [[ $HOSTNAME_OUT == mbot* ]]; then
     module purge >> /dev/null 2>&1
-    module load pinentry/1.2.1 tmux/3.3a gcc/11.4.0 emacs/29.2
+    module load pinentry/1.2.1 tmux/3.3a gcc/11.4.0 emacs/29.3
     module load spectre-deps >> /dev/null 2>&1
 fi
 
