@@ -186,26 +186,6 @@ compilation."
 (defvar my:ws-butler-global-exempt-modes
   '(markdown-mode ein:notebook-multilang-mode))
 
-;; List of regex that hide warning messages from being printed.
-;;
-;; Sometimes there's nothing that can be done other than modify
-;; an upstream package to silence a warning. So we just filter
-;; those.
-(defvar my:warning-suppress-regex
-  '(".*Unknown notification: semgrep/rulesRefreshed")
-  )
-(defun my:display-warning-filter (type message &optional level buffer-name)
-  "Filter warnings based on a list of regular expressions."
-  (catch 'exit
-    (dolist (regexp my:warning-suppress-regex)
-      (when (string-match-p regexp message)
-        (throw 'exit nil))
-      )
-    (throw 'exit t)
-    ))
-(add-function :before-while (symbol-function 'display-warning)
-              #'my:display-warning-filter)
-
 ;; TEX is installed in a different location on macOS
 (when (string-equal system-type "darwin")
   (setenv "PATH" (concat (getenv "PATH") ":/Library/TeX/texbin/"))
@@ -1701,6 +1681,9 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
   :init
   ;; Disable yasnippet. We re-enable when yasnippet is loaded.
   (defvar lsp-enable-snippet nil)
+  ;; Disable semgrep lsp. I haven't found it useful and it seems
+  ;; to crash Emacs.
+  (defvar lsp-semgrep-languages '())
   (use-package lsp-ui
     :ensure t
     :after lsp-mode
