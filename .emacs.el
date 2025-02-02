@@ -30,6 +30,10 @@
 ;; Choose ycmd or lsp for C/C++ completion. lsp or ycmd
 (defvar my:cxx-completer "lsp")
 
+;; Size in MB before running garbage collection.
+;; 25MB or larger is typically good for performance.
+(defvar my:gc-threshold-mb 25)
+
 ;; When t use smart-hungry-delete
 ;; (https://github.com/hrehfeld/emacs-smart-hungry-delete).
 ;; When nil use hungry-delete
@@ -252,7 +256,7 @@ compilation."
 (add-hook 'after-init-hook
           #'(lambda ()
               ;; restore after startup
-              (setq gc-cons-threshold 8000000
+              (setq gc-cons-threshold (* my:gc-threshold-mb (* 1024 1024))
                     file-name-handler-alist file-name-handler-alist-old
                     )))
 
@@ -1570,9 +1574,9 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
   (when my:byte-compile-init
       (dolist (lsp-file my:lsp-explicit-load-files)
         (require lsp-file)))
-  ;; Set GC threshold to 25MB since LSP mode is very memory hungry and
+  ;; Increase GC threshold since LSP mode is very memory hungry and
   ;; produces a lot of garbage
-  (setq gc-cons-threshold 25000000)
+  (setq gc-cons-threshold (* my:gc-threshold-mb (* 1024 1024)))
 
   ;; Increase the amount of data which Emacs reads from the process. The emacs
   ;; default is too low 4k considering that the some of the language server
