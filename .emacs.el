@@ -1670,6 +1670,8 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
     (add-hook 'python-mode-hook 'set-local-keybinds-lsp-ui)
     (add-hook 'rust-mode-hook 'set-local-keybinds-lsp-ui)
     (add-hook 'shell-mode-hook 'set-local-keybinds-lsp-ui)
+    :init
+    (setq lsp-ui-sideline-diagnostic-max-lines 6)
     )
 
   ;; Use as C++ completer if desired. We use the clangd backend.
