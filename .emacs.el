@@ -149,7 +149,8 @@ compilation."
 ;; Specify the search backend. Must be either:
 ;; - ivy https://github.com/abo-abo/swiper
 ;; - selectrum https://github.com/raxod502/selectrum
-(defvar my:search-backend "selectrum")
+;; - vertico https://github.com/minad/vertico
+(defvar my:search-backend "vertico")
 
 ;; A list of modes for which to disable whitespace mode
 (defvar my:ws-disable-modes '(magit-mode help-mode Buffer-menu-mode))
@@ -581,24 +582,59 @@ compilation."
   (ws-butler-global-mode 1))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; all-the-icons
+;; Marginalia
+;;
+;; Enable rich annotations using the Marginalia package
+(use-package marginalia
+  :ensure t
+  ;; Bind `marginalia-cycle' locally in the minibuffer.  To make the binding
+  ;; available in the *Completions* buffer, add it to the
+  ;; `completion-list-mode-map'.
+  :bind (:map minibuffer-local-map
+         ("M-A" . marginalia-cycle))
+
+  ;; :config
+  ;; (when my:byte-compile-init
+  ;;   (require 'marginalia))
+  ;; (marginalia-mode)
+
+  ;; The :init section is always executed.
+  :init
+
+  ;; Marginalia must be activated in the :init section of use-package such that
+  ;; the mode gets enabled right away. Note that this forces loading the
+  ;; package.
+  (marginalia-mode))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; all-the-icons and nerd-icons-completion
 ;;
 ;; Used by company-box and some themes
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package all-the-icons
   :ensure t)
 
+(use-package nerd-icons-completion
+  :ensure t
+  :after marginalia
+  :config
+  (nerd-icons-completion-mode)
+  (add-hook 'marginalia-mode-hook #'nerd-icons-completion-marginalia-setup))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Select search backend
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defvar my:use-ivy nil)
 (defvar my:use-selectrum nil)
+(defvar my:use-vertico nil)
 (if (string-match "ivy" my:search-backend)
     (setq my:use-ivy t)
   (if (string-match "selectrum" my:search-backend)
       (setq my:use-selectrum t)
-    (warn "my:search-backend must be to \"ivy\" or \"selectrum\"")
-    ))
+    (if (string-match "vertico" my:search-backend)
+      (setq my:use-vertico t)
+      (warn "my:search-backend must be to \"ivy\" or \"selectrum\"")
+      )))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; hydra config
@@ -968,6 +1004,74 @@ compilation."
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; vertico config
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(when my:use-vertico
+  (use-package vertico
+    :ensure t
+    :diminish
+    :custom
+    (vertico-scroll-margin 0) ;; Different scroll margin
+    (vertico-count 10) ;; Show more candidates
+    (vertico-resize t) ;; Grow and shrink the Vertico minibuffer
+    (vertico-cycle t) ;; Enable cycling for `vertico-next/previous'
+    :config
+    (vertico-mode)
+    (when my:use-prescient
+      (use-package vertico-prescient
+        :ensure t
+        :config
+        (vertico-prescient-mode t)
+        (prescient-persist-mode t)))
+    )
+
+  ;; Persist history over Emacs restarts. Vertico sorts by history position.
+  (use-package savehist
+    :ensure t
+    :diminish
+    :init
+    (savehist-mode))
+
+  (use-package ctrlf
+    :ensure t
+    :bind (("C-s" . ctrlf-forward-fuzzy-regexp)
+           ("C-r" . ctrlf-backward-fuzzy-regexp)
+           :map ctrlf-mode-map
+           ("C-s" . ctrlf-forward-fuzzy-regexp)
+           ("C-r" . ctrlf-backward-fuzzy-regexp)
+           )
+    :config
+    (ctrlf-mode t)
+    )
+  )
+
+;; A few more useful configurations...
+(use-package emacs
+  :custom
+  ;; Support opening new minibuffers from inside existing minibuffers.
+  (enable-recursive-minibuffers t)
+  ;; Hide commands in M-x which do not work in the current mode.  Vertico
+  ;; commands are hidden in normal buffers. This setting is useful beyond
+  ;; Vertico.
+  (read-extended-command-predicate #'command-completion-default-include-p)
+  :init
+  ;; Add prompt indicator to `completing-read-multiple'.
+  ;; We display [CRM<separator>], e.g., [CRM,] if the separator is a comma.
+  (defun crm-indicator (args)
+    (cons (format "[CRM%s] %s"
+                  (replace-regexp-in-string
+                   "\\`\\[.*?]\\*\\|\\[.*?]\\*\\'" ""
+                   crm-separator)
+                  (car args))
+          (cdr args)))
+  (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
+
+  ;; Do not allow the cursor in the minibuffer prompt
+  (setq minibuffer-prompt-properties
+        '(read-only t cursor-intangible t face minibuffer-prompt))
+  (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Set up GNU Global Tags (ggtags)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (when (executable-find "global")
@@ -1046,7 +1150,7 @@ compilation."
     (if (projectile-project-p)
         (call-interactively 'projectile-find-file-dwim)
       (call-interactively 'projectile-find-file)))
-  (when my:use-selectrum
+  (when (or my:use-selectrum my:use-vertico)
     (global-set-key (kbd "C-x M-f") 'my:projectile-find-file-dwim)
     (setq projectile-completion-system 'default))
   )
@@ -1100,7 +1204,7 @@ compilation."
     :ensure t
     :config
     (rg-enable-default-bindings)
-    (when my:use-selectrum
+    (when (or my:use-selectrum my:use-vertico)
       (global-set-key (kbd "C-c g") 'rg-project)
       (global-set-key (kbd "C-c r") 'rg-project))
     )
@@ -1962,7 +2066,7 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package magit
   :ensure t
-  :after (:any ivy selectrum)
+  :after (:any ivy selectrum vertico)
   :commands (magit-checkout)
   :bind (("M-g M-s" . magit-status)
          ("M-g M-c" . 'magit-checkout)
