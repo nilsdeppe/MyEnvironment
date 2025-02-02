@@ -1563,8 +1563,8 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
       ;; Only override the CTags shortcut if my:use-ycmd-goto is t
       (when my:use-ycmd-goto
         (add-hook 'c-mode-common-hook
-                  '(lambda ()
-                     (local-set-key (kbd "M-.") 'ycmd-goto))))
+                  #'(lambda ()
+                      (local-set-key (kbd "M-.") 'ycmd-goto))))
       :config
       (progn
         (set-variable 'ycmd-server-command my:ycmd-server-command)
@@ -1679,9 +1679,9 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
     (add-hook 'c-mode-common-hook #'lsp-deferred)
     ;;
     (add-hook 'lsp-mode-hook
-              '(lambda ()
-                 (when my:use-lsp-goto
-                   (local-set-key (kbd "M-.") 'lsp-find-definition)))))
+              #'(lambda ()
+                  (when my:use-lsp-goto
+                    (local-set-key (kbd "M-.") 'lsp-find-definition)))))
 
   (when (not (executable-find "cmake-language-server"))
     (message "Could not find cmake-language-server"))
