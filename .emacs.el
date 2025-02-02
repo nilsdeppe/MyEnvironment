@@ -34,6 +34,10 @@
 ;; 25MB or larger is typically good for performance.
 (defvar my:gc-threshold-mb 25)
 
+;; The amount of data which Emacs reads from a process.
+;; 1MB is reasonable.
+(defvar my:read-threshold-mb 1)
+
 ;; When t use smart-hungry-delete
 ;; (https://github.com/hrehfeld/emacs-smart-hungry-delete).
 ;; When nil use hungry-delete
@@ -1581,7 +1585,7 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
   ;; Increase the amount of data which Emacs reads from the process. The emacs
   ;; default is too low 4k considering that the some of the language server
   ;; responses are in 800k - 3M range. Set to 1MB
-  (setq read-process-output-max (* 1024 1024))
+  (setq read-process-output-max (* my:read-threshold-mb (* 1024 1024)))
 
   ;; Extra flags passed to clangd. See 'clangd --help' for info
   (if (string-equal system-type "darwin") ; Mac OS X
