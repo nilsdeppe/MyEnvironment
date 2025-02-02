@@ -1638,17 +1638,17 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
 (use-package lsp-mode
   :ensure t
   :hook (;; Python on Linux/mac OS is pyls (python language server)
-         (python-mode . lsp)
+         (python-mode . lsp-deferred)
          ;; Rust RLS (Rust Language Server) https://github.com/rust-lang/rls
-         (rust-mode . lsp)
+         (rust-mode . lsp-deferred)
          ;; Bash uses bash-language-server
          ;; https://github.com/mads-hartmann/bash-language-server
-         (shell-mode . lsp)
+         (shell-mode . lsp-deferred)
          ;; CMake uses cmake-language-server
          ;; https://github.com/regen100/cmake-language-server
          ;;
          ;; pip install cmake-language-server
-         (cmake-mode . lsp)
+         (cmake-mode . lsp-deferred)
          )
   :init
   ;; Disable yasnippet. We re-enable when yasnippet is loaded.
@@ -1674,7 +1674,7 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
 
   ;; Use as C++ completer if desired. We use the clangd backend.
   (when (string-equal my:cxx-completer "lsp")
-    (add-hook 'c-mode-common-hook #'lsp)
+    (add-hook 'c-mode-common-hook #'lsp-deferred)
     ;;
     (add-hook 'lsp-mode-hook
               '(lambda ()
