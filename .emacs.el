@@ -1686,6 +1686,20 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
   (when (not (executable-find "cmake-language-server"))
     (message "Could not find cmake-language-server"))
 
+  ;; There currently isn't a way to disable Sonar checks at the project level
+  ;; and some of them are rather overreaching or incorrect. Until it is fixed
+  ;; that SonarLint can be configured with a dot file like every other *nix
+  ;; tool, it's rather useless, unfortunately.
+  ;;
+  ;; (use-package lsp-sonarlint
+  ;;   :ensure t
+  ;;   :custom
+  ;;   (lsp-sonarlint-auto-download t)
+  ;;
+  ;;   ;; See `lsp-sonarlint-available-analyzers' for the full list.
+  ;;   (lsp-sonarlint-enabled-analyzers '("java" "cfamily" "python" "text"))
+  ;;   )
+
   :config
   (when my:byte-compile-init
       (dolist (lsp-file my:lsp-explicit-load-files)
