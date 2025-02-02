@@ -1477,7 +1477,8 @@ compilation."
   (define-key c++-mode-map (kbd "C-c C-c") 'compile)
   (define-key c++-mode-map (kbd "C-c C-k") 'kill-compilation)
   (setq compile-command my:compile-command)
-  (custom-set-variables '(c-noise-macro-names '("constexpr")))
+  (custom-set-variables '(c-noise-macro-names
+                          '("constexpr" "consteval" "constinit")))
   (add-hook 'c-mode-common-hook 'my:compile-command-hook)
   (use-package google-c-style
     :ensure t
