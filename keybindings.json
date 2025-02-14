@@ -262,7 +262,7 @@
     {
         "key": "alt+0",
         "command": "workbench.view.explorer",
-        "when": "editorTextFocus"
+        "when": "editorTextFocus || terminalFocus"
     },
     {
         "key": "cmd+0",
