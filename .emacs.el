@@ -190,8 +190,14 @@ compilation."
 (when (string-equal system-type "darwin")
   (setenv "PATH" (concat (getenv "PATH") ":/Library/TeX/texbin/"))
   (setq exec-path (append exec-path '("/Library/TeX/texbin/")))
-  (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
-  (setenv "PATH" (concat (getenv "PATH") ":/opt/homebrew/bin")))
+  (setenv "PATH"
+          (concat "/Users/nils/opt/anaconda3/bin:"
+                  "/Users/nils/opt/anaconda3/condabin:"
+                  "/opt/homebrew/opt/ruby/bin:/Users/nils/.gem/ruby/2.6.0/bin:"
+                  "/opt/homebrew/opt/python@3.9/libexec/bin:"
+                  "/opt/homebrew/bin:/opt/homebrew/sbin:"
+                  "/usr/local/bin:/usr/bin:/bin:/usr/sbin:"
+                  (getenv "PATH"))))
 
 ;; Set font size. Font size is set to my:font-size/10
 (defvar my:font-size 90)
@@ -1777,8 +1783,9 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
 
   ;; Add emacs-lsp-booster support
   (when (not (executable-find "emacs-lsp-booster"))
-      (warn "\nWARNING: Could not find the emacs-lsp-booster executable. It "
-            "is recommended you install emacs-lsp-booster."))
+      (warn (concat "\nWARNING: Could not find the emacs-lsp-booster "
+                    "executable. It is recommended you install "
+                    "emacs-lsp-booster.")))
 
   (defun lsp-booster--advice-json-parse (old-fn &rest args)
     "Try to parse bytecode instead of json."
