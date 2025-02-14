@@ -4,10 +4,13 @@
 // discovery, but I like my settings documented and organized,
 // so having a file is actually great!
 {
+    // CMake config
     "cmake.pinnedCommands": [
         "workbench.action.tasks.configureTaskRunner",
         "workbench.action.tasks.runTask"
     ],
+    "cmake.ctest.allowParallelJobs": true,
+    "cmake.generator": "Ninja",
     // Notifications can be annoying, so disable them.
     "cmake.showOptionsMovedNotification": false,
     // Use 2-wide tabs because we aren't monsters.
@@ -25,6 +28,15 @@
     // Use a block cursor style that's solid (no blinking).
     "editor.cursorStyle": "block",
     "editor.cursorBlinking": "solid",
+    // Auto-inlays like documentation are really annoying. We only enable them
+    // on request.
+    "editor.inlayHints.enabled": "offUnlessPressed",
+    // Select color scheme automatically.
+    "window.autoDetectColorScheme": true,
+    // Terminal config
+    //
+    // Allow using meta+b etc. to navigate in the VS Code terminal.
+    "terminal.integrated.macOptionIsMeta": true,
     // Configure Intellisense C and C++ extension.
     "C_Cpp.default.cppStandard": "c++20",
     "C_Cpp.default.intelliSenseMode": "macos-clang-arm64",
@@ -45,14 +57,11 @@
     "find-it-faster.findWithinFiles.fuzzRipgrepQuery": true,
     "find-it-faster.general.useTerminalInEditor": true,
 
-    "window.autoDetectColorScheme": true,
-    // Auto-inlays like documentation are really annoying. We only enable them
-    // on request.
-    "editor.inlayHints.enabled": "offUnlessPressed",
     "hungryDelete.enableSmartBackspace": false,
     // Custom dictionary words.
     "cSpell.userWords": [
-        "Chebyshev"
+        "Chebyshev",
+        "Lobatto"
     ],
     // Clean up files automatically on saves.
     "files.insertFinalNewline": true,
@@ -65,4 +74,15 @@
     "zenMode.hideStatusBar": false,
     "zenMode.fullScreen": false,
     "workbench.editor.empty.hint": "hidden",
+    // Awesome Emacs config
+    "emacs-mcx.emacsLikeTab": true,
+    "emacs-mcx.paredit.parentheses": {
+        "[": "]",
+        "(": ")",
+        "{": "}",
+        "<": ">"
+    },
+    // By default using ctrl+a etc. closes search, which differs from
+    // my Emacs config.
+    "emacs-mcx.cursorMoveOnFindWidget": true,
 }
