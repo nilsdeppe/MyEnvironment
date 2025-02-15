@@ -1277,6 +1277,11 @@ compilation."
   (winum-mode t)
   )
 
+(use-package grep
+  :config
+  (when (executable-find "rg")
+    (setq grep-program "rg")))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; wgrep
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1287,7 +1292,15 @@ compilation."
 ;; however you wish.
 (use-package wgrep
   :ensure t
-  :defer 1)
+  :after (ripgrep)
+  :config
+  (setq wgrep-auto-save-buffer t)
+  (setq wgrep-change-readonly-file t)
+  :bind (:map grep-mode-map
+          ("e" . wgrep-change-to-wgrep-mode)
+          :map ripgrep-search-mode-map
+          ("e" . wgrep-change-to-wgrep-mode))
+  )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ripgrep
