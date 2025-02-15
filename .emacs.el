@@ -186,19 +186,38 @@ compilation."
 (defvar my:ws-butler-global-exempt-modes
   '(markdown-mode ein:notebook-multilang-mode))
 
-;; TEX is installed in a different location on macOS
+;; macOS has a hard time with PATHs if running emacs as a service.
+;;
+;; Often executables are not found, etc. Set the PATH and exec-path
+;; based on the SHELL PATH.
+(defun set-exec-path-from-shell-PATH ()
+  "Set up Emacs' `exec-path' and PATH environment variable to match
+that used by the user's shell.
+
+This is particularly useful under Mac OS X and macOS, where GUI
+apps are not started from a shell."
+  (interactive)
+  (let ((path-from-shell (replace-regexp-in-string
+                          "[ \t\n]*$" "" (shell-command-to-string
+                                          "$SHELL --login -c 'echo $PATH'"))))
+    (setenv "PATH" path-from-shell)
+    (setq exec-path (split-string path-from-shell path-separator))))
+
 (when (string-equal system-type "darwin")
   (setq dired-use-ls-dired nil)
   (setenv "PATH" (concat (getenv "PATH") ":/Library/TeX/texbin/"))
   (setq exec-path (append exec-path '("/Library/TeX/texbin/")))
   (setenv "PATH"
-          (concat "/Users/nils/opt/anaconda3/bin:"
-                  "/Users/nils/opt/anaconda3/condabin:"
+          (concat "/Users/nils/opt/miniconda3/bin:"
+                  "/Users/nils/opt/miniconda3/condabin:"
+                  "/Users/nils/.cargo/bin:"
                   "/opt/homebrew/opt/ruby/bin:/Users/nils/.gem/ruby/2.6.0/bin:"
                   "/opt/homebrew/opt/python@3.9/libexec/bin:"
                   "/opt/homebrew/bin:/opt/homebrew/sbin:"
                   "/usr/local/bin:/usr/bin:/bin:/usr/sbin:"
-                  (getenv "PATH"))))
+                  (getenv "PATH")))
+  (set-exec-path-from-shell-PATH)
+  )
 
 ;; Set font size. Font size is set to my:font-size/10
 (defvar my:font-size 90)
