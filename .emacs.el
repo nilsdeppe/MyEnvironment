@@ -1654,9 +1654,12 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
 
         (use-package flycheck-ycmd
           :ensure t
-          :init
-          (add-hook 'c-mode-common-hook 'flycheck-ycmd-setup)
-          (add-hook 'rust-mode-hook 'flycheck-ycmd-setup)
+          :hook ((c-mode-common . flycheck-ycmd-setup)
+                 (c-ts-mode . flycheck-ycmd-setup)
+                 (c++-ts-mode . flycheck-ycmd-setup)
+                 (rust-mode . flycheck-ycmd-setup)
+                 (rust-ts-mode . flycheck-ycmd-setup)
+                 )
           )
 
         ;; Add displaying the function arguments in mini buffer using El Doc
