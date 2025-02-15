@@ -188,6 +188,7 @@ compilation."
 
 ;; TEX is installed in a different location on macOS
 (when (string-equal system-type "darwin")
+  (setq dired-use-ls-dired nil)
   (setenv "PATH" (concat (getenv "PATH") ":/Library/TeX/texbin/"))
   (setq exec-path (append exec-path '("/Library/TeX/texbin/")))
   (setenv "PATH"
