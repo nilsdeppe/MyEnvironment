@@ -1518,12 +1518,19 @@ compilation."
                           '("constexpr" "consteval" "constinit")))
   (use-package google-c-style
     :ensure t
-    :config
-    ;; This prevents the extra two spaces in a namespace that Emacs
-    ;; otherwise wants to put... Gawd!
-    (add-hook 'c-mode-common-hook 'google-set-c-style)
-    ;; Autoindent using google style guide
-    (add-hook 'c-mode-common-hook 'google-make-newline-indent)
+    :hook (;; This prevents the extra two spaces in a namespace that Emacs
+           ;; otherwise wants to put... Gawd!
+           (c-mode-common . google-set-c-style)
+           ;; This doesn't actually work with tree-sitter, so we are stuck
+           ;; with the horrid GNU settings.
+           ;; (c-ts-mode . google-set-c-style)
+           ;; (c++-ts-mode . google-set-c-style)
+           ;; Autoindent using google style guide
+           (c-mode-common . google-make-newline-indent)
+           ;; The package needs updating to work with tree-sitter
+           ;; (c-ts-mode . google-make-newline-indent)
+           ;; (c++-ts-mode . google-make-newline-indent)
+           )
     )
   )
 
