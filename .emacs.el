@@ -1694,7 +1694,9 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
   (use-package lsp-ui
     :ensure t
     :after lsp-mode
-    :hook (lsp-mode . lsp-ui-mode)
+    :hook ((lsp-mode . lsp-ui-mode)
+           (lsp-ui-mode . set-local-keybinds-lsp-ui)
+           )
     :config
     ;; Use find references and definitions key bindings instead of CTags.
     (defun set-local-keybinds-lsp-ui ()
@@ -1704,10 +1706,6 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
       (local-set-key (kbd "M-?") 'lsp-ui-peek-find-references)
       (local-set-key (kbd "C-c y d") 'lsp-ui-doc-toggle)
       )
-    (add-hook 'c-mode-common-hook 'set-local-keybinds-lsp-ui)
-    (add-hook 'python-mode-hook 'set-local-keybinds-lsp-ui)
-    (add-hook 'rust-mode-hook 'set-local-keybinds-lsp-ui)
-    (add-hook 'shell-mode-hook 'set-local-keybinds-lsp-ui)
     :init
     (setq lsp-ui-sideline-diagnostic-max-lines 6)
     )
