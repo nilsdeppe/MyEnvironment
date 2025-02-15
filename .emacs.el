@@ -670,6 +670,60 @@ compilation."
       (warn "my:search-backend must be to \"ivy\" or \"selectrum\"")
       )))
 
+(when (>= emacs-major-version 29)
+  (use-package treesit-auto
+    :ensure t
+    :custom
+    (treesit-auto-install 'prompt)
+    (treesit-auto-langs '(json markdown yaml))
+
+    :config
+    (setq treesit-language-source-alist
+          '((bash . ("https://github.com/tree-sitter/tree-sitter-bash"
+                     "v0.23.3"))
+            (c . ("https://github.com/tree-sitter/tree-sitter-c" "v0.23.5"))
+            (cpp . ("https://github.com/tree-sitter/tree-sitter-cpp" "v0.23.4"))
+            (css . ("https://github.com/tree-sitter/tree-sitter-css" "v0.20.0"))
+            (go . ("https://github.com/tree-sitter/tree-sitter-go" "v0.20.0"))
+            (haskell . ("https://github.com/tree-sitter/tree-sitter-haskell"
+                        "v0.23.1"))
+            (html . ("https://github.com/tree-sitter/tree-sitter-html"
+                     "v0.20.1"))
+            (javascript .
+                        ("https://github.com/tree-sitter/tree-sitter-javascript"
+                         "v0.20.1" "src"))
+            (json . ("https://github.com/tree-sitter/tree-sitter-json"
+                     "v0.20.2"))
+            (julia . ("https://github.com/tree-sitter/tree-sitter-julia"
+                      "v0.23.1"))
+            (markdown . ("https://github.com/ikatyang/tree-sitter-markdown"
+                         "v0.7.1"))
+            (python . ("https://github.com/tree-sitter/tree-sitter-python"
+                       "v0.20.4"))
+            (regex . ("https://github.com/tree-sitter/tree-sitter-regex"
+                      "v0.24.3"))
+            (rust . ("https://github.com/tree-sitter/tree-sitter-rust"
+                     "v0.21.2"))
+            (swift . ("https://github.com/alex-pinkus/tree-sitter-swift"
+                      "v0.7.0"))
+            (toml . ("https://github.com/tree-sitter/tree-sitter-toml"
+                     "v0.5.1"))
+            (tsx . ("https://github.com/tree-sitter/tree-sitter-typescript"
+                    "v0.20.3" "tsx/src"))
+            (typescript .
+                        ("https://github.com/tree-sitter/tree-sitter-typescript"
+                           "v0.20.3" "typescript/src"))
+            (yaml . ("https://github.com/ikatyang/tree-sitter-yaml" "v0.5.0"))))
+    (treesit-auto-add-to-auto-mode-alist 'all)
+    (global-treesit-auto-mode)
+    (use-package yaml-ts-mode
+      :ensure nil ;; Built-in
+      :mode ("\\.yml\\'" "\\.yaml\\'")
+      :hook ((yaml-ts-mode . (lambda () (setq tab-width 2))))
+      )
+    )
+  )
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; hydra config
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1121,9 +1175,10 @@ compilation."
                          my:use-lsp-goto))
                (not (and (string-equal my:cxx-completer "ycmd")
                          my:use-ycmd-goto)))
-      (add-hook 'c-mode-common-hook
+      (add-hook 'prog-mode-hook
                 (lambda ()
-                  (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
+                  (when (derived-mode-p 'c-mode 'c-ts-mode 'c++-mode
+                                        'c++-ts-mode 'java-mode 'java-ts-mode)
                     (ggtags-mode t)))))
     :config
     ;; Do not try to update GTAGS on each save;
@@ -1690,16 +1745,23 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
   :ensure t
   :hook (;; Python on Linux/mac OS is pyls (python language server)
          (python-mode . lsp-deferred)
+         (python-ts-mode . lsp-deferred)
          ;; Rust RLS (Rust Language Server) https://github.com/rust-lang/rls
          (rust-mode . lsp-deferred)
+         (rust-ts-mode . lsp-deferred)
          ;; Bash uses bash-language-server
          ;; https://github.com/mads-hartmann/bash-language-server
          (shell-mode . lsp-deferred)
+         (shell-ts-mode . lsp-deferred)
          ;; CMake uses cmake-language-server
          ;; https://github.com/regen100/cmake-language-server
          ;;
          ;; pip install cmake-language-server
          (cmake-mode . lsp-deferred)
+         (cmake-ts-mode . lsp-deferred)
+
+         (yaml-mode . lsp-deferred)
+         (yaml-ts-mode . lsp-deferred)
          )
   :init
   ;; Disable yasnippet. We re-enable when yasnippet is loaded.
@@ -1729,6 +1791,8 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
   ;; Use as C++ completer if desired. We use the clangd backend.
   (when (string-equal my:cxx-completer "lsp")
     (add-hook 'c-mode-common-hook #'lsp-deferred)
+    (add-hook 'c-ts-mode-hook #'lsp-deferred)
+    (add-hook 'c++-ts-mode-hook #'lsp-deferred)
     ;;
     (add-hook 'lsp-mode-hook
               #'(lambda ()
@@ -2259,9 +2323,13 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; yaml-mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package yaml-mode
-  :ensure t
-  :mode ("\\.yml\\'" "\\.yaml\\'"))
+(when (< emacs-major-version 29)
+  (use-package yaml-mode
+    :ensure t
+    :mode ("\\.yml\\'" "\\.yaml\\'")
+    :hook ((yaml-mode . (lambda () (setq tab-width 2))))
+    )
+  )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; json-mode
@@ -2292,6 +2360,7 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
     (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)
     )
   (add-hook 'rust-mode-hook 'my:rust-mode-hook)
+  (add-hook 'rust-ts-mode-hook 'my:rust-mode-hook)
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
