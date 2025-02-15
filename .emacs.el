@@ -1264,7 +1264,8 @@ apps are not started from a shell."
 
   (when (not (executable-find "fd"))
     (warn (concat "\nWARNING: Could not find the fd executable. It is "
-                  "recommended you install fd for projectile.")))
+                  "recommended you install fd for projectile. Path is: "
+                  (getenv "PATH"))))
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1334,6 +1335,12 @@ apps are not started from a shell."
       (global-set-key (kbd "C-c r") 'rg-project))
     )
   )
+(when (not (executable-find "rg"))
+  (warn (concat "\nWARNING: Could not find the ripgrep executable. It "
+                "is recommended you install ripgrep. Path is: "
+                (getenv "PATH")))
+  )
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; pinentry
@@ -1896,7 +1903,8 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
   (when (not (executable-find "emacs-lsp-booster"))
       (warn (concat "\nWARNING: Could not find the emacs-lsp-booster "
                     "executable. It is recommended you install "
-                    "emacs-lsp-booster.")))
+                    "emacs-lsp-booster. Path is: "
+                    (getenv "PATH"))))
 
   (defun lsp-booster--advice-json-parse (old-fn &rest args)
     "Try to parse bytecode instead of json."
