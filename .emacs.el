@@ -1507,13 +1507,15 @@ compilation."
   (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
   (add-to-list 'auto-mode-alist '("\\.hpp\\'" . c++-mode))
   (add-to-list 'auto-mode-alist '("\\.cpp\\'" . c++-mode))
+  :hook ((c-mode-common . my:compile-command-hook)
+         (c-ts-mode . my:compile-command-hook)
+         (c++-ts-mode . my:compile-command-hook))
   :config
   (define-key c++-mode-map (kbd "C-c C-c") 'compile)
   (define-key c++-mode-map (kbd "C-c C-k") 'kill-compilation)
   (setq compile-command my:compile-command)
   (custom-set-variables '(c-noise-macro-names
                           '("constexpr" "consteval" "constinit")))
-  (add-hook 'c-mode-common-hook 'my:compile-command-hook)
   (use-package google-c-style
     :ensure t
     :config
