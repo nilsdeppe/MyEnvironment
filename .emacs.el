@@ -1248,6 +1248,19 @@ apps are not started from a shell."
   :config
   (projectile-mode t)
   (setq projectile-enable-caching t)
+  ;; Identify the SpECTRE project.
+  (projectile-register-project-type
+   'spectre
+   '("CMakeLists.txt" "citation.bib" "CITATION.cff" "cmake"
+     "containers" "docs" "external" "LICENSE.txt"
+     "Metadata.yaml" "pyproject.toml" "README.md"
+     "setup.cfg" "src" "support" "tests" "tools")
+   :project-file "CMakeLists.txt"
+   :compile "ninja"
+   :src-dir "src/"
+   :test "ctest"
+   :test-dir "tests/Unit/"
+   :test-prefix "Test_")
   (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
   (when my:use-ivy
     (setq projectile-completion-system 'ivy))
