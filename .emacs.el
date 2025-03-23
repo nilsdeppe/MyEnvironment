@@ -1822,6 +1822,14 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
   ;; While useful, it gets repetitive because it doesn't remember
   ;; "no" as an answer.
   (setq lsp-enable-suggest-server-download nil)
+
+  ;; Warn if some language servers aren't installed.
+  (when (not (executable-find "yamlls"))
+    (message "Could not find yamlls language server"))
+  (when (not (executable-find "cmake-language-server"))
+    (message "Could not find cmake-language-server"))
+
+
   ;; Disable semgrep lsp. I haven't found it useful and it seems
   ;; to crash Emacs.
   (defvar lsp-semgrep-languages '())
@@ -1854,9 +1862,6 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
               #'(lambda ()
                   (when my:use-lsp-goto
                     (local-set-key (kbd "M-.") 'lsp-find-definition)))))
-
-  (when (not (executable-find "cmake-language-server"))
-    (message "Could not find cmake-language-server"))
 
   ;; There currently isn't a way to disable Sonar checks at the project level
   ;; and some of them are rather overreaching or incorrect. Until it is fixed
