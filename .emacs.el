@@ -1245,6 +1245,11 @@ apps are not started from a shell."
   (eval-when-compile
     ;; Silence missing function warnings
     (declare-function projectile-mode "projectile.el"))
+
+  (when (not (executable-find "fd"))
+    (warn (concat "\nWARNING: Could not find the fd executable. It is "
+                  "recommended you install fd for projectile. Path is: "
+                  (getenv "PATH"))))
   :config
   (projectile-mode t)
   (setq projectile-enable-caching t)
@@ -1274,11 +1279,6 @@ apps are not started from a shell."
   (when (or my:use-selectrum my:use-vertico)
     (global-set-key (kbd "C-x M-f") 'my:projectile-find-file-dwim)
     (setq projectile-completion-system 'default))
-
-  (when (not (executable-find "fd"))
-    (warn (concat "\nWARNING: Could not find the fd executable. It is "
-                  "recommended you install fd for projectile. Path is: "
-                  (getenv "PATH"))))
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
