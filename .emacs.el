@@ -1818,6 +1818,10 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
   :init
   ;; Disable yasnippet. We re-enable when yasnippet is loaded.
   (defvar lsp-enable-snippet nil)
+  ;; Disable automatically suggesting to install a completer.
+  ;; While useful, it gets repetitive because it doesn't remember
+  ;; "no" as an answer.
+  (setq lsp-enable-suggest-server-download nil)
   ;; Disable semgrep lsp. I haven't found it useful and it seems
   ;; to crash Emacs.
   (defvar lsp-semgrep-languages '())
