@@ -1828,7 +1828,8 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
     (message "Could not find yamlls language server"))
   (when (not (executable-find "cmake-language-server"))
     (message "Could not find cmake-language-server"))
-
+  (when (not (executable-find "pylsp"))
+    (message "Could not find pylsp language server"))
 
   ;; Disable semgrep lsp. I haven't found it useful and it seems
   ;; to crash Emacs.
