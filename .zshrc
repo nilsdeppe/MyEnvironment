@@ -689,5 +689,5 @@ fi
 
 function show_queue() {
     squeue -o "%.18i %.9P %.20j %.8u %.2t %.10M %.6D %R" "$@" | \
-        sed "s/spec1182/amacedo/g; s/spec1168/ffoucart/g; s/spec1170/acarpenter/g; s/spec1162/knelli/g; s/spec1164/glovelace/g; s/spec1167/nora/g"
+        sed "s/spec1182/amacedo/g; s/spec1168/ffoucart/g; s/spec1170/acarpenter/g; s/spec1162/knelli/g; s/spec1164/glovelace/g; s/spec1167/nora/g; s/spec1180/samrath/g; s/spec1194/vprasad/g; s/spec1217/lstein/g; s/spec1163/mscheel/g; s/spec1187/gdare/g"
 }
