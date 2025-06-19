@@ -699,7 +699,7 @@ apps are not started from a shell."
       (warn "my:search-backend must be to \"ivy\" or \"selectrum\"")
       )))
 
-(when (>= emacs-major-version 29)
+(when (and (>= emacs-major-version 29) (executable-find "tree-sitter"))
   (use-package treesit-auto
     :ensure t
     :custom
