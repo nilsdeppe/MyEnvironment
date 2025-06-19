@@ -211,6 +211,7 @@ apps are not started from a shell."
           (concat "/Users/nils/opt/miniconda3/bin:"
                   "/Users/nils/opt/miniconda3/condabin:"
                   "/Users/nils/.cargo/bin:"
+                  "/Users/nils/.juliaup/bin:"
                   "/opt/homebrew/opt/ruby/bin:/Users/nils/.gem/ruby/2.6.0/bin:"
                   "/opt/homebrew/opt/python@3.9/libexec/bin:"
                   "/opt/homebrew/bin:/opt/homebrew/sbin:"
@@ -694,7 +695,7 @@ apps are not started from a shell."
     :ensure t
     :custom
     (treesit-auto-install 'prompt)
-    (treesit-auto-langs '(json markdown yaml))
+    (treesit-auto-langs '(json markdown yaml julia))
 
     :config
     (setq treesit-language-source-alist
@@ -1565,6 +1566,43 @@ apps are not started from a shell."
   :hook (python-mode . yapf-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Julia lang
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package julia-mode
+    :ensure t
+    :mode "\\.jl\\'"
+    :interpreter ("julia" . julia-mode)
+    :init
+    (setenv "JULIA_NUM_THREADS" "4")
+    (use-package julia-repl
+      :ensure t
+      :config
+      (set-language-environment "UTF-8")
+      )
+    (use-package lsp-julia
+      :ensure t
+      :config
+      (setq lsp-julia-default-environment "~/.julia/environments/v1.11"))
+    (use-package julia-ts-mode
+      :ensure t
+      :mode "\\.jl$")
+    ;; (use-package eglot-jl
+    ;;   :ensure t
+    ;;   )
+    :config
+    (set-language-environment "UTF-8")
+    ;; (add-hook 'julia-mode-hook 'eglot-jl-init)
+    ;; (add-hook 'julia-mode-hook (lambda () (setq eglot-connect-timeout 120)))
+    ;; (add-hook 'julia-mode-hook (lambda () (setq eglot-autoshutdown t)))
+    (add-hook 'julia-mode-hook 'julia-repl-mode)
+    (add-hook 'julia-mode-hook 'company-mode)
+    (add-hook 'julia-mode-hook #'yas-minor-mode)
+    (add-hook 'julia-mode-hook (lambda () (setq julia-repl-set-terminal-backend
+                                                'vterm)))
+    )
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Clang-format
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; clang-format can be triggered using C-c C-f
@@ -1814,6 +1852,9 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
 
          (yaml-mode . lsp-deferred)
          (yaml-ts-mode . lsp-deferred)
+
+         ;; Julia lang support
+         (julia-mode . lsp-deferred)
          )
   :init
   ;; Disable yasnippet. We re-enable when yasnippet is loaded.
