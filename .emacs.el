@@ -2780,7 +2780,9 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
   ;; Set the header line
   (setq header-line-format
         (list "-"
-              '(which-func-mode ("" which-func-format))
+              ;; Don't add current function into header because it takes
+              ;; up a lot of space and I don't use it.
+              ;; '(which-func-mode ("" which-func-format))
               '("" ;; invocation-name
                 (:eval (if (buffer-file-name)
                            (concat "[" (sl/make-header) "]")
