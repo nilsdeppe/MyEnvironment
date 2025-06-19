@@ -9,6 +9,7 @@
 // - CMake: https://github.com/twxs/vs.language.cmake
 // - CMake Tools: https://github.com/microsoft/vscode-cmake-tools
 // - Code Ace Jumper: https://github.com/lucax88x/CodeAceJumper
+// - Jump and Select: https://github.com/ArturoDent/jump-and-select
 // - Code Spell Checker: https://github.com/streetsidesoftware/vscode-spell-checker
 // - edamagit: https://github.com/kahole/edamagit
 // - Find It Faster: https://github.com/tomrijndorp/vscode-finditfaster
@@ -487,18 +488,23 @@
     // different behavior in C++ and python, it becomes more reasonably. Python
     // is essentially treated as plain text.
     {
-        "key": "ctrl+alt+e",
-        "command": "gotoNextPreviousMember.nextMember",
-        "when": "editorTextFocus && editorLangId == cpp",
+        "key": "ctrl+alt+e", // Or your preferred keybinding
+        "command": "jump-and-select.bySymbol",
+        "args": {
+            "symbol": ["function", "class", "method"], // Choose your desired symbols
+            "where": "currentEnd" // Go to the beginning of the current symbol
+        }
     },
     {
         "key": "ctrl+down",
         "command": "-gotoNextPreviousMember.nextMember"
-    },
-    {
-        "key": "ctrl+alt+a",
-        "command": "gotoNextPreviousMember.previousMember",
-        "when": "editorTextFocus && editorLangId == cpp",
+    },{
+        "key": "ctrl+alt+a", // Or your preferred keybinding
+        "command": "jump-and-select.bySymbol",
+        "args": {
+            "symbol": ["function", "class", "method"], // Choose your desired symbols
+            "where": "currentStart" // Go to the beginning of the current symbol
+        }
     },
     {
         "key": "ctrl+up",
