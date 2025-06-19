@@ -675,6 +675,15 @@ apps are not started from a shell."
   (nerd-icons-completion-mode)
   (add-hook 'marginalia-mode-hook #'nerd-icons-completion-marginalia-setup))
 
+;; Setup gptel for LLM integration
+(use-package gptel
+  :ensure t
+  :config
+  (gptel-make-gh-copilot "Copilot")
+  (setq gptel-model 'gpt-4.1
+      gptel-backend (gptel-make-gh-copilot "Copilot"))
+  )
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Select search backend
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
