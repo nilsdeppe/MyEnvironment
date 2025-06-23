@@ -229,7 +229,7 @@ apps are not started from a shell."
   "Set custom faces after the theme is loaded."
   (custom-set-faces
    '(ivy-current-match
-     ((t (:background nil :underline t))))
+     ((t (:background unspecified :underline t))))
    '(company-tooltip
      ((t (:background unspecified))))
    '(company-tooltip-selection
