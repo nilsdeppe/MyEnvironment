@@ -180,7 +180,14 @@ compilation."
 (defvar my:search-backend "vertico")
 
 ;; A list of modes for which to disable whitespace mode
-(defvar my:ws-disable-modes '(magit-mode help-mode Buffer-menu-mode))
+(defvar my:ws-disable-modes '(magit-mode help-mode Buffer-menu-mode
+                                         aidermacs-comint-mode
+                                         aidermacs-vterm-mode))
+
+;; A list of buffer names for which to disable whitespace mode
+(defvar my:ws-disable-buffers
+  '("*Warnings*" "*Compile-Log*" "*Messages*"
+    ))
 
 ;; Modes in which to disable auto-deleting of trailing whitespace
 (defvar my:ws-butler-global-exempt-modes
@@ -1725,6 +1732,10 @@ apps are not started from a shell."
           (when (derived-mode-p element)
             (setq allow-ws-mode nil)
             )
+          )
+        (dolist (element my:ws-disable-buffers)
+          (when (string-match element (buffer-name))
+            (setq allow-ws-mode nil))
           )
         (when allow-ws-mode
           (whitespace-mode t))))
