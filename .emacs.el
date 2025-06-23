@@ -803,7 +803,7 @@ apps are not started from a shell."
   :config
   ;; Define a hydra for movement
   (defhydra hydra-move ()
-    "move"
+    ;; move
     ("n" next-line)
     ("p" previous-line)
     ("f" forward-char)
@@ -2076,8 +2076,7 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
         ;; These auto-complete the current selection when
         ;; `company-auto-complete-chars' is typed. This is too magical. We
         ;; already have the much more explicit RET and TAB.
-        company-auto-complete nil
-        company-auto-complete-chars nil
+        company-insertion-triggers nil
 
         ;; Only search the current buffer for `company-dabbrev' (a backend that
         ;; suggests text your open buffers). This prevents Company from causing
