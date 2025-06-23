@@ -687,6 +687,10 @@ apps are not started from a shell."
   :ensure t
   :config
   (gptel-make-gh-copilot "Copilot")
+  (gptel-make-ollama "Ollama"
+    :host "localhost:11434"
+    :stream t
+    :models '(mistral:latest))
   (setq gptel-model 'gpt-4.1
       gptel-backend (gptel-make-gh-copilot "Copilot"))
   )
