@@ -182,7 +182,8 @@ compilation."
 ;; A list of modes for which to disable whitespace mode
 (defvar my:ws-disable-modes '(magit-mode help-mode Buffer-menu-mode
                                          aidermacs-comint-mode
-                                         aidermacs-vterm-mode))
+                                         aidermacs-vterm-mode
+                                         gptel-mode))
 
 ;; A list of buffer names for which to disable whitespace mode
 (defvar my:ws-disable-buffers
