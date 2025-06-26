@@ -2372,6 +2372,7 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
   :config
   (when my:use-ivy
     (setq magit-completing-read-function 'ivy-completing-read))
+  (set-face-attribute 'magit-diff-added-highlight nil :foreground "black")
   ;; Set SSH_AUTH_SOCK if necessary. This allows us to run the ssh-agent
   ;; and emacs as daemons while having them work together.
   (my:set_ssh_auth_sock)
