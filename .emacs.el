@@ -686,6 +686,7 @@ apps are not started from a shell."
 ;; Setup gptel for LLM integration
 (use-package gptel
   :ensure t
+  :bind (("C-c g" . gptel))
   :config
   (gptel-make-gh-copilot "Copilot")
   (gptel-make-ollama "Ollama"
@@ -699,7 +700,11 @@ apps are not started from a shell."
 (if (executable-find "aider")
     (use-package aidermacs
       :ensure t
-      :bind (("C-c a" . aidermacs-transient-menu))
+      :bind (("C-c a" . aidermacs-transient-menu)
+             :map aidermacs-comint-mode-map
+             ("C-m" . comint-accumulate)
+             ("C-c C-m" . comint-send-input)
+             )
       :config
       ;; Set API_KEY in ~/.aider.conf.yml. E.g.:
       ;;    openai-api-base: https://api.githubcopilot.com
@@ -1397,7 +1402,6 @@ apps are not started from a shell."
     :config
     (rg-enable-default-bindings)
     (when (or my:use-selectrum my:use-vertico)
-      (global-set-key (kbd "C-c g") 'rg-project)
       (global-set-key (kbd "C-c r") 'rg-project))
     )
   )
