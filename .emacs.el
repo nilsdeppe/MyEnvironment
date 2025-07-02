@@ -669,11 +669,11 @@ apps are not started from a shell."
   (marginalia-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; all-the-icons and nerd-icons-completion
+;; nerd-icons and nerd-icons-completion
 ;;
 ;; Used by company-box and some themes
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package all-the-icons
+(use-package nerd-icons
   :ensure t)
 
 (use-package nerd-icons-completion
