@@ -2104,6 +2104,8 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
   (setq company-backends (delete 'company-eclim company-backends))
   (setq company-backends (delete 'company-clang company-backends))
   (setq company-backends (delete 'company-xcode company-backends))
+  (setq company-backends (delete 'company-bbdb company-backends))
+  (setq company-backends (delete 'company-cmake company-backends))
   )
 
 ;; Use prescient for sorting results with company:
