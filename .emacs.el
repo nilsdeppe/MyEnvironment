@@ -2124,7 +2124,10 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; (use-package company-box
 ;;   :ensure t
-;;   :hook (company-mode . company-box-mode))
+;;   :hook (company-mode . company-box-mode)
+;;   :config
+;;   (setq company-box-icons-alist 'company-box-icons-nerd-icons)
+;;   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Configure flycheck
