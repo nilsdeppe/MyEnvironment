@@ -2106,6 +2106,21 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
   (setq company-backends (delete 'company-xcode company-backends))
   (setq company-backends (delete 'company-bbdb company-backends))
   (setq company-backends (delete 'company-cmake company-backends))
+  ;; Replace company-capf with capf+yasnippet. Then add company-capf
+  ;; to the end so that when modes get loaded they don't prepend
+  ;; company-capf. There's probably a smarter way to do this, but
+  ;; it works.
+  (defun my:company-capf-yasnippet-group-hook ()
+    (setq-local company-backends
+                (append
+                 (cl-substitute
+                  '(company-capf :with company-yasnippet) ; new value
+                  'company-capf                          ; old value to replace
+                  company-backends
+                  :test #'eq)
+                 '(company-capf))
+                ))
+  (add-hook 'c-mode-common-hook #'my:company-capf-yasnippet-group-hook)
   )
 
 ;; Use prescient for sorting results with company:
