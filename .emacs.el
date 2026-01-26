@@ -1469,6 +1469,7 @@ apps are not started from a shell."
 ;; if/else/for/function so that you can fit more code on your screen
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package origami
+  :vc (:url "https://github.com/elp-revive/origami.el.git" :newest)
   :ensure t
   :commands (origami-mode)
   :hook (prog-mode . origami-mode)
