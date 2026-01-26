@@ -2141,6 +2141,47 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Use dtrt-indent to guess indentation
+;; https://github.com/jscheid/dtrt-indent
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package dtrt-indent
+  :custom
+  (dtrt-indent-verbosity 0)
+  (dtrt-indent-run-after-smie t)
+  :ensure t
+  :hook (prog-mode . dtrt-indent-mode)
+  )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Add vertical parts to align things
+;; https://github.com/jdtsmith/indent-bars
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package indent-bars
+  :ensure t
+  :config
+  (setq indent-bars-color '(highlight :face-bg t :blend 0.75)
+        ;; Hard-code fonts so we can use prog-mode hook. Otherwise
+        ;; we get colors from before we load doom.
+        indent-bars-color-by-depth
+        '(:palette ("#51afef" "#c678dd" "#a9a1e1" "#7cc3f3"
+                    "#d499e5" "#a8d7f7" "#e2bbee" "#dceffb"))
+        indent-bars-unspecified-fg-color "white"
+        indent-bars-unspecified-bg-color "black"
+        indent-bars-prefer-character t
+        indent-bars-display-on-blank-lines t
+        indent-bars-no-descend-lists t
+        indent-bars-highlight-current-depth '(:color "white")
+        )
+  ;; If you don't want dtrt-indent then you need to figure out how to delay
+  ;; load to get the right number of spaces. Easiest is probably just
+  ;; maintaining the list of modes. Tedious, but one can spend an eternity
+  ;; hacking emacs...
+  ;;
+  ;; :hook ((python-mode c++-ts-mode c++-mode) . indent-bars-mode)
+  :hook ((dtrt-indent-mode) . indent-bars-mode)
+  )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Add icons to code completion when using the GUI client.
 ;; https://github.com/sebastiencs/company-box/
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
