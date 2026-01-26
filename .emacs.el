@@ -1,6 +1,6 @@
-;;; initfile --- Summary:
+;;; initfile --- Summary:             -*- lexical-binding: nil; -*-
 ;;; Commentary:
-;; Emacs 25.1 and newer tested
+;;; Emacs 25.1 and newer tested
 ;;; Code:
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -112,7 +112,7 @@ compilation."
                    my:project-build-dir))
       (when (not my:project-build-dir)
         ;; Use a json parse as the fallback. This is extremely
-        ;; slow when Emacs isn't compiled with native JSON support.
+        ;; slow when Emacs is not compiled with native JSON support.
         (require 'json)
         (set (make-local-variable 'compile-command)
              (format "cmake --build %s -j50 --target"
@@ -199,8 +199,7 @@ compilation."
 ;; Often executables are not found, etc. Set the PATH and exec-path
 ;; based on the SHELL PATH.
 (defun set-exec-path-from-shell-PATH ()
-  "Set up Emacs' `exec-path' and PATH environment variable to match
-that used by the user's shell.
+  "Set variable `exec-path' and PATH to match the user shell.
 
 This is particularly useful under Mac OS X and macOS, where GUI
 apps are not started from a shell."
@@ -722,7 +721,7 @@ apps are not started from a shell."
       ;;    # Must recreate periodically. Note that tokens from other sources
       ;;    # may not have sufficient access writes. If you get the error:
       ;;    #    "access to this endpoint is forbidden"
-      ;;    # then it is because the access token doesn't have sufficient
+      ;;    # then it is because the access token does not have sufficient
       ;;    # priveleges.
       ;;    openai-api-key:
       ;;    model:           openai/gpt-4.1
@@ -738,8 +737,8 @@ apps are not started from a shell."
                                         ; See the Configuration section below
       (aidermacs-default-chat-mode 'architect)
       (aidermacs-default-model "openai/gpt-4.1"))
-  (warn "\nWARNING: Could not find the aider executable. Cannot "
-        "use aidermacs AI code assistant..")
+  (warn "\nWARNING: Could not find the aider executable. Cannot %s"
+        "use aidermacs AI code assistant.")
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1018,7 +1017,7 @@ apps are not started from a shell."
               "rg -i -M 120 --no-heading --line-number --color never %s %s"
               counsel-rg-base-command
               "rg -i -M 120 --no-heading --line-number --color never %s .")
-      (warn "\nWARNING: Could not find the ripgrep executable. It "
+      (warn "\nWARNING: Could not find the ripgrep executable. It %s"
             "is recommended you install ripgrep."))
 
     ;; Switch whether we use swiper or counsel-grep depending on the
@@ -1736,7 +1735,7 @@ apps are not started from a shell."
     :hook (;; This prevents the extra two spaces in a namespace that Emacs
            ;; otherwise wants to put... Gawd!
            (c-mode-common . google-set-c-style)
-           ;; This doesn't actually work with tree-sitter, so we are stuck
+           ;; This does not actually work with tree-sitter, so we are stuck
            ;; with the horrid GNU settings.
            ;; (c-ts-mode . google-set-c-style)
            ;; (c++-ts-mode . google-set-c-style)
@@ -1788,8 +1787,8 @@ apps are not started from a shell."
             (setq allow-ws-mode nil))
           )
         (when allow-ws-mode
-          (whitespace-mode t))))
-    ))
+          (whitespace-mode t)))))
+  :group 'whitespace)
 (my-global-whitespace-mode t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1930,11 +1929,11 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
   ;; Disable yasnippet. We re-enable when yasnippet is loaded.
   (defvar lsp-enable-snippet nil)
   ;; Disable automatically suggesting to install a completer.
-  ;; While useful, it gets repetitive because it doesn't remember
+  ;; While useful, it gets repetitive because it does not remember
   ;; "no" as an answer.
   (setq lsp-enable-suggest-server-download nil)
 
-  ;; Warn if some language servers aren't installed.
+  ;; Warn if some language servers are not installed.
   (when (not (executable-find "yamlls"))
     (message "Could not find yamlls language server"))
   (when (not (executable-find "cmake-language-server"))
@@ -1942,7 +1941,7 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
   (when (not (executable-find "pylsp"))
     (message "Could not find pylsp language server"))
 
-  ;; Disable semgrep lsp. I haven't found it useful and it seems
+  ;; Disable semgrep lsp. I have not found it useful and it seems
   ;; to crash Emacs.
   (defvar lsp-semgrep-languages '())
   (use-package lsp-ui
@@ -1975,10 +1974,10 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
                   (when my:use-lsp-goto
                     (local-set-key (kbd "M-.") 'lsp-find-definition)))))
 
-  ;; There currently isn't a way to disable Sonar checks at the project level
+  ;; There currently is not a way to disable Sonar checks at the project level
   ;; and some of them are rather overreaching or incorrect. Until it is fixed
   ;; that SonarLint can be configured with a dot file like every other *nix
-  ;; tool, it's rather useless, unfortunately.
+  ;; tool, it is rather useless, unfortunately.
   ;;
   ;; (use-package lsp-sonarlint
   ;;   :ensure t
@@ -2117,7 +2116,7 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
   (setq company-backends (delete 'company-bbdb company-backends))
   (setq company-backends (delete 'company-cmake company-backends))
   ;; Replace company-capf with capf+yasnippet. Then add company-capf
-  ;; to the end so that when modes get loaded they don't prepend
+  ;; to the end so that when modes get loaded they do not prepend
   ;; company-capf. There's probably a smarter way to do this, but
   ;; it works.
   (defun my:company-capf-yasnippet-group-hook ()
@@ -2183,7 +2182,7 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
         indent-bars-unspecified-bg-color "black"
         indent-bars-display-on-blank-lines t
         )
-  ;; If you don't want dtrt-indent then you need to figure out how to delay
+  ;; If you do not want dtrt-indent then you need to figure out how to delay
   ;; load to get the right number of spaces. Easiest is probably just
   ;; maintaining the list of modes. Tedious, but one can spend an eternity
   ;; hacking emacs...
@@ -2323,7 +2322,7 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
         (require ein-file)))
     ;; when editing the emacs.el file, we do not want to start a new
     ;; Jupyter server each time we save, so we only start a new Jupyter
-    ;; server if there currently isn't one running.
+    ;; server if there currently is not one running.
     (defvar my-found-ein-server nil)
     (dolist (my-current-process (process-list))
       (when (string-match "EIN: Jupyter*" (process-name my-current-process))
@@ -2338,7 +2337,7 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
 ;; Automatically at closing brace, bracket and quote
 ;;
 ;; NOTE: some or all of this functionality seems to be in Emacs and
-;;       I can't find this package in (m)elpa anymore.
+;;       I cannot find this package in (m)elpa anymore.
 ;;
 ;; (use-package autopair
 ;;   :ensure t
@@ -2766,7 +2765,7 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
    ;; custom-set-faces was added by Custom.
    ;; If you edit it by hand, you could mess it up, so be careful.
    ;; Your init file should contain only one such instance.
-   ;; If there is more than one, they won't work right.
+   ;; If there is more than one, they will not work right.
    '(default
       ((((type tty) (background dark)) (:background "nil"))))
    '(company-preview
@@ -2901,7 +2900,7 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
 (defun sl/display-header ()
   "Create the header string and display it."
   ;; The dark blue in the header for which-func is terrible to read.
-  ;; However, in the terminal it's quite nice
+  ;; However, in the terminal it is quite nice
   (if window-system
       (custom-set-faces
        '(which-func ((t (:foreground "#8fb28f")))))
@@ -2910,8 +2909,8 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
   ;; Set the header line
   (setq header-line-format
         (list "-"
-              ;; Don't add current function into header because it takes
-              ;; up a lot of space and I don't use it.
+              ;; Do not add current function into header because it takes
+              ;; up a lot of space and I do not use it.
               ;; '(which-func-mode ("" which-func-format))
               '("" ;; invocation-name
                 (:eval (if (buffer-file-name)
@@ -2985,6 +2984,8 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
   (use-package evil
     :ensure t
     :diminish undo-tree-mode
+    :preface
+    (customize-set-variable 'evil-want-keybinding nil)
     :init
     (eval-when-compile
       ;; Silence missing function warnings
@@ -2998,7 +2999,7 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
       (powerline-center-evil-theme))
 
     ;; There is a warning about evil-want-integration not being set to
-    ;; nil during compilation that I haven't figured out how to fix.
+    ;; nil during compilation that I have not figured out how to fix.
     (use-package evil-collection
       :after evil
       :ensure t
