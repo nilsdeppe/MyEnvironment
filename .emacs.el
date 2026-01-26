@@ -272,6 +272,11 @@ apps are not started from a shell."
   (custom-set-faces
    '(default
       ((t (:background "black")))))
+
+  ;; Set a light maroon for comments so they are easier to read in
+  ;; bright light settings.
+  (custom-set-faces
+   '(font-lock-comment-face ((t (:foreground "#996960")))))
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
