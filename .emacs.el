@@ -679,7 +679,12 @@ apps are not started from a shell."
 ;; Used by company-box and some themes
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package nerd-icons
-  :ensure t)
+  :ensure t
+  :custom
+  (when (string-equal system-type "darwin")
+    (nerd-icons-font-family "Symbols Nerd Font Mono")
+    )
+  )
 
 (use-package nerd-icons-completion
   :ensure t
