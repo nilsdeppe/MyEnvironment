@@ -1,4 +1,4 @@
-;;; initfile --- Summary:             -*- lexical-binding: nil; -*-
+;;; initfile --- Summary: -*- lexical-binding: nil; byte-compile-warnings: (not docstrings); -*-
 ;;; Commentary:
 ;;; Emacs 25.1 and newer tested
 ;;; Code:
