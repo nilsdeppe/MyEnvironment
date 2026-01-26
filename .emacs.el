@@ -243,7 +243,7 @@ apps are not started from a shell."
    '(company-tooltip-selection
      ((t (:background unspecified :underline t))))
    '(highlight
-     ((t (:background "nil" :foreground "nil" :underline t))))
+     ((t (:underline t))))
    )
 
   ;; Customize powerline colors. I like purple pink-ish
