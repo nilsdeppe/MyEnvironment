@@ -2163,7 +2163,16 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package indent-bars
   :ensure t
+  :init
+  (defvar
+    indent-bars-no-descend-lists t
+    )
   :config
+  (setq
+   indent-bars-prefer-character t
+   indent-bars-highlight-current-depth '(:color "white" :blend 0.5 :face-bg t)
+   )
+  :custom
   (setq indent-bars-color '(highlight :face-bg t :blend 0.75)
         ;; Hard-code fonts so we can use prog-mode hook. Otherwise
         ;; we get colors from before we load doom.
@@ -2172,10 +2181,7 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
                     "#d499e5" "#a8d7f7" "#e2bbee" "#dceffb"))
         indent-bars-unspecified-fg-color "white"
         indent-bars-unspecified-bg-color "black"
-        indent-bars-prefer-character t
         indent-bars-display-on-blank-lines t
-        indent-bars-no-descend-lists t
-        indent-bars-highlight-current-depth '(:color "white")
         )
   ;; If you don't want dtrt-indent then you need to figure out how to delay
   ;; load to get the right number of spaces. Easiest is probably just
