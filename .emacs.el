@@ -2170,7 +2170,7 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
   :config
   (setq
    indent-bars-prefer-character t
-   indent-bars-highlight-current-depth '(:color "white" :blend 0.5 :face-bg t)
+   indent-bars-highlight-current-depth '(:color "white" :blend 0.35 :face-bg t)
    )
   :custom
   (setq indent-bars-color '(highlight :face-bg t :blend 0.75)
