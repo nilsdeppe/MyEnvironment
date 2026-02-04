@@ -2012,14 +2012,12 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
                                         "--fallback-style=google"
                                         "-j=4"
                                         "--enable-config"
-                                        "--pch-storage=disk"
-                                        "--rename-file-limit=0"))
+                                        "--pch-storage=disk"))
       (defvar lsp-clients-clangd-args '("--clang-tidy"
                                         "--fallback-style=google"
                                         "-j=8"
                                         "--enable-config"
                                         "--pch-storage=disk"
-                                        "--rename-file-limit=0"
                                         "--malloc-trim"))
       )
   (setq lsp-enable-on-type-formatting nil)
