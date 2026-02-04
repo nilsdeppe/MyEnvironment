@@ -1,7 +1,11 @@
 ;;; initfile --- Summary: -*- lexical-binding: nil; byte-compile-warnings: (not docstrings); -*-
 ;;; Commentary:
-;;; Emacs 25.1 and newer tested
+;;; Emacs 29.1 and newer tested
 ;;; Code:
+
+(if (< emacs-major-version 29)
+    (error "Emacs must be version 29 or newer")
+  )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Configuration/Customization:
