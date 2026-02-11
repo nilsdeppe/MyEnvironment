@@ -713,40 +713,42 @@ apps are not started from a shell."
       gptel-backend (gptel-make-gh-copilot "Copilot"))
   )
 
-(if (executable-find "aider")
-    (use-package aidermacs
-      :ensure t
-      :bind (("C-c a" . aidermacs-transient-menu)
-             :map aidermacs-comint-mode-map
-             ("C-m" . comint-accumulate)
-             ("C-c C-m" . comint-send-input)
-             )
-      :config
-      ;; Set API_KEY in ~/.aider.conf.yml. E.g.:
-      ;;    openai-api-base: https://api.githubcopilot.com
-      ;;    # oauth_token from JetBrains ~/.config/github-copilot/apps.json
-      ;;    # Must recreate periodically. Note that tokens from other sources
-      ;;    # may not have sufficient access writes. If you get the error:
-      ;;    #    "access to this endpoint is forbidden"
-      ;;    # then it is because the access token does not have sufficient
-      ;;    # priveleges.
-      ;;    openai-api-key:
-      ;;    model:           openai/gpt-4.1
-      ;;    weak-model:      openai/gpt-4.1
-      ;;    show-model-warnings: false
-      ;;
-      ;; You can also connect to a local ollama instance using:
-      ;;   (setenv "OLLAMA_API_BASE" "http://127.0.0.1:11434")
-      ;; Note that you need a pretty good GPU to run a decent model
-      ;; locally.
-      (setenv "OLLAMA_API_BASE" "http://127.0.0.1:11434")
-      :custom
+(use-package aidermacs
+  :ensure t
+  :bind (("C-c a" . aidermacs-transient-menu)
+         :map aidermacs-comint-mode-map
+         ("C-m" . comint-accumulate)
+         ("C-c C-m" . comint-send-input)
+         )
+  :init
+  (setq aidermacs-program (or my:aidermacs-program "aider"))
+  :config
+  (unless (or (and (file-name-absolute-p aidermacs-program)
+                   (file-executable-p aidermacs-program))
+              (executable-find aidermacs-program))
+    (warn "aidermacs: '%s' not found" aidermacs-program))
+  ;; Set API_KEY in ~/.aider.conf.yml. E.g.:
+  ;;    openai-api-base: https://api.githubcopilot.com
+  ;;    # oauth_token from JetBrains ~/.config/github-copilot/apps.json
+  ;;    # Must recreate periodically. Note that tokens from other sources
+  ;;    # may not have sufficient access writes. If you get the error:
+  ;;    #    "access to this endpoint is forbidden"
+  ;;    # then it is because the access token does not have sufficient
+  ;;    # priveleges.
+  ;;    openai-api-key:
+  ;;    model:           openai/gpt-4.1
+  ;;    weak-model:      openai/gpt-4.1
+  ;;    show-model-warnings: false
+  ;;
+  ;; You can also connect to a local ollama instance using:
+  ;;   (setenv "OLLAMA_API_BASE" "http://127.0.0.1:11434")
+  ;; Note that you need a pretty good GPU to run a decent model
+  ;; locally.
+  (setenv "OLLAMA_API_BASE" "http://127.0.0.1:11434")
+  :custom
                                         ; See the Configuration section below
-      (aidermacs-default-chat-mode 'architect)
-      (aidermacs-default-model "openai/gpt-4.1"))
-  (warn "\nWARNING: Could not find the aider executable. Cannot %s"
-        "use aidermacs AI code assistant.")
-  )
+  (aidermacs-default-chat-mode 'architect)
+  (aidermacs-default-model "openai/gpt-4.1"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Select search backend
