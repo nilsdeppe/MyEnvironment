@@ -12,6 +12,41 @@
 ;; Defines global variables that are later used to customize and set
 ;; up packages.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defvar my:aidermacs-program "~/.local/bin/aider"
+  "Custom path to aider. If nil, search PATH for 'aider'.")
+
+(defvar my:compile-command "clang++ -Wall -Wextra -std=c++17 "
+  "Compilation command for C/C++.")
+
+(defvar my:cxx-completer "lsp"
+  "Choose ycmd or lsp for C/C++ completion. lsp or ycmd. lsp is better.")
+
+(defvar my:use-lsp-goto t
+  "Set to t if you want to use lsp-find-definition in C/C++/Rust mode")
+
+(defvar lsp-use-plists t
+  "lsp-mode performs better with plists (see LSP documentation)")
+
+;; When t use smart-hungry-delete
+;; (https://github.com/hrehfeld/emacs-smart-hungry-delete).
+;; When nil use hungry-delete
+(defvar my:use-smart-hungry-delete nil)
+
+;; Size in MB before running garbage collection.
+;; 25MB or larger is typically good for performance.
+(defvar my:gc-threshold-mb 25)
+
+;; The amount of data which Emacs reads from a process.
+;; 1MB is reasonable.
+(defvar my:read-threshold-mb 1)
+
+;; Set to t if you want to use ycmd-goto in C/C++/Rust mode
+(defvar my:use-ycmd-goto nil)
+
+;; Specify the jupyter executable name, and the start dir of the server
+(defvar my:jupyter_location (executable-find "jupyter"))
+(defvar my:jupyter_start_dir "/home/nils")
+
 ;; Specify the ycmd server command and path to the ycmd directory
 ;; *inside* the cloned ycmd directory. I use a wrapper to add the
 ;; path to the ycmd clang directories.
@@ -31,35 +66,6 @@
 ;; template-heavy C++ code.
 (defvar my:use-ycmd-eldoc nil)
 
-;; Choose ycmd or lsp for C/C++ completion. lsp or ycmd
-(defvar my:cxx-completer "lsp")
-
-;; Size in MB before running garbage collection.
-;; 25MB or larger is typically good for performance.
-(defvar my:gc-threshold-mb 25)
-
-;; The amount of data which Emacs reads from a process.
-;; 1MB is reasonable.
-(defvar my:read-threshold-mb 1)
-
-;; When t use smart-hungry-delete
-;; (https://github.com/hrehfeld/emacs-smart-hungry-delete).
-;; When nil use hungry-delete
-(defvar my:use-smart-hungry-delete nil)
-
-;; Set to t if you want to use ycmd-goto in C/C++/Rust mode
-(defvar my:use-ycmd-goto nil)
-
-;; Set to t if you want to use lsp-find-definition in C/C++/Rust mode
-(defvar my:use-lsp-goto t)
-
-;; lsp-mode performs better with plists (see LSP documentation)
-(defvar lsp-use-plists t)
-
-;; Specify the jupyter executable name, and the start dir of the server
-(defvar my:jupyter_location (executable-find "jupyter"))
-(defvar my:jupyter_start_dir "/home/nils")
-
 ;; In order to get EIN to work with byte-compiling we must explicitly
 ;; load some of the EIN files. Which files need to be loaded seems to change
 ;; over time, so to make maintenance easier we provide a variable here that
@@ -73,9 +79,6 @@
 (defvar my:lsp-explicit-load-files
   '(lsp-completion lsp-diagnostics lsp-headerline lsp-lens lsp-mode
                    lsp-modeline lsp-protocol lsp))
-
-;; Compilation command for C/C++
-(defvar my:compile-command "clang++ -Wall -Wextra -std=c++17 ")
 
 (defun my:compile-command-hook()
   "Try to intelligently set the compilation command locally in the buffer.
