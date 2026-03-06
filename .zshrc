@@ -670,21 +670,12 @@ function enable_perf() {
     echo always | sudo tee /sys/kernel/mm/transparent_hugepage/enabled
 }
 
-if [[ "$MACHINE_TYPE" == "Mac" ]]; then
-    # >>> conda initialize >>>
-    # !! Contents within this block are managed by 'conda init' !!
-    __conda_setup="$('/Users/nils/opt/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-    if [ $? -eq 0 ]; then
-        eval "$__conda_setup"
-    else
-        if [ -f "/Users/nils/opt/miniconda3/etc/profile.d/conda.sh" ]; then
-            . "/Users/nils/opt/miniconda3/etc/profile.d/conda.sh"
-        elif [ -d /Users/nils/opt/miniconda3/bin ]; then
-            export PATH="/Users/nils/opt/miniconda3/bin:$PATH"
-        fi
-    fi
-    unset __conda_setup
-    # <<< conda initialize <<<
+if [ -d "$HOME/.local/bin/" ]; then
+    export PATH=$PATH:$HOME/.local/bin/
+fi
+
+if [ -f "$HOME/.local/bin/env" ]; then
+    . "$HOME/.local/bin/env"
 fi
 
 function show_queue() {
