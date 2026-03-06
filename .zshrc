@@ -463,7 +463,7 @@ if ! in_container; then
     fi
 
     # Drop into a Singularity dev environment, reset modules after
-    container() {
+    my_container() {
         if [ "$1" = "spectre" ] && \
                [ -f $HOME/Research/spectre.sif ]; then
             module purge
