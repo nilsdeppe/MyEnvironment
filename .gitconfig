@@ -8,3 +8,6 @@
 	user = nilsdeppe
 [hub]
 	protocol = ssh
+[safe]
+	directory = /home/fs01/ml2847/SPECTRE
+	directory = /home/fs01/spec1167/spectre
