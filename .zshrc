@@ -678,6 +678,33 @@ if [ -f "$HOME/.local/bin/env" ]; then
     . "$HOME/.local/bin/env"
 fi
 
+if [[ $HOSTNAME_OUT == mbot* ]]; then
+    function claude-anthropic() {
+        apptainer shell --contain -B ./spectre_claude0/build_tmp:/tmp \
+                  -B ~/spectre_claude0:$HOME/spectre \
+                  -B ~/Claudes/Anthropic/.claude:$HOME/.claude \
+                  -B ~/Claudes/Anthropic/.claude.json:$HOME/.claude.json \
+                  --add-caps CAP_NET_RAW ~/SpectreAi.sif $@
+    }
+    function claude-github() {
+        apptainer shell --contain -B ./spectre_claude0/build_tmp:/tmp \
+                  -B ~/spectre_claude0:$HOME/spectre \
+                  -B ~/Claudes/Anthropic/.claude:$HOME/.claude \
+                  -B ~/Claudes/Anthropic/.claude.json:$HOME/.claude.json \
+                  --env ANTHROPIC_BASE_URL='http://localhost:41357' \
+                  --env ANTHROPIC_AUTH_TOKEN='dummy' \
+                  --env ANTHROPIC_MODEL='claude-sonnet-4.6' \
+                  --env ANTHROPIC_DEFAULT_HAIKU_MODEL='gpt-5-mini' \
+                  --add-caps CAP_NET_RAW ~/SpectreAi.sif $@
+    }
+    function claude-copilot-api() {
+        apptainer exec -c \
+                  -B ~/.local/share/copilot-api:$HOME/.local/share/copilot-api \
+                  ~/CopilotApi.sif copilot-api start --proxy-env --wait \
+                  --port 41357 --listen 0.0.0.0:41357
+    }
+fi
+
 function show_queue() {
     squeue -o "%.18i %.9P %.20j %.8u %.2t %.10M %.6D %R" "$@" | \
         sed "s/spec1182/amacedo/g; s/spec1168/ffoucart/g; s/spec1170/acarpenter/g; s/spec1162/knelli/g; s/spec1164/glovelace/g; s/spec1167/nora/g; s/spec1180/samrath/g; s/spec1194/vprasad/g; s/spec1217/lstein/g; s/spec1163/mscheel/g; s/spec1187/gdare/g; s/spec1250/jpineda/g; s/spec1253/ehury/g; s/spec1246/imendes/g"
