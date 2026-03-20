@@ -709,7 +709,7 @@ apps are not started from a shell."
     :host "localhost:11434"
     :stream t
     :models '(mistral:latest))
-  (setq gptel-model 'gpt-4.1
+  (setq gptel-model 'gpt-5-mini
       gptel-backend (gptel-make-gh-copilot "Copilot"))
   )
 
