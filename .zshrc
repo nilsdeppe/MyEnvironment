@@ -647,8 +647,11 @@ fi
 #
 # Make sure ~/.ssh/config has:
 #    AddKeysToAgent  yes
-if [ -e "$XDG_RUNTIME_DIR/ssh-agent.socket" ]; then
-    export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
+#
+# If SSH_AUTH_SOCK is not already set (i.e. no agent forwarding),
+# point at the systemd agent
+if [ -z "$SSH_AUTH_SOCK" ]; then
+    export SSH_AUTH_SOCK="/run/user/$(id -u)/ssh-agent.socket"
 fi
 
 #############################################################################
