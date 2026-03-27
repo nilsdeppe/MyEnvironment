@@ -696,6 +696,7 @@ if [[ $HOSTNAME_OUT == mbot* ]]; then
                   -B ~/Claudes/Anthropic/.claude:$HOME/.claude \
                   -B ~/Claudes/Anthropic/.claude.json:$HOME/.claude.json \
                   -B ~/.config/gh:/home/claude/.config/gh:ro \
+                  -B ~/SpECTRE_AGENTS.md:$HOME/spectre/AGENTS.md:ro \
                   --add-caps CAP_NET_RAW ~/SpectreAi.sif "$@"
     }
     function claude-github() {
@@ -711,6 +712,7 @@ if [[ $HOSTNAME_OUT == mbot* ]]; then
                   -B ~/Claudes/Anthropic/.claude:$HOME/.claude \
                   -B ~/Claudes/Anthropic/.claude.json:$HOME/.claude.json \
                   -B ~/.config/gh:/home/claude/.config/gh:ro \
+                  -B ~/SpECTRE_AGENTS.md:$HOME/spectre/AGENTS.md:ro \
                   --env ANTHROPIC_BASE_URL='http://localhost:41357' \
                   --env ANTHROPIC_AUTH_TOKEN='dummy' \
                   --env ANTHROPIC_MODEL='claude-sonnet-4.6' \
