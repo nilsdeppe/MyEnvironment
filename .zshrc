@@ -683,17 +683,34 @@ fi
 
 if [[ $HOSTNAME_OUT == mbot* ]]; then
     function claude-anthropic() {
-        apptainer shell --contain -B ./spectre_claude0/build_tmp:/tmp \
-                  -B ~/spectre_claude0:$HOME/spectre \
+        if [[ -z $1 ]]; then
+            echo "Usage: claude-anthropic <number> [other_args]" >&2
+            return 1
+        fi
+        local num=$1
+        shift
+        mkdir -p ./spectre_claude${num}/build_tmp
+        apptainer shell --contain \
+                  -B ./spectre_claude${num}/build_tmp:/tmp \
+                  -B ~/spectre_claude${num}:$HOME/spectre \
                   -B ~/Claudes/Anthropic/.claude:$HOME/.claude \
                   -B ~/Claudes/Anthropic/.claude.json:$HOME/.claude.json \
-                  --add-caps CAP_NET_RAW ~/SpectreAi.sif $@
+                  -B ~/.config/gh:/home/claude/.config/gh:ro \
+                  --add-caps CAP_NET_RAW ~/SpectreAi.sif "$@"
     }
     function claude-github() {
-        apptainer shell --contain -B ./spectre_claude0/build_tmp:/tmp \
-                  -B ~/spectre_claude0:$HOME/spectre \
+        if [[ -z $1 ]]; then
+            echo "Usage: claude-github <number> [other_args]" >&2
+            return 1
+        fi
+        local num=$1
+        shift
+        mkdir -p ./spectre_claude${num}/build_tmp
+        apptainer shell --contain -B ./spectre_claude${num}/build_tmp:/tmp \
+                  -B ~/spectre_claude${num}:$HOME/spectre \
                   -B ~/Claudes/Anthropic/.claude:$HOME/.claude \
                   -B ~/Claudes/Anthropic/.claude.json:$HOME/.claude.json \
+                  -B ~/.config/gh:/home/claude/.config/gh:ro \
                   --env ANTHROPIC_BASE_URL='http://localhost:41357' \
                   --env ANTHROPIC_AUTH_TOKEN='dummy' \
                   --env ANTHROPIC_MODEL='claude-sonnet-4.6' \
