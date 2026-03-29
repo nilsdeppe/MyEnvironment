@@ -696,7 +696,7 @@ if [[ $HOSTNAME_OUT == mbot* ]]; then
                   -B ~/spectre_claude${num}:$HOME/spectre \
                   -B ~/Claudes/Anthropic/.claude:$HOME/.claude \
                   -B ~/Claudes/Anthropic/.claude.json:$HOME/.claude.json \
-                  -B ~/.config/gh:/home/claude/.config/gh:ro \
+                  -B ~/.config/gh:$HOME/.config/gh:ro \
                   -B ~/SpECTRE_AGENTS.md:$HOME/spectre/AGENTS.md:ro \
                   --add-caps CAP_NET_RAW ~/SpectreAi.sif "$@"
         rm -rf "$CONTAINER_TMP"
@@ -715,7 +715,7 @@ if [[ $HOSTNAME_OUT == mbot* ]]; then
                   -B ~/spectre_claude${num}:$HOME/spectre \
                   -B ~/Claudes/Anthropic/.claude:$HOME/.claude \
                   -B ~/Claudes/Anthropic/.claude.json:$HOME/.claude.json \
-                  -B ~/.config/gh:/home/claude/.config/gh:ro \
+                  -B ~/.config/gh:$HOME/.config/gh:ro \
                   -B ~/SpECTRE_AGENTS.md:$HOME/spectre/AGENTS.md:ro \
                   --env ANTHROPIC_BASE_URL='http://localhost:41357' \
                   --env ANTHROPIC_AUTH_TOKEN='dummy' \
