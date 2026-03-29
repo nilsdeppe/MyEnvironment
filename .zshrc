@@ -689,15 +689,17 @@ if [[ $HOSTNAME_OUT == mbot* ]]; then
         fi
         local num=$1
         shift
-        mkdir -p ./spectre_claude${num}/build_tmp
+        CONTAINER_TMP=$(mktemp -d /tmp/$USER-claude-anthropic-XXXXXX)
+        mkdir -p "$CONTAINER_TMP"
         apptainer shell --contain \
-                  -B ./spectre_claude${num}/build_tmp:/tmp \
+                  -B "$CONTAINER_TMP":/tmp \
                   -B ~/spectre_claude${num}:$HOME/spectre \
                   -B ~/Claudes/Anthropic/.claude:$HOME/.claude \
                   -B ~/Claudes/Anthropic/.claude.json:$HOME/.claude.json \
                   -B ~/.config/gh:/home/claude/.config/gh:ro \
                   -B ~/SpECTRE_AGENTS.md:$HOME/spectre/AGENTS.md:ro \
                   --add-caps CAP_NET_RAW ~/SpectreAi.sif "$@"
+        rm -rf "$CONTAINER_TMP"
     }
     function claude-github() {
         if [[ -z $1 ]]; then
@@ -706,8 +708,10 @@ if [[ $HOSTNAME_OUT == mbot* ]]; then
         fi
         local num=$1
         shift
-        mkdir -p ./spectre_claude${num}/build_tmp
-        apptainer shell --contain -B ./spectre_claude${num}/build_tmp:/tmp \
+        CONTAINER_TMP=$(mktemp -d /tmp/$USER-claude-github-XXXXXX)
+        mkdir -p "$CONTAINER_TMP"
+        apptainer shell --contain \
+                  -B "$CONTAINER_TMP":/tmp \
                   -B ~/spectre_claude${num}:$HOME/spectre \
                   -B ~/Claudes/Anthropic/.claude:$HOME/.claude \
                   -B ~/Claudes/Anthropic/.claude.json:$HOME/.claude.json \
@@ -718,6 +722,7 @@ if [[ $HOSTNAME_OUT == mbot* ]]; then
                   --env ANTHROPIC_MODEL='claude-sonnet-4.6' \
                   --env ANTHROPIC_DEFAULT_HAIKU_MODEL='gpt-5-mini' \
                   --add-caps CAP_NET_RAW ~/SpectreAi.sif $@
+        rm -rf "$CONTAINER_TMP"
     }
     function claude-copilot-api() {
         apptainer exec -c \
