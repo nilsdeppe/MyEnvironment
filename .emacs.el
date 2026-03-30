@@ -134,6 +134,13 @@ compilation."
       )
     ))
 
+
+(defun my/git-commit-co-authored-by-claude ()
+  "Insert Co-Authored-By trailer for Claude.
+Currently bound to C-c C-l in git-commit mode."
+  (interactive)
+  (insert "Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>"))
+
 ;; Which theme to use.
 ;; - spacemacs-dark
 ;; - sourcerer
@@ -2467,6 +2474,13 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
   ;; and emacs as daemons while having them work together.
   (my:set_ssh_auth_sock)
   )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; git-commit mode
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package git-commit
+  :bind
+  (:map git-commit-mode-map ("C-c C-l" . my/git-commit-co-authored-by-claude)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; diff-hl
