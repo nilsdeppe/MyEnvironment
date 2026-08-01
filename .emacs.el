@@ -1329,9 +1329,10 @@ apps are not started from a shell."
     ;; Silence missing function warnings
     (declare-function projectile-mode "projectile.el"))
 
-  (when (not (executable-find "fd"))
-    (warn (concat "\nWARNING: Could not find the fd executable. It is "
-                  "recommended you install fd for projectile. Path is: "
+  (when (and (not (executable-find "fd"))
+             (not (executable-find "fdfind")))
+    (warn (concat "\nWARNING: Could not find the fd or fdfind executable. "
+                  "It is recommended you install fd for projectile. Path is: "
                   (getenv "PATH"))))
   :config
   (projectile-mode t)
