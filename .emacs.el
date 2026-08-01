@@ -2438,6 +2438,11 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
     :diminish flyspell-correct-mode
     :after flyspell)
   :config
+  (add-hook 'latex-mode-hook
+            (lambda ()
+              (dolist (m '("cite" "citep" "citet" "ref" "citeUS"))
+                (add-to-list 'ispell-skip-region-alist
+                             (cons (concat "\\\\" m "{") "}")))))
   (defun flyspell-check-next-highlighted-word ()
     "Custom function to spell check next highlighted word."
     (interactive)
